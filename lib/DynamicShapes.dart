@@ -2,16 +2,19 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:math_app/Circle/CircleExample.dart';
 import 'package:math_app/Circle/CirclePart.dart';
+import 'package:math_app/Circle/CircleQuiz.dart';
 import 'package:math_app/Circle/DefinitionCircle.dart';
 import 'package:math_app/Circle/FormulaCircle.dart';
 import 'package:math_app/Ellipse/DefinitionEllipse.dart';
 import 'package:math_app/Ellipse/EllipseExamples.dart';
 import 'package:math_app/Ellipse/EllipseFormula.dart';
 import 'package:math_app/Ellipse/EllipsePart.dart';
+import 'package:math_app/Ellipse/EllipseQuiz.dart';
 import 'package:math_app/Hyperbola/HyperbolaDefinition.dart';
 import 'package:math_app/Hyperbola/HyperbolaExample.dart';
 import 'package:math_app/Hyperbola/HyperbolaFormula.dart';
 import 'package:math_app/Hyperbola/HyperbolaPart.dart';
+import 'package:math_app/Hyperbola/HyperbolaQuiz.dart';
 import 'package:math_app/Menu.dart';
 import 'package:math_app/Parabola/ParabolaDefinition.dart';
 import 'package:math_app/Parabola/ParabolaExample.dart';
@@ -55,84 +58,92 @@ class _ConicSectionVisualizationState extends State<DynamicShapes> with TickerPr
           height: 300, // <-- control height here
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 8),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('Can Manipulate', style: TextStyle(fontWeight: FontWeight.bold)),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ButtonMenu(
+                        _currentType == 'Circle'
+                            ? Colors.red
+                            : _currentType == 'Ellipse'
+                            ? Colors.orange
+                            : _currentType == 'Parabola'
+                            ? Colors.green
+                            : _currentType == 'Hyperbola'
+                            ? Colors.blue
+                            : Colors.red,
+                        'Definition',
+                        _currentType,
+                      ),
+                      ButtonMenu(
+                        _currentType == 'Circle'
+                            ? Colors.red
+                            : _currentType == 'Ellipse'
+                            ? Colors.orange
+                            : _currentType == 'Parabola'
+                            ? Colors.green
+                            : _currentType == 'Hyperbola'
+                            ? Colors.blue
+                            : Colors.red,
+                        'Parts',
+                        _currentType,
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ButtonMenu(
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ButtonMenu(
+                        _currentType == 'Circle'
+                            ? Colors.red
+                            : _currentType == 'Ellipse'
+                            ? Colors.orange
+                            : _currentType == 'Parabola'
+                            ? Colors.green
+                            : _currentType == 'Hyperbola'
+                            ? Colors.blue
+                            : Colors.red,
+                        'Formulas',
+                        _currentType,
+                      ),
+                      ButtonMenu(
+                        _currentType == 'Circle'
+                            ? Colors.red
+                            : _currentType == 'Ellipse'
+                            ? Colors.orange
+                            : _currentType == 'Parabola'
+                            ? Colors.green
+                            : _currentType == 'Hyperbola'
+                            ? Colors.blue
+                            : Colors.red,
+                        'Examples',
+                        _currentType,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: ButtonMenu(
                       _currentType == 'Circle'
                           ? Colors.red
                           : _currentType == 'Ellipse'
                           ? Colors.orange
                           : _currentType == 'Parabola'
                           ? Colors.green
-                          : _currentType == 'Hyperbola'
+                          : _currentType == 'Hyperbol'
                           ? Colors.blue
                           : Colors.red,
-                      'Definition',
+                      'Quiz',
                       _currentType,
                     ),
-                    ButtonMenu(
-                      _currentType == 'Circle'
-                          ? Colors.red
-                          : _currentType == 'Ellipse'
-                          ? Colors.orange
-                          : _currentType == 'Parabola'
-                          ? Colors.green
-                          : _currentType == 'Hyperbola'
-                          ? Colors.blue
-                          : Colors.red,
-                      'Parts',
-                      _currentType,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ButtonMenu(
-                      _currentType == 'Circle'
-                          ? Colors.red
-                          : _currentType == 'Ellipse'
-                          ? Colors.orange
-                          : _currentType == 'Parabola'
-                          ? Colors.green
-                          : _currentType == 'Hyperbola'
-                          ? Colors.blue
-                          : Colors.red,
-                      'Formulas',
-                      _currentType,
-                    ),
-                    ButtonMenu(
-                      _currentType == 'Circle'
-                          ? Colors.red
-                          : _currentType == 'Ellipse'
-                          ? Colors.orange
-                          : _currentType == 'Parabola'
-                          ? Colors.green
-                          : _currentType == 'Hyperbola'
-                          ? Colors.blue
-                          : Colors.red,
-                      'Examples',
-                      _currentType,
-                    ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -299,6 +310,9 @@ class _ConicSectionVisualizationState extends State<DynamicShapes> with TickerPr
               case 'Examples':
                 Navigator.push(context, MaterialPageRoute(builder: (context) => CircleExamplesApp()));
                 break;
+              case 'Quiz':
+                Navigator.push(context, MaterialPageRoute(builder: (context) => QuizScreen()));
+
               default:
                 break;
             }
@@ -319,6 +333,9 @@ class _ConicSectionVisualizationState extends State<DynamicShapes> with TickerPr
                 Navigator.push(context, MaterialPageRoute(builder: (context) => EllipseExamplesApp()));
                 break;
 
+              case 'Quiz':
+                Navigator.push(context, MaterialPageRoute(builder: (context) => QuizScreenEllipse()));
+
               default:
                 break;
             }
@@ -338,6 +355,7 @@ class _ConicSectionVisualizationState extends State<DynamicShapes> with TickerPr
               case 'Examples':
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ParabolaExamplesApp()));
                 break;
+
               default:
                 break;
             }
@@ -357,6 +375,8 @@ class _ConicSectionVisualizationState extends State<DynamicShapes> with TickerPr
               case 'Examples':
                 Navigator.push(context, MaterialPageRoute(builder: (context) => HyperbolaExamplesApp()));
                 break;
+              case 'Quiz':
+                Navigator.push(context, MaterialPageRoute(builder: (context) => QuizScreenHyperBola()));
 
               default:
                 break;
