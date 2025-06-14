@@ -1,121 +1,85 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 
-class QuizScreenEllipse extends StatefulWidget {
+class QuizScreenParabola extends StatefulWidget {
   @override
-  _QuizScreenState createState() => _QuizScreenState();
+  _QuizScreenParabolaState createState() => _QuizScreenParabolaState();
 }
 
-class _QuizScreenState extends State<QuizScreenEllipse> {
-  // Questions list with ABCD options and solutions
+class _QuizScreenParabolaState extends State<QuizScreenParabola> {
   final List<Map<String, dynamic>> questions = [
     {
-      'question': '1. In an ellipse, the longest axis is called:',
-      'options': ['a. eccentricity', 'b. minor axis', 'c. major axis', 'd. conjugate axis'],
+      'question': '1. What is the standard form equation of a vertically opening parabola with vertex at the origin?',
+      'options': ['a. (x - h)² = 4p(y - k)', 'b. y² = 4px', 'c. x² = 4py', 'd. (y - k)² = 4p(x - h)'],
       'correctIndex': 2,
-      'solution': 'The major axis is the longest diameter of an ellipse, passing through both foci and the center.',
+      'solution': 'Answer: c. x² = 4py\n\nFor a vertical parabola with vertex at origin, the standard form is x² = 4py',
       'image': null,
     },
     {
-      'question': '2. An ellipse has _____ vertices and _____ foci.',
-      'options': ['a. two, two', 'b. one, two', 'c. two, one', 'd. one, one'],
+      'question': '2. The vertex of a parabola is the point that...',
+      'options': ['a. Is the midpoint of the focus and directrix', 'b. Lies at the center of the parabola', 'c. Is always at (0,0)', 'd. Lies on the directrix'],
       'correctIndex': 0,
-      'solution': 'An ellipse has exactly two vertices (endpoints of major axis) and two foci (fixed points).',
+      'solution': 'Answer: a. Is the midpoint of the focus and directrix\n\nThe vertex is equidistant between the focus and directrix',
       'image': null,
     },
     {
-      'question': '3. The two fixed points in the ellipse are called ____.',
-      'options': ['a. Co-vertices', 'b. Vertices', 'c. Foci', 'd. Latus Rectum'],
-      'correctIndex': 2,
-      'solution': 'The foci are the two fixed points that define an ellipse. The sum of distances from any point on the ellipse to both foci is constant.',
-      'image': null,
-    },
-    {
-      'question': '4. The endpoints of the minor axis of an ellipse are called:',
-      'options': ['a. Foci', 'b. Vertices', 'c. Co-vertices', 'd. Center'],
-      'correctIndex': 2,
-      'solution': 'Co-vertices are the endpoints of the minor axis, which is the shorter diameter of the ellipse.',
-      'image': null,
-    },
-    {
-      'question': '5. What are the coordinates of the foci for an ellipse with a horizontal major axis centered at (0,0)?',
-      'options': ['a. (0, ±c)', 'b. (±c, 0)', 'c. (h, k±c)', 'd. (h±a, c)'],
+      'question': '3. What is the directrix of a parabola?',
+      'options': ['a. A point inside the parabola', 'b. A fixed straight line used to define the parabola', 'c. The longest chord of the parabola', 'd. A line perpendicular to the axis of symmetry'],
       'correctIndex': 1,
-      'solution': 'For a horizontal ellipse centered at origin, foci are at (±c, 0) where c² = a² - b².',
+      'solution': 'Answer: b. A fixed straight line used to define the parabola\n\nThe directrix is a fixed line that, with the focus, defines the parabola',
       'image': null,
     },
     {
-      'question': '6. The line segments perpendicular to the major axis through any of the foci such that their endpoints lie on the ellipse:',
-      'options': ['a. Latus Rectum', 'b. Directrix', 'c. Eccentricity', 'd. Conjugate axis'],
-      'correctIndex': 0,
-      'solution': 'The latus rectum is a chord through a focus perpendicular to the major axis. Its length is 2b²/a.',
-      'image': null,
-    },
-    {
-      'question': '7. What are the foci of an ellipse with equation x²/100 + y²/169 = 1?',
-      'options': ['a. (0, ±5√2)', 'b. (0, ±√73)', 'c. (0, ±√69)', 'd. (0, ±√13)'],
-      'correctIndex': 2,
-      'solution': 'a² = 169, b² = 100. Since a > b, major axis is vertical. c² = a² - b² = 169 - 100 = 69, so c = √69. Foci: (0, ±√69)',
-      'image': null,
-    },
-    {
-      'question': '8. What is eccentricity for x²/25 + y²/16 = 1?',
-      'options': ['a. 5/4', 'b. 4/5', 'c. 2/5', 'd. 3/5'],
+      'question': '4. The equation (y - 2)² = 8(x - 3) represents a parabola that opens...',
+      'options': ['a. Upward', 'b. Downward', 'c. To the left', 'd. To the right'],
       'correctIndex': 3,
-      'solution': 'a² = 25, b² = 16, so a = 5, b = 4. c² = a² - b² = 25 - 16 = 9, so c = 3. Eccentricity = c/a = 3/5.',
+      'solution': 'Solution:\n4p = 8 → p = 2\nSince p > 0 and it\'s a y² equation, it opens to the right',
       'image': null,
     },
     {
-      'question': '9. What is the length of latus rectum for x²/144 + y²/49 = 1?',
-      'options': ['a. 27/4', 'b. 49/6', 'c. 12/7', 'd. 19/9'],
-      'correctIndex': 1,
-      'solution': 'a² = 144, b² = 49, so a = 12, b = 7. Latus rectum = 2b²/a = 2(49)/12 = 98/12 = 49/6.',
+      'question': '5. Find the vertex of (y - 1)² = -4(x + 3)',
+      'options': ['a. (3, -1)', 'b. (3, 1)', 'c. (-3, 1)', 'd. (-3, -1)'],
+      'correctIndex': 2,
+      'solution': 'Solution: (h, k) = (-3, 1)\nStandard form is (y - k)² = 4p(x - h)',
       'image': null,
     },
     {
-      'question': '10. If length of major axis is 10 and minor axis is 8, with major axis along x-axis, find the equation.',
-      'options': ['a. x²/10 + y²/8 = 1', 'b. x²/8 + y²/10 = 1', 'c. x²/16 + y²/25 = 1', 'd. x²/25 + y²/16 = 1'],
+      'question': '6. Find the focus of (y - 1)² = -4(x + 3)',
+      'options': ['a. (-4, 1)', 'b. (1, -4)', 'c. (-1, 4)', 'd. (-1, -4)'],
+      'correctIndex': 0,
+      'solution': 'Solution:\n4p = -4 → p = -1\nFocus = (h + p, k) = (-3 + (-1), 1) = (-4, 1)',
+      'image': null,
+    },
+    {
+      'question': '7. Find the directrix of (y - 1)² = -4(x + 3)',
+      'options': ['a. x = -2', 'b. x = 2', 'c. y = -2', 'd. y = 2'],
+      'correctIndex': 0,
+      'solution': 'Solution:\np = -1\nDirectrix: x = h - p = -3 - (-1) = -2',
+      'image': null,
+    },
+    {
+      'question': '8. Find the latus rectum of (y - 1)² = -4(x + 3)',
+      'options': ['a. 1 unit', 'b. 2 units', 'c. 3 units', 'd. 4 units'],
       'correctIndex': 3,
-      'solution': 'Major axis = 2a = 10, so a = 5. Minor axis = 2b = 8, so b = 4. Since major axis is along x-axis: x²/25 + y²/16 = 1.',
+      'solution': 'Solution:\nLatus rectum = |4p| = |-4| = 4 units',
       'image': null,
     },
     {
-      'question': '11. If foci of an ellipse are (0, ±6) and length of semi-major axis is 10 units, then find the equation of ellipse.',
-      'options': ['a. x²/64 + y²/100 = 1', 'b. x²/10 + y²/8 = 1', 'c. x²/6 + y²/10 = 1', 'd. x²/10 + y²/6 = 1'],
-      'correctIndex': 0,
-      'solution': 'Foci: (0, ±6), so c = 6. Semi-major axis a = 10. Since foci are vertical, major axis is along y-axis. c² = a² - b², so 36 = 100 - b², therefore b² = 64. Equation: x²/64 + y²/100 = 1.',
-      'image': null,
-    },
-    {
-      'question': '12. Which of the following equations satisfy the condition as eccentricity e = √3/2?',
-      'options': ['a. x² + 4y² + 6x - 8y + 9 = 0', 'b. 2x - y² - 8x + 5y - 6 = 0', 'c. 2x² - y² + 4x + 18y - 2 = 0', 'd. x² + y² + 12x - 6y + 10 = 0'],
-      'correctIndex': 0,
-      'solution': 'Converting to standard form: (x+3)²/4 + (y-1)²/1 = 1. Here a² = 4, b² = 1, so c² = 4-1 = 3, c = √3. Eccentricity = c/a = √3/2.',
-      'image': null,
-    },
-    {
-      'question': '13. If an ellipse has foci at (±5, 0) and vertices at (±7, 0), what is its eccentricity?',
-      'options': ['a. 7/5', 'b. 5/7', 'c. 12/7', 'd. 7/12'],
+      'question': '9. Find the endpoints of latus rectum for (y - 1)² = -4(x + 3)',
+      'options': ['a. E₁(4,3) and E₂(4,1)', 'b. E₁(-4,3) and E₂(-4,-1)', 'c. E₁(3,4) and E₂(1,4)', 'd. E₁(-3,4) and E₂(-1,-4)'],
       'correctIndex': 1,
-      'solution': 'Foci: (±5, 0), so c = 5. Vertices: (±7, 0), so a = 7. Eccentricity = c/a = 5/7.',
+      'solution': 'Solution:\np = -1\nEndpoints = (h - p, k ± 2p)\n= (-3 - (-1), 1 ± 2(-1))\n= (-4, 1 ± (-2))\n= (-4,3) and (-4,-1)',
       'image': null,
     },
     {
-      'question': '14. Which graph correctly represents the equation (x-4)²/49 + (y+3)²/64 = 1?',
-      'options': ['a. Graph A', 'b. Graph B', 'c. Graph C', 'd. Graph D'],
-      'correctIndex': 0, // You'll need to determine the correct answer based on the actual graphs
-      'solution': 'Center: (4, -3). a² = 64, b² = 49, so a = 8, b = 7. Since a² > b², major axis is vertical with length 16, minor axis horizontal with length 14.',
-      'image': 'assets/images/question14_graphs.png', // Single image showing all 4 graph options
-    },
-    {
-      'question': '15. What are the vertices of the ellipse shown in the graph?',
-      'options': ['a. (-5, 15) and (-5, -1)', 'b. (-11, 7) and (1, 7)', 'c. (-5, 7) and (1, 7)', 'd. (15, -5) and (1, 5)'],
-      'correctIndex': 0,
-      'solution': 'From the graph, the center appears to be at (-5, 7). The major axis is vertical, and counting units from center to endpoints of major axis gives vertices at (-5, 15) and (-5, -1).',
-      'image': 'assets/images/question15_ellipse.png', // You'll need to add this image
+      'question': '10. Write the equation of a parabola with vertex at (1,-3), opens right, and latus rectum of 8 units',
+      'options': ['a. (x + 3)² = 8(y - 1)', 'b. (y + 3)² = 8(x - 1)', 'c. (x - 3)² = -8(y - 1)', 'd. (y + 3)² = -8(x - 1)'],
+      'correctIndex': 1,
+      'solution': 'Solution:\nStandard form: (y - k)² = 4p(x - h)\n4p = 8 → p = 2\nVertex (1,-3)\nEquation: (y + 3)² = 8(x - 1)',
+      'image': null,
     },
   ];
 
+  // Rest of your existing state management and UI code
   int currentQuestionIndex = 0;
   int? selectedOptionIndex;
   bool isAnswered = false;
@@ -195,7 +159,7 @@ class _QuizScreenState extends State<QuizScreenEllipse> {
     final currentQuestion = questions[originalIndex];
 
     return Scaffold(
-      appBar: AppBar(title: Text('Ellipse Geometry Quiz (${currentQuestionIndex + 1}/${questions.length})'), backgroundColor: Colors.purple, foregroundColor: Colors.white, actions: [Padding(padding: EdgeInsets.all(8.0), child: Center(child: Text('Score: $score/${questions.length}', style: TextStyle(color: Colors.white))))]),
+      appBar: AppBar(title: Text('Parabola Quiz (${currentQuestionIndex + 1}/${questions.length})'), backgroundColor: Colors.purple, foregroundColor: Colors.white, actions: [Padding(padding: EdgeInsets.all(8.0), child: Center(child: Text('Score: $score/${questions.length}', style: TextStyle(color: Colors.white))))]),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -209,7 +173,7 @@ class _QuizScreenState extends State<QuizScreenEllipse> {
                 elevation: 2,
                 color: getOptionColor(index),
                 child: ListTile(
-                  title: Text(currentQuestion['options'][index], style: TextStyle(fontSize: 16)),
+                  title: Text(currentQuestion['options'][index]),
                   onTap: () => answerQuestion(index),
                   leading: Icon(
                     isAnswered && index == selectedOptionIndex
@@ -228,7 +192,7 @@ class _QuizScreenState extends State<QuizScreenEllipse> {
               );
             }),
             SizedBox(height: 20),
-            if (isAnswered) Card(color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green.shade50 : Colors.red.shade50, child: Padding(padding: const EdgeInsets.all(16.0), child: Column(children: [Text(selectedOptionIndex == currentQuestion['correctIndex'] ? '✓ Correct!' : '✗ Incorrect!', style: TextStyle(fontWeight: FontWeight.bold, color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green : Colors.red, fontSize: 20)), SizedBox(height: 10), Text('Solution: ${currentQuestion['solution']}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14))]))),
+            if (isAnswered) Card(color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green.shade50 : Colors.red.shade50, child: Padding(padding: const EdgeInsets.all(16.0), child: Column(children: [Text(selectedOptionIndex == currentQuestion['correctIndex'] ? '✓ Correct!' : '✗ Incorrect!', style: TextStyle(fontWeight: FontWeight.bold, color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green : Colors.red, fontSize: 20)), SizedBox(height: 10), Text(currentQuestion['solution'], style: TextStyle(fontSize: 14))]))),
             Spacer(),
             ElevatedButton(onPressed: isAnswered ? nextQuestion : null, style: ElevatedButton.styleFrom(backgroundColor: Colors.purple, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)), child: Text(currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz', style: TextStyle(fontSize: 18))),
           ],
@@ -333,14 +297,14 @@ class ResultsScreen extends StatelessWidget {
                         children: [
                           Row(children: [Icon(answer['isCorrect'] ? Icons.check_circle : Icons.cancel, color: answer['isCorrect'] ? Colors.green : Colors.red, size: 20), SizedBox(width: 8), Expanded(child: Text('Question ${displayIndex + 1}', style: TextStyle(fontWeight: FontWeight.bold, color: answer['isCorrect'] ? Colors.green.shade900 : Colors.red.shade900, fontSize: 16)))]),
                           SizedBox(height: 8),
-                          Text(answer['question'], style: TextStyle(fontSize: 14)),
+                          Text(answer['question']),
                           SizedBox(height: 8),
                           if (answer['image'] != null) Container(height: 100, child: Image.asset(answer['image'], fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey))))),
-                          SizedBox(height: 8.0),
+                          SizedBox(height: 8),
                           Text('Your answer: ${answer['selected'] != null ? question['options'][answer['selected']] : 'Not answered'}', style: TextStyle(color: answer['isCorrect'] ? Colors.green.shade900 : Colors.red.shade900, fontWeight: FontWeight.w500)),
                           Text('Correct answer: ${question['options'][answer['correct']]}', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green.shade900)),
                           SizedBox(height: 8),
-                          Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.circular(4)), child: Text('Solution: ${answer['solution']}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 13, color: Colors.blue.shade800))),
+                          Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.purple.shade50, borderRadius: BorderRadius.circular(4)), child: Text('Solution: ${answer['solution']}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 13, color: Colors.purple.shade800))),
                         ],
                       ),
                     ),

@@ -20,6 +20,7 @@ import 'package:math_app/Parabola/ParabolaDefinition.dart';
 import 'package:math_app/Parabola/ParabolaExample.dart';
 import 'package:math_app/Parabola/ParabolaFormula.dart';
 import 'package:math_app/Parabola/ParabolaPart.dart';
+import 'package:math_app/Parabola/ParabolaQuiz.dart';
 import 'package:vector_math/vector_math.dart' as vector_math;
 
 class DynamicShapes extends StatefulWidget {
@@ -355,6 +356,8 @@ class _ConicSectionVisualizationState extends State<DynamicShapes> with TickerPr
               case 'Examples':
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ParabolaExamplesApp()));
                 break;
+              case 'Quiz':
+                Navigator.push(context, MaterialPageRoute(builder: (context) => QuizScreenParabola()));
 
               default:
                 break;
