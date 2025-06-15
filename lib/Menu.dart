@@ -1,43 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:math_app/DynamicShapes.dart';
+import 'package:math_app/GeneralQuiz.dart';
 
 class MenuButton extends StatelessWidget {
   const MenuButton({Key? key});
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        // removes default back button
-        centerTitle: true, // centers the title
-        title: const Text('Shapes', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-        actions: [],
-      ),
-
+      appBar: AppBar(centerTitle: true, title: const Text('Shapes', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)), actions: []),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Select Shapes', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-            Padding(padding: EdgeInsets.fromLTRB(50, 0, 0, 0), child: Image.asset('assets/images/Conic_Sections_Shapes.png')),
-
-            const SizedBox(height: 0),
-            ButtonMenu(context, Colors.red, 'Circle', Icons.circle),
-            const SizedBox(height: 15),
-            ButtonMenu(context, Colors.orange, 'Ellipse', Icons.egg_alt),
-
-            const SizedBox(height: 15),
-            ButtonMenu(context, Colors.green, 'Parabola', Icons.stacked_line_chart),
-            const SizedBox(height: 15),
-            ButtonMenu(context, Colors.blue, 'Hyperbola', Icons.all_inclusive),
-            const Spacer(), // pushes the quiz button to the bottom
+            // Top content that can scroll if needed
+            Expanded(child: SingleChildScrollView(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [const Text('Select Shapes', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)), Padding(padding: EdgeInsets.fromLTRB(50, 0, 0, 0), child: Image.asset('assets/images/Conic_Sections_Shapes.png')), const SizedBox(height: 20), ButtonMenu(context, Colors.red, 'Circle', Icons.circle), const SizedBox(height: 15), ButtonMenu(context, Colors.orange, 'Ellipse', Icons.egg_alt), const SizedBox(height: 15), ButtonMenu(context, Colors.green, 'Parabola', Icons.stacked_line_chart), const SizedBox(height: 15), ButtonMenu(context, Colors.blue, 'Hyperbola', Icons.all_inclusive)]))),
+            // Bottom button that stays at bottom
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  // Navigate to General Quiz screen
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ConicSectionsQuiz()));
                 },
                 icon: const Icon(Icons.quiz),
                 label: const Text('General Quiz', style: TextStyle(fontSize: 18)),
