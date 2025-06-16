@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:just_audio/just_audio.dart';
 
 class EllipsePartsScreen extends StatefulWidget {
   @override
@@ -8,13 +9,67 @@ class EllipsePartsScreen extends StatefulWidget {
 
 class _EllipsePartsScreenState extends State<EllipsePartsScreen> {
   String selectedPart = '';
+  final AudioPlayer player = AudioPlayer();
+  bool isPlaying = false;
 
-  final Map<String, String> descriptions = {'Center': 'The midpoint where the major and minor axes intersect.', 'Vertices': 'The endpoints of the major axis.', 'Co-vertices': 'The endpoints of the minor axis.', 'Major Axis': 'The longest diameter that passes through the foci.', 'Minor Axis': 'The shortest diameter, perpendicular to the major axis.', 'Semi-major Axis': 'Half of the major axis from the center to a vertex.', 'Semi-minor Axis': 'Half of the minor axis from the center to a co-vertex.', 'Foci': 'Two fixed points inside the ellipse, used to define its shape.', 'Latus Rectum': 'A line segment perpendicular to the major axis through each focus.', 'Eccentricity': 'A measure of how "stretched" the ellipse is.', 'Axis of Symmetry': 'The major and minor axes are both axes of symmetry.'};
+  final Map<String, String> descriptions = {'Focus': 'Has two foci. The foci (singular: focus) are the fixed points of the ellipse, which are located on the major axis.', 'Center': 'The midpoint between the two foci. The major and minor axes intersect at this point at 90°. It is denoted by (h, k).', 'Major Axis': 'It is the distance between the end vertices. The center divides the major axis into two equal halves. Each half is called the semi-major axis or major radius, represented by \'a\'.', 'Minor Axis': 'It is the distance between the end co-vertices. Center divides the minor axis into two halves. Each half is called the semi-minor axis or minor radius, represented by \'b\'.', 'Vertex': 'It is the point where the ellipse intersects the major axis. In other words, the two extreme points that form the major axis are the vertices.', 'Co-vertex': 'It is the point where the ellipse intersects the minor axis. In other words, the two extreme points that form the minor axis are the co-vertices.', 'Latus Rectum': 'The line segments perpendicular to the major axis through any of the foci such that their endpoints lie on the ellipse.', 'Eccentricity': 'The ratio of the distance of the focus from the center of the ellipse, and the distance of one end of the major axis from the center of the ellipse.'};
 
-  void selectPart(String part) {
+  Future<void> selectPart(String part) async {
     setState(() {
       selectedPart = part;
     });
+    await player.stop();
+    setState(() {
+      isPlaying = false;
+    });
+  }
+
+  Future<void> playAudio() async {
+    try {
+      if (selectedPart.isEmpty) return;
+
+      // Audio file paths based on selected part
+      if (selectedPart == 'Focus') {
+        await player.setAsset('assets/Audio/Ellipse(focus).mp3');
+      } else if (selectedPart == 'Center') {
+        await player.setAsset('assets/Audio/Ellipse(center).mp3');
+      } else if (selectedPart == 'Major Axis') {
+        await player.setAsset('assets/Audio/Ellipse(major axis).mp3');
+      } else if (selectedPart == 'Minor Axis') {
+        await player.setAsset('assets/Audio/Ellipse(minor axis).mp3');
+      } else if (selectedPart == 'Vertex') {
+        await player.setAsset('assets/Audio/Ellipse(vertex).mp3');
+      } else if (selectedPart == 'Co-vertex') {
+        await player.setAsset('assets/Audio/Ellipse(co-vertex).mp3');
+      } else if (selectedPart == 'Latus Rectum') {
+        await player.setAsset('assets/Audio/Ellipse(latus rectum).mp3');
+      } else if (selectedPart == 'Eccentricity') {
+        await player.setAsset('assets/Audio/Ellipse(eccentricity).mp3');
+      }
+
+      await player.play();
+      setState(() {
+        isPlaying = true;
+      });
+
+      player.playerStateStream.listen((state) {
+        if (state.processingState == ProcessingState.completed) {
+          setState(() {
+            isPlaying = false;
+          });
+        }
+      });
+    } on PlayerException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: ${e.message}')));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+    }
+  }
+
+  @override
+  void dispose() {
+    player.dispose();
+    super.dispose();
   }
 
   @override
@@ -23,10 +78,10 @@ class _EllipsePartsScreenState extends State<EllipsePartsScreen> {
       appBar: AppBar(title: Text("Ellipse Parts")),
       body: Column(
         children: [
-          SizedBox(height: 50),
+          SizedBox(height: 20),
           Text("Ellipse Parts", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.orange)),
-
-          SizedBox(height: 300, child: CustomPaint(painter: EllipsePainter(selectedPart), child: Container())),
+          SizedBox(height: 10),
+          SizedBox(height: 250, child: CustomPaint(painter: EllipsePainter(selectedPart), child: Container())),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -37,7 +92,40 @@ class _EllipsePartsScreenState extends State<EllipsePartsScreen> {
                   }).toList(),
             ),
           ),
-          if (selectedPart.isNotEmpty) Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: const Color.fromARGB(255, 7, 78, 129), borderRadius: BorderRadius.circular(8)), child: Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 16, color: Colors.white))),
+          if (selectedPart.isNotEmpty)
+            Column(
+              children: [
+                Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Color.fromARGB(255, 7, 78, 129), borderRadius: BorderRadius.circular(8)), child: Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 16, color: Colors.white))),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, size: 36, color: Colors.blue),
+                      onPressed: () async {
+                        if (isPlaying) {
+                          await player.pause();
+                          setState(() {
+                            isPlaying = false;
+                          });
+                        } else {
+                          await playAudio();
+                        }
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.stop, size: 36, color: Colors.red),
+                      onPressed: () async {
+                        await player.stop();
+                        setState(() {
+                          isPlaying = false;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
         ],
       ),
     );
@@ -82,56 +170,46 @@ class EllipsePainter extends CustomPainter {
     final double c = sqrt((rx * rx) - (ry * ry)); // distance from center to focus
 
     // Major Axis
-    if (selectedPart == 'Major Axis' || selectedPart == 'Axis of Symmetry') {
+    if (selectedPart == 'Major Axis') {
       canvas.drawLine(
         Offset(center.dx - rx, center.dy),
         Offset(center.dx + rx, center.dy),
         Paint()
           ..strokeWidth = 2
-          ..color = selectedPart == 'Axis of Symmetry' ? Colors.green : Colors.orange,
+          ..color = Colors.orange,
       );
     }
 
     // Minor Axis
-    if (selectedPart == 'Minor Axis' || selectedPart == 'Axis of Symmetry') {
+    if (selectedPart == 'Minor Axis') {
       canvas.drawLine(
         Offset(center.dx, center.dy - ry),
         Offset(center.dx, center.dy + ry),
         Paint()
           ..strokeWidth = 2
-          ..color = selectedPart == 'Axis of Symmetry' ? Colors.green : Colors.blue,
+          ..color = Colors.blue,
       );
     }
 
     // Vertices
-    if (selectedPart == 'Vertices') {
+    if (selectedPart == 'Vertex') {
       canvas.drawCircle(Offset(center.dx - rx, center.dy), 5, highlight);
       canvas.drawCircle(Offset(center.dx + rx, center.dy), 5, highlight);
     }
 
     // Co-vertices
-    if (selectedPart == 'Co-vertices') {
+    if (selectedPart == 'Co-vertex') {
       canvas.drawCircle(Offset(center.dx, center.dy - ry), 5, highlight);
       canvas.drawCircle(Offset(center.dx, center.dy + ry), 5, highlight);
     }
 
-    // Semi-major Axis
-    if (selectedPart == 'Semi-major Axis') {
-      canvas.drawLine(center, Offset(center.dx + rx, center.dy), highlight);
-    }
-
-    // Semi-minor Axis
-    if (selectedPart == 'Semi-minor Axis') {
-      canvas.drawLine(center, Offset(center.dx, center.dy - ry), highlight);
-    }
-
     // Foci
-    if (selectedPart == 'Foci') {
+    if (selectedPart == 'Focus') {
       canvas.drawCircle(Offset(center.dx - c, center.dy), 5, highlight);
       canvas.drawCircle(Offset(center.dx + c, center.dy), 5, highlight);
     }
 
-    // Latus Rectum (simplified as vertical lines through each focus)
+    // Latus Rectum
     if (selectedPart == 'Latus Rectum') {
       final paint =
           Paint()

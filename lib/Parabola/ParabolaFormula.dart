@@ -11,7 +11,6 @@ class _FormulasSectionState extends State<FormulasParabolaSection> {
   int currentStep = 0;
 
   final List<Map<String, dynamic>> parabolaSteps = [
-    {'title': 'FORMULAS OF THE PARABOLA', 'content': 'Let\'s explore standard forms of parabolas with different orientations, their key parts like vertex, focus, directrix, axis of symmetry, and latus rectum.', 'image': 'assets/images/parabola_intro.png', 'type': 'intro'},
     {'title': 'Upward Opening Parabola (Vertex at Origin)', 'content': 'Standard form: x² = 4py\n• Vertex: (0,0)\n• Focus: (0, p)\n• Directrix: y = -p\n• Axis: x = 0\n• Latus Rectum: length = |4p|, endpoints at (±2p, p)', 'image': 'assets/images/upward_origin.png', 'type': 'formula'},
     {'title': 'Downward Opening Parabola (Vertex at Origin)', 'content': 'Standard form: x² = -4py\n• Vertex: (0,0)\n• Focus: (0, -p)\n• Directrix: y = p\n• Axis: x = 0\n• Latus Rectum: length = |4p|, endpoints at (±2p, -p)', 'image': 'assets/images/downward_origin.png', 'type': 'formula'},
     {'title': 'Right Opening Parabola (Vertex at Origin)', 'content': 'Standard form: y² = 4px\n• Vertex: (0,0)\n• Focus: (p, 0)\n• Directrix: x = -p\n• Axis: y = 0\n• Latus Rectum: length = |4p|, endpoints at (p, ±2p)', 'image': 'assets/images/right_origin.png', 'type': 'formula'},

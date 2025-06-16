@@ -12,9 +12,9 @@ class HyperbolaFromPropertiesScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildPropertiesExample(equation: '(x + 3)²/10 - (y - 1)²/45 = 1', properties: [_buildProperty('Center', '(h, k) = (-3, 1)'), _buildProperty('Orientation', 'Horizontal'), _buildProperty('a²', '10 → a = √10 ≈ 3.16'), _buildProperty('b²', '45 → b = √45 ≈ 6.71'), _buildProperty('c²', 'a² + b² = 55 → c = √55 ≈ 7.42'), _buildProperty('Vertices', '(-3 ± √10, 1) ≈ (0.16, 1), (-6.16, 1)'), _buildProperty('Foci', '(-3 ± √55, 1) ≈ (4.42, 1), (-10.42, 1)')], graphImage: 'assets/hyperbola_graph1.jpg'),
+            _buildPropertiesExample(equation: '(x + 3)²/10 - (y - 1)²/45 = 1', properties: [_buildProperty('Center', '(h, k) = (-3, 1)'), _buildProperty('Orientation', 'Horizontal'), _buildProperty('a²', '10 → a = √10 ≈ 3.16'), _buildProperty('b²', '45 → b = √45 ≈ 6.71'), _buildProperty('c²', 'a² + b² = 55 → c = √55 ≈ 7.42'), _buildProperty('Vertices', '(-3 ± √10, 1) ≈ (0.16, 1), (-6.16, 1)'), _buildProperty('Foci', '(-3 ± √55, 1) ≈ (4.42, 1), (-10.42, 1)')], graphImage: 'assets/images/hyperbola_graph1.jpg'),
             const SizedBox(height: 24),
-            _buildPropertiesExample(equation: '(y - 8)²/25 - (x - 4)²/16 = 1', properties: [_buildProperty('Center', '(h, k) = (4, 8)'), _buildProperty('Orientation', 'Vertical'), _buildProperty('a²', '25 → a = 5'), _buildProperty('b²', '16 → b = 4'), _buildProperty('c²', 'a² + b² = 41 → c = √41 ≈ 6.40'), _buildProperty('Vertices', '(4, 8 ± 5) = (4, 13), (4, 3)'), _buildProperty('Foci', '(4, 8 ± √41) ≈ (4, 14.40), (4, 1.60)'), _buildProperty('Asymptotes', 'y - 8 = ±(5/4)(x - 4)')], graphImage: 'assets/hyperbola_graph2.jpg'),
+            _buildPropertiesExample(equation: '(y - 8)²/25 - (x - 4)²/16 = 1', properties: [_buildProperty('Center', '(h, k) = (4, 8)'), _buildProperty('Orientation', 'Vertical'), _buildProperty('a²', '25 → a = 5'), _buildProperty('b²', '16 → b = 4'), _buildProperty('c²', 'a² + b² = 41 → c = √41 ≈ 6.40'), _buildProperty('Vertices', '(4, 8 ± 5) = (4, 13), (4, 3)'), _buildProperty('Foci', '(4, 8 ± √41) ≈ (4, 14.40), (4, 1.60)'), _buildProperty('Asymptotes', 'y - 8 = ±(5/4)(x - 4)')], graphImage: 'assets/images/hyperbola_graph2.jpg'),
           ],
         ),
       ),

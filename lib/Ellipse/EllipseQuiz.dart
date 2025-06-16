@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:math_app/Menu.dart';
+
 class QuizScreenEllipse extends StatefulWidget {
   @override
   _QuizScreenState createState() => _QuizScreenState();
@@ -10,49 +12,14 @@ class _QuizScreenState extends State<QuizScreenEllipse> {
   // Questions list with ABCD options and solutions
   final List<Map<String, dynamic>> questions = [
     {
-      'question': '1. In an ellipse, the longest axis is called:',
-      'options': ['a. eccentricity', 'b. minor axis', 'c. major axis', 'd. conjugate axis'],
-      'correctIndex': 2,
-      'solution': 'The major axis is the longest diameter of an ellipse, passing through both foci and the center.',
-      'image': null,
-    },
-    {
-      'question': '2. An ellipse has _____ vertices and _____ foci.',
-      'options': ['a. two, two', 'b. one, two', 'c. two, one', 'd. one, one'],
-      'correctIndex': 0,
-      'solution': 'An ellipse has exactly two vertices (endpoints of major axis) and two foci (fixed points).',
-      'image': null,
-    },
-    {
-      'question': '3. The two fixed points in the ellipse are called ____.',
-      'options': ['a. Co-vertices', 'b. Vertices', 'c. Foci', 'd. Latus Rectum'],
-      'correctIndex': 2,
-      'solution': 'The foci are the two fixed points that define an ellipse. The sum of distances from any point on the ellipse to both foci is constant.',
-      'image': null,
-    },
-    {
-      'question': '4. The endpoints of the minor axis of an ellipse are called:',
-      'options': ['a. Foci', 'b. Vertices', 'c. Co-vertices', 'd. Center'],
-      'correctIndex': 2,
-      'solution': 'Co-vertices are the endpoints of the minor axis, which is the shorter diameter of the ellipse.',
-      'image': null,
-    },
-    {
-      'question': '5. What are the coordinates of the foci for an ellipse with a horizontal major axis centered at (0,0)?',
-      'options': ['a. (0, ±c)', 'b. (±c, 0)', 'c. (h, k±c)', 'd. (h±a, c)'],
-      'correctIndex': 1,
-      'solution': 'For a horizontal ellipse centered at origin, foci are at (±c, 0) where c² = a² - b².',
-      'image': null,
-    },
-    {
-      'question': '6. The line segments perpendicular to the major axis through any of the foci such that their endpoints lie on the ellipse:',
+      'question': '6. The line segments perpendicular to the major axis through any of the foci such that their endpoints lie on the ellipse',
       'options': ['a. Latus Rectum', 'b. Directrix', 'c. Eccentricity', 'd. Conjugate axis'],
       'correctIndex': 0,
       'solution': 'The latus rectum is a chord through a focus perpendicular to the major axis. Its length is 2b²/a.',
       'image': null,
     },
     {
-      'question': '7. What are the foci of an ellipse with equation x²/100 + y²/169 = 1?',
+      'question': '7. What are the foci of an ellipse with an equation of x²/100 + y²/169 = 1?',
       'options': ['a. (0, ±5√2)', 'b. (0, ±√73)', 'c. (0, ±√69)', 'd. (0, ±√13)'],
       'correctIndex': 2,
       'solution': 'a² = 169, b² = 100. Since a > b, major axis is vertical. c² = a² - b² = 169 - 100 = 69, so c = √69. Foci: (0, ±√69)',
@@ -73,7 +40,7 @@ class _QuizScreenState extends State<QuizScreenEllipse> {
       'image': null,
     },
     {
-      'question': '10. If length of major axis is 10 and minor axis is 8, with major axis along x-axis, find the equation.',
+      'question': '10. If length of major axis is 10 and minor axis is 8 and major axis is along x-axis then find the equation of ellipse.',
       'options': ['a. x²/10 + y²/8 = 1', 'b. x²/8 + y²/10 = 1', 'c. x²/16 + y²/25 = 1', 'd. x²/25 + y²/16 = 1'],
       'correctIndex': 3,
       'solution': 'Major axis = 2a = 10, so a = 5. Minor axis = 2b = 8, so b = 4. Since major axis is along x-axis: x²/25 + y²/16 = 1.',
@@ -103,16 +70,16 @@ class _QuizScreenState extends State<QuizScreenEllipse> {
     {
       'question': '14. Which graph correctly represents the equation (x-4)²/49 + (y+3)²/64 = 1?',
       'options': ['a. Graph A', 'b. Graph B', 'c. Graph C', 'd. Graph D'],
-      'correctIndex': 0, // You'll need to determine the correct answer based on the actual graphs
+      'correctIndex': 0,
       'solution': 'Center: (4, -3). a² = 64, b² = 49, so a = 8, b = 7. Since a² > b², major axis is vertical with length 16, minor axis horizontal with length 14.',
-      'image': 'assets/images/question14_graphs.png', // Single image showing all 4 graph options
+      'image': 'assets/images/question14_graphs.png',
     },
     {
       'question': '15. What are the vertices of the ellipse shown in the graph?',
       'options': ['a. (-5, 15) and (-5, -1)', 'b. (-11, 7) and (1, 7)', 'c. (-5, 7) and (1, 7)', 'd. (15, -5) and (1, 5)'],
       'correctIndex': 0,
       'solution': 'From the graph, the center appears to be at (-5, 7). The major axis is vertical, and counting units from center to endpoints of major axis gives vertices at (-5, 15) and (-5, -1).',
-      'image': 'assets/images/question15_ellipse.png', // You'll need to add this image
+      'image': 'assets/images/question15_ellipse.png',
     },
   ];
 
@@ -198,40 +165,42 @@ class _QuizScreenState extends State<QuizScreenEllipse> {
       appBar: AppBar(title: Text('Ellipse Geometry Quiz (${currentQuestionIndex + 1}/${questions.length})'), backgroundColor: Colors.purple, foregroundColor: Colors.white, actions: [Padding(padding: EdgeInsets.all(8.0), child: Center(child: Text('Score: $score/${questions.length}', style: TextStyle(color: Colors.white))))]),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Card(elevation: 4, child: Padding(padding: const EdgeInsets.all(16.0), child: Text(currentQuestion['question'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))),
-            _buildQuestionImage(currentQuestion['image']),
-            SizedBox(height: 20),
-            ...List.generate(currentQuestion['options'].length, (index) {
-              return Card(
-                elevation: 2,
-                color: getOptionColor(index),
-                child: ListTile(
-                  title: Text(currentQuestion['options'][index], style: TextStyle(fontSize: 16)),
-                  onTap: () => answerQuestion(index),
-                  leading: Icon(
-                    isAnswered && index == selectedOptionIndex
-                        ? (selectedOptionIndex == currentQuestion['correctIndex'] ? Icons.check_circle : Icons.cancel)
-                        : isAnswered && index == currentQuestion['correctIndex']
-                        ? Icons.check_circle
-                        : Icons.radio_button_unchecked,
-                    color:
-                        isAnswered && index == currentQuestion['correctIndex']
-                            ? Colors.green
-                            : isAnswered && index == selectedOptionIndex
-                            ? Colors.red
-                            : Colors.grey,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Card(elevation: 4, child: Padding(padding: const EdgeInsets.all(16.0), child: Text(currentQuestion['question'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))),
+              _buildQuestionImage(currentQuestion['image']),
+              SizedBox(height: 20),
+              ...List.generate(currentQuestion['options'].length, (index) {
+                return Card(
+                  elevation: 2,
+                  color: getOptionColor(index),
+                  child: ListTile(
+                    title: Text(currentQuestion['options'][index], style: TextStyle(fontSize: 16)),
+                    onTap: () => answerQuestion(index),
+                    leading: Icon(
+                      isAnswered && index == selectedOptionIndex
+                          ? (selectedOptionIndex == currentQuestion['correctIndex'] ? Icons.check_circle : Icons.cancel)
+                          : isAnswered && index == currentQuestion['correctIndex']
+                          ? Icons.check_circle
+                          : Icons.radio_button_unchecked,
+                      color:
+                          isAnswered && index == currentQuestion['correctIndex']
+                              ? Colors.green
+                              : isAnswered && index == selectedOptionIndex
+                              ? Colors.red
+                              : Colors.grey,
+                    ),
                   ),
-                ),
-              );
-            }),
-            SizedBox(height: 20),
-            if (isAnswered) Card(color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green.shade50 : Colors.red.shade50, child: Padding(padding: const EdgeInsets.all(16.0), child: Column(children: [Text(selectedOptionIndex == currentQuestion['correctIndex'] ? '✓ Correct!' : '✗ Incorrect!', style: TextStyle(fontWeight: FontWeight.bold, color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green : Colors.red, fontSize: 20)), SizedBox(height: 10), Text('Solution: ${currentQuestion['solution']}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14))]))),
-            Spacer(),
-            ElevatedButton(onPressed: isAnswered ? nextQuestion : null, style: ElevatedButton.styleFrom(backgroundColor: Colors.purple, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)), child: Text(currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz', style: TextStyle(fontSize: 18))),
-          ],
+                );
+              }),
+              SizedBox(height: 20),
+              if (isAnswered) Card(color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green.shade50 : Colors.red.shade50, child: Padding(padding: const EdgeInsets.all(16.0), child: Column(children: [Text(selectedOptionIndex == currentQuestion['correctIndex'] ? '✓ Correct!' : '✗ Incorrect!', style: TextStyle(fontWeight: FontWeight.bold, color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green : Colors.red, fontSize: 20)), SizedBox(height: 10), Text('Solution: ${currentQuestion['solution']}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14))]))),
+              SizedBox(height: 20),
+              ElevatedButton(onPressed: isAnswered ? nextQuestion : null, style: ElevatedButton.styleFrom(backgroundColor: Colors.purple, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)), child: Text(currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz', style: TextStyle(fontSize: 18))),
+            ],
+          ),
         ),
       ),
     );
@@ -270,6 +239,12 @@ class ResultsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
         title: Text('Quiz Results'),
         backgroundColor: Colors.purple,
         foregroundColor: Colors.white,
@@ -351,7 +326,6 @@ class ResultsScreen extends StatelessWidget {
             SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context);
                 onRestart();
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.purple, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)),

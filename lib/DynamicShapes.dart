@@ -136,7 +136,7 @@ class _ConicSectionVisualizationState extends State<DynamicShapes> with TickerPr
                           ? Colors.orange
                           : _currentType == 'Parabola'
                           ? Colors.green
-                          : _currentType == 'Hyperbol'
+                          : _currentType == 'Hyperbola'
                           ? Colors.blue
                           : Colors.red,
                       'Quiz',

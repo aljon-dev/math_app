@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'dart:math' as math;
 
 class ParabolaPartsScreen extends StatefulWidget {
@@ -11,12 +12,74 @@ class _ParabolaPartsScreenState extends State<ParabolaPartsScreen> {
   String selectedPart = '';
   double pValue = 25.0; // Distance from vertex to focus/directrix
   bool showFormula = false;
+  final AudioPlayer player = AudioPlayer();
+  bool isPlaying = false;
 
-  final Map<String, String> descriptions = {'Vertex': 'The point on the parabola that is halfway from the focus to the directrix. The highest or lowest point where the parabola changes direction.', 'Focus': 'A fixed point inside the parabola used to define its shape. All points on the parabola are equidistant from the focus and directrix.', 'Directrix': 'A fixed line outside the parabola that helps define its shape. Works with the focus to determine the parabola\'s curve.', 'Axis of Symmetry': 'The line passing through the focus and perpendicular to the directrix. This axis divides the parabola into 2 equal parts.', 'Focal Chord': 'A line segment connecting two points on the parabola that passes through the focus.', 'Latus Rectum': 'A special focal chord perpendicular to the axis of symmetry, with length |4p|.', 'Distance p': 'The distance from vertex to focus or from vertex to directrix. If p > 0, parabola opens upward; if p < 0, opens downward.'};
+  final Map<String, String> descriptions = {'Vertex': 'The point on the parabola that is halfway from the focus to the directrix. The highest or lowest point where the parabola changes direction.', 'Focus': 'A fixed point inside the parabola used to define its shape. All points on the parabola are equidistant from the focus and directrix.', 'Directrix': 'A fixed line outside the parabola that helps define its shape. Works with the focus to determine the parabola\'s curve.', 'Axis of Symmetry': 'The line passing through the focus and perpendicular to the directrix. This axis divides the parabola into 2 equal parts.', 'Focal Chord': 'A line segment connecting two points on the parabola that passes through the focus.', 'Latus Rectum': 'A special focal chord perpendicular to the axis of symmetry, with length |4p|.'};
 
-  void selectPart(String part) {
+  Future<void> selectPart(String part) async {
     setState(() {
       selectedPart = part;
+    });
+    await player.stop();
+    setState(() {
+      isPlaying = false;
+    });
+  }
+
+  Future<void> playAudio() async {
+    try {
+      if (selectedPart.isEmpty) return;
+
+      // Audio file paths based on selected part
+      if (selectedPart == 'Vertex') {
+        await player.setAsset('assets/Audio/Parabola_Vertex.mp3');
+      } else if (selectedPart == 'Focus') {
+        await player.setAsset('assets/Audio/Parabola_Focus.mp3');
+      } else if (selectedPart == 'Directrix') {
+        await player.setAsset('assets/Audio/Parabola_Directrix.mp3');
+      } else if (selectedPart == 'Axis of Symmetry') {
+        await player.setAsset('assets/Audio/Parabola_AxisOfSymmetry.mp3');
+      } else if (selectedPart == 'Focal Chord') {
+        await player.setAsset('assets/Audio/Parabola_FocalChord.mp3');
+      } else if (selectedPart == 'Latus Rectum') {
+        await player.setAsset('assets/Audio/Parabola_LatusRectum.mp3');
+      }
+
+      await player.play();
+      setState(() {
+        isPlaying = true;
+      });
+
+      player.playerStateStream.listen((state) {
+        if (state.processingState == ProcessingState.completed) {
+          setState(() {
+            isPlaying = false;
+          });
+        }
+      });
+    } on PlayerException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: ${e.message}')));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+    }
+  }
+
+  Future<void> togglePlayPause() async {
+    if (isPlaying) {
+      await player.pause();
+      setState(() {
+        isPlaying = false;
+      });
+    } else {
+      await playAudio();
+    }
+  }
+
+  Future<void> stopAudio() async {
+    await player.stop();
+    setState(() {
+      isPlaying = false;
     });
   }
 
@@ -24,6 +87,12 @@ class _ParabolaPartsScreenState extends State<ParabolaPartsScreen> {
     setState(() {
       showFormula = !showFormula;
     });
+  }
+
+  @override
+  void dispose() {
+    player.dispose();
+    super.dispose();
   }
 
   @override
@@ -76,8 +145,15 @@ class _ParabolaPartsScreenState extends State<ParabolaPartsScreen> {
             ),
           ),
 
-          // Description section
-          if (selectedPart.isNotEmpty) Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.amber[50], borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.amber[200]!)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(selectedPart, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amber[800])), SizedBox(height: 8), Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 15, color: Colors.black87))])),
+          // Description and audio section
+          if (selectedPart.isNotEmpty)
+            Column(
+              children: [
+                Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.amber[50], borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.amber[200]!)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(selectedPart, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amber[800])), SizedBox(height: 8), Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 15, color: Colors.black87))])),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [IconButton(icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, size: 26, color: Colors.blue), onPressed: togglePlayPause), IconButton(icon: Icon(Icons.stop, size: 26, color: Colors.red), onPressed: stopAudio)]),
+                SizedBox(height: 10),
+              ],
+            ),
         ],
       ),
     );

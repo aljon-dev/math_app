@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 
 class ParabolaDefinitionSection extends StatefulWidget {
   const ParabolaDefinitionSection({Key? key}) : super(key: key);
@@ -9,9 +10,25 @@ class ParabolaDefinitionSection extends StatefulWidget {
 
 class _DefinitionSectionState extends State<ParabolaDefinitionSection> {
   int currentStep = 0;
+  bool isPlaying = false;
+  final player = AudioPlayer();
+
+  Future<void> play() async {
+    try {
+      await player.setAsset('assets/Audio/PARABOLA_definition.mp3');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
+
+      await player.play();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to load ${e}', style: TextStyle(color: Colors.white)), backgroundColor: Colors.red));
+    }
+  }
+
+  Future<void> pause() async {
+    await player.pause();
+  }
 
   final List<Map<String, dynamic>> steps = [
-    {'title': 'DEFINITION OF THE PARABOLA', 'content': 'Welcome to learning about parabolas! Let\'s explore what makes a parabola special.', 'image': 'assets/images/Parabola1.jpg'},
     {'title': 'What is a parabola?', 'content': 'A parabola is a conic section that is formed when a cone is cut by a plane parallel to one lateral side of the cone.', 'image': 'assets/images/Parabola1.jpg'},
     {'title': 'Geometric Shape', 'content': 'A parabola is a U-shaped plane curve where any point is at an equal distance from a fixed point (called the focus) and from a fixed straight line (called the directrix).', 'image': 'assets/images/Parabola2.jpg'},
     {'title': 'Mathematical Definition', 'content': 'A parabola is the set of all points whose distance from a fixed point, called the focus, is equal to the distance from a fixed line, called the directrix.', 'image': 'assets/images/Parabola3.jpg'},
@@ -39,7 +56,34 @@ class _DefinitionSectionState extends State<ParabolaDefinitionSection> {
     final currentStepData = steps[currentStep];
 
     return Scaffold(
-      appBar: AppBar(title: Text('Circle', textAlign: TextAlign.center)),
+      appBar: AppBar(
+        title: Text('Parabola', textAlign: TextAlign.center),
+        actions: [
+          if (isPlaying == false)
+            TextButton.icon(
+              onPressed: () {
+                setState(() {
+                  isPlaying = true;
+                });
+                play();
+              },
+              icon: Icon(Icons.play_circle),
+              label: Text('Play'),
+            ),
+
+          if (isPlaying == true)
+            TextButton.icon(
+              onPressed: () {
+                setState(() {
+                  isPlaying = false;
+                });
+                pause();
+              },
+              icon: Icon(Icons.pause_circle),
+              label: Text('Pause'),
+            ),
+        ],
+      ),
       body: Column(
         children: [
           // Progress indicator

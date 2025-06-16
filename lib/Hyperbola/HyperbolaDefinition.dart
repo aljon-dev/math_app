@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 
 class DefinitionHyperBolaSection extends StatefulWidget {
   const DefinitionHyperBolaSection({Key? key}) : super(key: key);
@@ -9,13 +10,28 @@ class DefinitionHyperBolaSection extends StatefulWidget {
 
 class _DefinitionSectionState extends State<DefinitionHyperBolaSection> {
   int currentStep = 0;
+  bool isPlaying = false;
+  final player = AudioPlayer();
+
+  Future<void> play() async {
+    try {
+      await player.setAsset('assets/Audio/HYPERBOLA_definition.wav');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
+
+      await player.play();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to load ${e}', style: TextStyle(color: Colors.white)), backgroundColor: Colors.red));
+    }
+  }
+
+  Future<void> pause() async {
+    await player.pause();
+  }
 
   final List<Map<String, dynamic>> steps = [
-    {'title': 'DEFINITION OF HYPERBOLA', 'content': 'Welcome to the world of hyperbolas! Let’s uncover what makes a hyperbola unique in the family of conic sections.', 'image': 'assets/images/Hyperbola1.jpg'},
     {'title': 'What is a Hyperbola?', 'content': 'A hyperbola is a type of conic section formed when a plane intersects both halves of a double right circular cone at an angle. This results in two open, mirror-image curves.', 'image': 'assets/images/Hyperbola2.jpg'},
     {'title': 'Focus, Directrix, and Eccentricity', 'content': 'Each branch of a hyperbola has a focus, and the distances to the foci define its shape. The eccentricity of a hyperbola is greater than 1, distinguishing it from ellipses and circles.', 'image': 'assets/images/Hyperbola3.jpg'},
     {'title': 'Standard Equation', 'content': 'The standard form of a hyperbola is (x²/a²) - (y²/b²) = 1 or (y²/a²) - (x²/b²) = 1, depending on the orientation. This equation defines the curve’s symmetry and shape.', 'image': 'assets/images/Hyperbola4.jpg'},
-    {'title': 'Real-World Applications', 'content': 'Hyperbolas are used in satellite dish design, navigation systems, astronomy (orbital paths), and even in acoustics and radio signals, where wave reflection plays a role.', 'image': 'assets/images/Hyperbola5.jpg'},
   ];
 
   void nextStep() {
@@ -39,7 +55,34 @@ class _DefinitionSectionState extends State<DefinitionHyperBolaSection> {
     final currentStepData = steps[currentStep];
 
     return Scaffold(
-      appBar: AppBar(title: Text('Circle', textAlign: TextAlign.center)),
+      appBar: AppBar(
+        title: Text('Hyperbola', textAlign: TextAlign.center),
+        actions: [
+          if (isPlaying == false)
+            TextButton.icon(
+              onPressed: () {
+                setState(() {
+                  isPlaying = true;
+                });
+                play();
+              },
+              icon: Icon(Icons.play_circle),
+              label: Text('Play'),
+            ),
+
+          if (isPlaying == true)
+            TextButton.icon(
+              onPressed: () {
+                setState(() {
+                  isPlaying = false;
+                });
+                pause();
+              },
+              icon: Icon(Icons.pause_circle),
+              label: Text('Pause'),
+            ),
+        ],
+      ),
       body: Column(
         children: [
           // Progress indicator

@@ -15,12 +15,10 @@ class _FormulasSectionState extends State<FormulasEllipseSection> {
     {'title': 'General Equation of an Ellipse', 'content': 'This is the general form used to represent an ellipse in conic sections.', 'formula': r'Ax² + By² + Cx + Dy + E = 0', 'image': 'assets/images/general_equation.png', 'type': 'formula'},
     {'title': 'Eccentricity', 'content': 'Eccentricity defines how "stretched" an ellipse is. It ranges from 0 (a circle) to close to 1.', 'formula': r'e = c / a', 'image': 'assets/images/eccentricity.png', 'type': 'formula'},
     {'title': 'Latus Rectum', 'content': 'Latus Rectum is a chord through a focus perpendicular to the major axis.', 'formula': r'LR = (2b²) / a', 'image': 'assets/images/latus_rectum.png', 'type': 'formula'},
-    {'title': 'Standard Form (Center at Origin, Horizontal)', 'content': 'Ellipse with center at (0,0) and major axis along x-axis.', 'formula': r'x² / a² + y² / b² = 1', 'image': 'assets/images/standard_horizontal_origin.png', 'type': 'formula'},
-    {'title': 'Horizontal Orientation Details', 'content': '• a > b\n• Major Axis = 2a\n• Vertices = (±a, 0)\n• Minor Axis = 2b\n• Co-Vertices = (0, ±b)\n• Foci = (±c, 0), where c² = a² - b²', 'image': 'assets/images/horizontal_details.png', 'type': 'formula'},
-    {'title': 'Standard Form (Center at Origin, Vertical)', 'content': 'Ellipse with center at (0,0) and major axis along y-axis.', 'formula': r'x² / b² + y² / a² = 1', 'image': 'assets/images/standard_vertical_origin.png', 'type': 'formula'},
-    {'title': 'Vertical Orientation Details', 'content': '• b > a\n• Major Axis = 2a\n• Vertices = (0, ±a)\n• Minor Axis = 2b\n• Co-Vertices = (±b, 0)\n• Foci = (0, ±c), where c² = a² - b²', 'image': 'assets/images/vertical_details.png', 'type': 'formula'},
-    {'title': 'Standard Form (Center at (h, k), Horizontal)', 'content': 'Ellipse with center at (h,k) and major axis along x-axis.', 'formula': r'(x - h)² / a² + (y - k)² / b² = 1', 'image': 'assets/images/standard_horizontal_hk.png', 'type': 'formula'},
-    {'title': 'Standard Form (Center at (h, k), Vertical)', 'content': 'Ellipse with center at (h,k) and major axis along y-axis.', 'formula': r'(x - h)² / b² + (y - k)² / a² = 1', 'image': 'assets/images/standard_vertical_hk.png', 'type': 'formula'},
+    {'title': 'Standard Form (Center at Origin, Horizontal)', 'content': 'The standard form of the equation of an ellipse with center (0,0) and major axis on the x-axis.', 'formula': r'x² / a² + y² / b² = 1', 'image': 'assets/images/standard_horizontal_origin.png', 'type': 'formula', 'details': '• a > b\n• Major Axis Length = 2a\n• Vertices = (±a, 0)\n• Minor Axis Length = 2b\n• Co-Vertices = (0, ±b)\n• Foci = (±c, 0), where c² = a² - b²'},
+    {'title': 'Standard Form (Center at Origin, Vertical)', 'content': 'The standard form of the equation of an ellipse with center (0,0) and major axis on the y-axis.', 'formula': r'x² / b² + y² / a² = 1', 'image': 'assets/images/standard_vertical_origin.png', 'type': 'formula', 'details': '• b > a\n• Major Axis Length = 2a\n• Vertices = (0, ±a)\n• Minor Axis Length = 2b\n• Co-Vertices = (±b, 0)\n• Foci = (0, ±c), where c² = a² - b²'},
+    {'title': 'Standard Form (Center at (h, k), Horizontal', 'content': 'The standard form of the equation of an ellipse with center (h,k) and major axis parallel to the x-axis.', 'formula': r'(x - h)² / a² + (y - k)² / b² = 1', 'image': 'assets/images/standard_horizontal_hk.png', 'type': 'formula', 'details': '• a > b\n• Major Axis Length = 2a\n• Vertices = (h ± a, k)\n• Minor Axis Length = 2b\n• Co-Vertices = (h, k ± b)\n• Foci = (h ± c, k), where c² = a² - b²'},
+    {'title': 'Standard Form (Center at (h, k), Vertical', 'content': 'The standard form of the equation of an ellipse with center (h,k) and major axis parallel to the y-axis.', 'formula': r'(x - h)² / b² + (y - k)² / a² = 1', 'image': 'assets/images/standard_vertical_hk.png', 'type': 'formula', 'details': '• b > a\n• Major Axis Length = 2a\n• Vertices = (h, k ± a)\n• Minor Axis Length = 2b\n• Co-Vertices = (h ± b, k)\n• Foci = (h, k ± c), where c² = a² - b²'},
   ];
 
   void nextStep() {
@@ -73,6 +71,9 @@ class _FormulasSectionState extends State<FormulasEllipseSection> {
 
                     // Formula (if available)
                     if (currentStepData['formula'] != null) ...[const SizedBox(height: 30), Container(width: double.infinity, padding: const EdgeInsets.all(20), decoration: BoxDecoration(color: _getFormulaBackgroundColor(currentStepData['type']), borderRadius: BorderRadius.circular(12), border: Border.all(color: _getFormulaBorderColor(currentStepData['type']), width: 2)), child: Center(child: Text(currentStepData['formula'], style: TextStyle(fontFamily: 'Math', fontSize: 24, fontWeight: FontWeight.bold, color: _getFormulaTextColor(currentStepData['type'])))))],
+
+                    // Details (if available)
+                    if (currentStepData['details'] != null) ...[const SizedBox(height: 30), Container(width: double.infinity, padding: const EdgeInsets.all(20), decoration: BoxDecoration(color: Colors.grey[50], borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.grey[300]!, width: 1)), child: Text(currentStepData['details'], style: const TextStyle(fontSize: 16, height: 1.5)))],
                   ],
                 ),
               ),

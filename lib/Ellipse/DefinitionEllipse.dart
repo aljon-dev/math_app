@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 
 class DefinitionSectionEllipse extends StatefulWidget {
   const DefinitionSectionEllipse({Key? key}) : super(key: key);
@@ -10,15 +11,27 @@ class DefinitionSectionEllipse extends StatefulWidget {
 class _DefinitionSectionState extends State<DefinitionSectionEllipse> {
   int currentStep = 0;
 
+  bool isPlaying = false;
+  final player = AudioPlayer();
+
   final List<Map<String, dynamic>> steps = [
-    {'title': 'DEFINITION OF THE Ellipse', 'content': 'Welcome to learning about ellipses! Let\'s explore what makes an ellipse special.', 'image': 'assets/images/Circle1.jpg'},
-    {'title': 'What is a circle?', 'content': 'An ellipse is a two-dimensional shape defined by its axes. It forms when a cone is intersected by a plane at an angle with respect to its base.\n\nIt is a set of all points in a plane where the total distance to two fixed points (foci) is constant.\n\nLet’s say, if f₁ and f₂ are two fixed points and k is a positive constant, then the ellipse is the set of points P(x, y) such that:\n\nPf₁ + Pf₂ = k', 'image': 'assets/images/Circle1.jpg'},
-    {
-      'title': 'Parts of an Ellipse',
-      'content': '', // handled via RichText
-      'image': 'assets/images/Circle2.jpg',
-    },
+    {'title': 'What is a Ellipse?', 'content': 'An ellipse is a two-dimensional shape defined by its axes. It forms when a cone is intersected by a plane at an angle with respect to its base.\n\nIt is a set of all points in a plane where the total distance to two fixed points (foci) is constant.\n\nLet’s say, if f₁ and f₂ are two fixed points and k is a positive constant, then the ellipse is the set of points P(x, y) such that:\n\nPf₁ + Pf₂ = k', 'image': 'assets/images/Circle1.jpg'},
   ];
+
+  Future<void> play() async {
+    try {
+      await player.setAsset('assets/Audio/Ellipse_definition.mp3');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
+
+      await player.play();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to load ${e}', style: TextStyle(color: Colors.white)), backgroundColor: Colors.red));
+    }
+  }
+
+  Future<void> pause() async {
+    await player.pause();
+  }
 
   void nextStep() {
     if (currentStep < steps.length - 1) {
@@ -41,7 +54,34 @@ class _DefinitionSectionState extends State<DefinitionSectionEllipse> {
     final currentStepData = steps[currentStep];
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Ellipse')),
+      appBar: AppBar(
+        title: const Text('Ellipse'),
+        actions: [
+          if (isPlaying == false)
+            TextButton.icon(
+              onPressed: () {
+                setState(() {
+                  isPlaying = true;
+                });
+                play();
+              },
+              icon: Icon(Icons.play_circle),
+              label: Text('Play'),
+            ),
+
+          if (isPlaying == true)
+            TextButton.icon(
+              onPressed: () {
+                setState(() {
+                  isPlaying = false;
+                });
+                pause();
+              },
+              icon: Icon(Icons.pause_circle),
+              label: Text('Pause'),
+            ),
+        ],
+      ),
       body: Column(
         children: [
           // Step indicator

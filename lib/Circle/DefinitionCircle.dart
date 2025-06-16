@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:just_audio/just_audio.dart';
 
 class DefinitionSection extends StatefulWidget {
   const DefinitionSection({Key? key}) : super(key: key);
@@ -9,13 +11,30 @@ class DefinitionSection extends StatefulWidget {
 
 class _DefinitionSectionState extends State<DefinitionSection> {
   int currentStep = 0;
+  bool isPlaying = false;
+  final player = AudioPlayer();
+
+  Future<void> play() async {
+    try {
+      await player.setAsset('assets/Audio/Circle_definition.wav');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
+
+      await player.play();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to load ${e}', style: TextStyle(color: Colors.white)), backgroundColor: Colors.red));
+    }
+  }
+
+  Future<void> pause() async {
+    await player.pause();
+  }
 
   final List<Map<String, dynamic>> steps = [
     {'title': 'DEFINITION OF THE CIRCLE', 'content': 'Welcome to learning about circles! Let\'s explore what makes a circle special.', 'image': 'assets/images/Circle1.jpg'},
     {'title': 'What is a circle?', 'content': 'A circle is all points equidistant (the distance is called the radius) from one point (which is called the center of the circle). A circle can be formed by slicing a right circular cone with a plane traveling parallel to the base of the cone', 'image': 'assets/images/Circle1.jpg'},
-    {'title': 'Center and Radius', 'content': 'The given point is called the center, (h, k), and the fixed distance is called the radius, r, of the circle. ', 'image': 'assets/images/Circle2.jpg'},
+    {'title': 'Center and Radius', 'content': 'The given point is called the center, (h, k), and the fixed distance is called the radius, r, of the circle.', 'image': 'assets/images/Circle2.jpg'},
     {'title': 'Geometric Definition', 'content': 'A circle is a basic geometric shape defined as the set of all points in a plane that are equidistant from a fixed point, known as the center. Circles are fundamental in calculus and geometry, playing a crucial role in various mathematical applications, such as area, perimeter (circumference), and motion.', 'image': 'assets/images/Circle2.jpg'},
-    {'title': 'Conic Section', 'content': 'The set of all the points in a plane that are equidistant from a fixed point (center) in the plane is called the circle. A circle is an ellipse in which both the foci coincide with its center. As the foci are at the same point, for a circle, the distance from the center to a focus is zero. This eccentricity gives the circle its round shape. Thus, the eccentricity of any circle is 0.A circle is the conic section with the least deviation from circularity; hence its eccentricity is 0. In a circle, the focus and directrix concepts are somewhat different from other conic sections, but the eccentricity value of 0 still represents its perfect circular shape. ', 'image': 'assets/images/Circle3.jpg'},
+    {'title': 'Conic Section', 'content': 'The set of all the points in a plane that are equidistant from a fixed point (center) in the plane is called the circle. A circle is an ellipse in which both the foci coincide with its center. As the foci are at the same point, for a circle, the distance from the center to a focus is zero. This eccentricity gives the circle its round shape. Thus, the eccentricity of any circle is 0. A circle is the conic section with the least deviation from circularity; hence its eccentricity is 0. In a circle, the focus and directrix concepts are somewhat different from other conic sections, but the eccentricity value of 0 still represents its perfect circular shape.', 'image': 'assets/images/Circle3.jpg'},
   ];
 
   void nextStep() {
@@ -39,7 +58,34 @@ class _DefinitionSectionState extends State<DefinitionSection> {
     final currentStepData = steps[currentStep];
 
     return Scaffold(
-      appBar: AppBar(title: Text('Circle', textAlign: TextAlign.center)),
+      appBar: AppBar(
+        title: const Text('Circle'),
+        actions: [
+          if (isPlaying == false)
+            TextButton.icon(
+              onPressed: () {
+                setState(() {
+                  isPlaying = true;
+                });
+                play();
+              },
+              icon: Icon(Icons.play_circle),
+              label: Text('Play'),
+            ),
+
+          if (isPlaying == true)
+            TextButton.icon(
+              onPressed: () {
+                setState(() {
+                  isPlaying = false;
+                });
+                pause();
+              },
+              icon: Icon(Icons.pause_circle),
+              label: Text('Pause'),
+            ),
+        ],
+      ),
       body: Column(
         children: [
           // Progress indicator

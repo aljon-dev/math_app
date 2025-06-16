@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:math_app/Menu.dart';
+
 void main() {
   runApp(CircleQuizApp());
 }
@@ -171,7 +173,18 @@ class _QuizScreenState extends State<QuizScreen> {
     final currentQuestion = questions[originalIndex];
 
     return Scaffold(
-      appBar: AppBar(title: Text('Circle Geometry Quiz (${currentQuestionIndex + 1}/${questions.length})'), backgroundColor: Colors.blue, foregroundColor: Colors.white, actions: [Padding(padding: EdgeInsets.all(8.0), child: Center(child: Text('Score: $score/${questions.length}', style: TextStyle(color: Colors.white))))]),
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
+        title: Text('Circle Geometry Quiz (${currentQuestionIndex + 1}/${questions.length})'),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        actions: [Padding(padding: EdgeInsets.all(8.0), child: Center(child: Text('Score: $score/${questions.length}', style: TextStyle(color: Colors.white))))],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

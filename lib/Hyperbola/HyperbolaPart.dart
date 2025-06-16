@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'dart:math' as math;
 
 class HyperbolaPartsScreen extends StatefulWidget {
@@ -13,13 +14,76 @@ class _HyperbolaPartsScreenState extends State<HyperbolaPartsScreen> {
   double bValue = 30.0; // Semi-minor axis
   bool isHorizontal = true; // true for horizontal, false for vertical
   bool showFormula = false;
+  final AudioPlayer player = AudioPlayer();
+  bool isPlaying = false;
 
   final Map<String, String> descriptions = {'Center': 'The midpoint of the line joining the two foci. The major and minor axes intersect at this point. Center is at (h, k).', 'Foci': 'The hyperbola has two foci. For horizontal: F₁(-c, 0) and F₂(c, 0). For vertical: F₁(0, -c) and F₂(0, c), where c² = a² + b².', 'Vertices': 'The points where the hyperbola intersects the transverse axis. For horizontal: (±a, 0). For vertical: (0, ±a).', 'Co-vertices': 'Points on the conjugate axis that are equidistant from the center. For horizontal: (0, ±b). For vertical: (±b, 0).', 'Major Axis': 'The distance between the vertices. Also called the transverse axis. Length = 2a units.', 'Minor Axis': 'The distance between the co-vertices. Also called the conjugate axis. Length = 2b units.', 'Transverse Axis': 'The line passing through the two foci and center. Determines if hyperbola is horizontal (x-axis) or vertical (y-axis).', 'Conjugate Axis': 'The line passing through the center perpendicular to the transverse axis.', 'Asymptotes': 'Lines that pass through the center. The hyperbola branches approach but never touch these lines. Equations: y = ±(b/a)x for horizontal.', 'Latus Rectum': 'A line perpendicular to the transverse axis passing through the foci. Length = 2b²/a units.'};
 
-  void selectPart(String part) {
+  Future<void> selectPart(String part) async {
     setState(() {
       selectedPart = part;
     });
+    await player.stop();
+    setState(() {
+      isPlaying = false;
+    });
+  }
+
+  Future<void> playAudio() async {
+    try {
+      if (selectedPart.isEmpty) return;
+
+      // Audio file paths based on selected part
+      if (selectedPart == 'Center') {
+        await player.setAsset('assets/Audio/Hyperbola_(center).wav');
+      } else if (selectedPart == 'Foci') {
+        await player.setAsset('assets/Audio/Hyperbola_(foci).wav');
+      } else if (selectedPart == 'Vertices') {
+        await player.setAsset('assets/Audio/HYperbola_(vertices).wav');
+      } else if (selectedPart == 'Co-vertices') {
+        await player.setAsset('assets/Audio/Hyperbola_(co-vertex).wav');
+      } else if (selectedPart == 'Major Axis') {
+        await player.setAsset('assets/Audio/Hyperbola_(major axis).wav');
+      } else if (selectedPart == 'Minor Axis') {
+        await player.setAsset('assets/Audio/Hyperbola_(minor axis).wav');
+      } else if (selectedPart == 'Transverse Axis') {
+        await player.setAsset('assets/Audio/Hyperbola_(transverse axis).wav');
+      } else if (selectedPart == 'Conjugate Axis') {
+        await player.setAsset('assets/Audio/Hyperbola(conjugate_axis).wav');
+      } else if (selectedPart == 'Asymptotes') {
+        await player.setAsset('assets/Audio/Hyperbola_(asymptote).wav');
+      } else if (selectedPart == 'Latus Rectum') {
+        await player.setAsset('assets/Audio/Hyperbola_(latus rectum).wav');
+      }
+
+      await player.play();
+      setState(() {
+        isPlaying = true;
+      });
+
+      player.playerStateStream.listen((state) {
+        if (state.processingState == ProcessingState.completed) {
+          setState(() {
+            isPlaying = false;
+          });
+        }
+      });
+    } on PlayerException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: ${e.message}')));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+    }
+  }
+
+  Future<void> togglePlayPause() async {
+    if (isPlaying) {
+      await player.pause();
+      setState(() {
+        isPlaying = false;
+      });
+    } else {
+      await playAudio();
+    }
   }
 
   void toggleOrientation() {
@@ -37,17 +101,23 @@ class _HyperbolaPartsScreenState extends State<HyperbolaPartsScreen> {
   double get cValue => math.sqrt(aValue * aValue + bValue * bValue);
 
   @override
+  void dispose() {
+    player.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Hyperbola Parts"), backgroundColor: Colors.indigo[100], actions: [IconButton(icon: Icon(Icons.functions), onPressed: toggleFormula, tooltip: 'Show Formula'), IconButton(icon: Icon(Icons.rotate_90_degrees_ccw), onPressed: toggleOrientation, tooltip: 'Toggle Orientation')]),
       body: Column(
         children: [
           SizedBox(height: 15),
-          Text("${isHorizontal ? 'Horizontal' : 'Vertical'} Hyperbola", style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.indigo[800])),
+          Text("${isHorizontal ? 'Horizontal' : 'Vertical'} Hyperbola", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.indigo[800])),
 
           // Parameter controls
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
             child: Column(
               children: [
                 Row(
@@ -109,8 +179,41 @@ class _HyperbolaPartsScreenState extends State<HyperbolaPartsScreen> {
             ),
           ),
 
-          // Description section
-          if (selectedPart.isNotEmpty) Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.orange[50], borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.orange[200]!)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(selectedPart, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.orange[800])), SizedBox(height: 8), Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 13, color: Colors.black87))])),
+          // Description and audio section
+          if (selectedPart.isNotEmpty)
+            Column(
+              children: [
+                Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Color.fromARGB(255, 7, 78, 129), borderRadius: BorderRadius.circular(8)), child: Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 16, color: Colors.white))),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, size: 36, color: Colors.blue),
+                      onPressed: () async {
+                        if (isPlaying) {
+                          await player.pause();
+                          setState(() {
+                            isPlaying = false;
+                          });
+                        } else {
+                          await playAudio();
+                        }
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.stop, size: 36, color: Colors.red),
+                      onPressed: () async {
+                        await player.stop();
+                        setState(() {
+                          isPlaying = false;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
         ],
       ),
     );
