@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.example.math_app"
     compileSdk = flutter.compileSdkVersion
-   ndkVersion = "27.0.12077973" 
+    ndkVersion = "27.0.12077973" 
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -35,6 +35,10 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+            
+            // Add these lines to fix just_audio in release builds
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
 }
