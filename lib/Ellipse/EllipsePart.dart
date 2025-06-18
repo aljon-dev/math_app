@@ -74,59 +74,64 @@ class _EllipsePartsScreenState extends State<EllipsePartsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Ellipse Parts")),
-      body: Column(
-        children: [
-          SizedBox(height: 20),
-          Text("Ellipse Parts", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.orange)),
-          SizedBox(height: 10),
-          SizedBox(height: 250, child: CustomPaint(painter: EllipsePainter(selectedPart), child: Container())),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              children:
-                  descriptions.keys.map((part) {
-                    final isSelected = selectedPart == part;
-                    return GestureDetector(onTap: () => selectPart(part), child: Card(elevation: isSelected ? 4 : 1, color: isSelected ? Colors.amber[100] : Colors.white, margin: const EdgeInsets.symmetric(vertical: 6), child: ListTile(title: Text(part, style: TextStyle(fontSize: 16, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal)), trailing: Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey[600]))));
-                  }).toList(),
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) async {
+        await player.stop();
+      },
+      child: Scaffold(
+        appBar: AppBar(title: Text("Ellipse Parts")),
+        body: Column(
+          children: [
+            SizedBox(height: 20),
+            Text("Ellipse Parts", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.orange)),
+            SizedBox(height: 10),
+            SizedBox(height: 250, child: CustomPaint(painter: EllipsePainter(selectedPart), child: Container())),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                children:
+                    descriptions.keys.map((part) {
+                      final isSelected = selectedPart == part;
+                      return GestureDetector(onTap: () => selectPart(part), child: Card(elevation: isSelected ? 4 : 1, color: isSelected ? Colors.amber[100] : Colors.white, margin: const EdgeInsets.symmetric(vertical: 6), child: ListTile(title: Text(part, style: TextStyle(fontSize: 16, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal)), trailing: Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey[600]))));
+                    }).toList(),
+              ),
             ),
-          ),
-          if (selectedPart.isNotEmpty)
-            Column(
-              children: [
-                Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Color.fromARGB(255, 7, 78, 129), borderRadius: BorderRadius.circular(8)), child: Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 16, color: Colors.white))),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, size: 36, color: Colors.blue),
-                      onPressed: () async {
-                        if (isPlaying) {
-                          await player.pause();
+            if (selectedPart.isNotEmpty)
+              Column(
+                children: [
+                  Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Color.fromARGB(255, 7, 78, 129), borderRadius: BorderRadius.circular(8)), child: Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 16, color: Colors.white))),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, size: 36, color: Colors.blue),
+                        onPressed: () async {
+                          if (isPlaying) {
+                            await player.pause();
+                            setState(() {
+                              isPlaying = false;
+                            });
+                          } else {
+                            await playAudio();
+                          }
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.stop, size: 36, color: Colors.red),
+                        onPressed: () async {
+                          await player.stop();
                           setState(() {
                             isPlaying = false;
                           });
-                        } else {
-                          await playAudio();
-                        }
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.stop, size: 36, color: Colors.red),
-                      onPressed: () async {
-                        await player.stop();
-                        setState(() {
-                          isPlaying = false;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-              ],
-            ),
-        ],
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                ],
+              ),
+          ],
+        ),
       ),
     );
   }

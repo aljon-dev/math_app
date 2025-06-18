@@ -97,64 +97,105 @@ class _ParabolaPartsScreenState extends State<ParabolaPartsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Parabola Parts"), backgroundColor: Colors.purple[100], actions: [IconButton(icon: Icon(Icons.functions), onPressed: toggleFormula, tooltip: 'Show Formula')]),
-      body: Column(
-        children: [
-          SizedBox(height: 20),
-          Text("Parts of a Parabola", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.purple[800])),
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) async {
+        await player.stop();
+      },
+      child: Scaffold(
+        appBar: AppBar(title: Text("Parabola Parts"), backgroundColor: Colors.purple[100], actions: [IconButton(icon: Icon(Icons.functions), onPressed: toggleFormula, tooltip: 'Show Formula')]),
+        body: Column(
+          children: [
+            SizedBox(height: 20),
+            Text("Parts of a Parabola", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.purple[800])),
 
-          // P value slider
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Row(
-              children: [
-                Text('p = ${pValue.toInt()}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                Expanded(
-                  child: Slider(
-                    value: pValue,
-                    min: 10.0,
-                    max: 50.0,
-                    divisions: 40,
-                    onChanged: (value) {
-                      setState(() {
-                        pValue = value;
-                      });
-                    },
+            // P value slider
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Row(
+                children: [
+                  Text('p = ${pValue.toInt()}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Expanded(
+                    child: Slider(
+                      value: pValue,
+                      min: 10.0,
+                      max: 50.0,
+                      divisions: 40,
+                      onChanged: (value) {
+                        setState(() {
+                          pValue = value;
+                        });
+                      },
+                    ),
                   ),
+                ],
+              ),
+            ),
+
+            // Parabola visualization
+            Container(height: 280, margin: EdgeInsets.symmetric(horizontal: 10), child: CustomPaint(painter: ParabolaPainter(selectedPart, pValue), child: Container())),
+
+            // Formula section
+            // In the formula section of your build method:
+            if (showFormula)
+              Container(
+                width: double.infinity,
+                margin: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(color: Colors.blue[50], borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.blue[200]!)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Standard Form: x² = 4py (where p = ${pValue.toStringAsFixed(1)})', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue[800])),
+                    SizedBox(height: 8),
+                    Text(
+                      '• Vertex at origin (0, 0)\n'
+                      '• Focus at (0, ${pValue.toStringAsFixed(1)})\n'
+                      '• Directrix: y = ${(-pValue).toStringAsFixed(1)}\n'
+                      '• Latus Rectum length: ${(4 * pValue).toStringAsFixed(1)}',
+                      style: TextStyle(fontSize: 14, color: Colors.blue[700]),
+                    ),
+                  ],
                 ),
-              ],
+              ),
+            // Parts list
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                children:
+                    ['Vertex', 'Focus', 'Directrix', 'Axis of Symmetry', 'Focal Chord', 'Latus Rectum', 'Distance p'].map((part) {
+                      final isSelected = selectedPart == part;
+                      return GestureDetector(onTap: () => selectPart(part), child: Card(elevation: isSelected ? 6 : 2, color: isSelected ? Colors.purple[100] : Colors.white, margin: const EdgeInsets.symmetric(vertical: 4), child: ListTile(title: Text(part, style: TextStyle(fontSize: 16, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal, color: isSelected ? Colors.purple[800] : Colors.black87)), trailing: Icon(Icons.arrow_forward_ios, size: 16, color: isSelected ? Colors.purple[600] : Colors.grey[600]))));
+                    }).toList(),
+              ),
             ),
-          ),
 
-          // Parabola visualization
-          Container(height: 280, margin: EdgeInsets.symmetric(horizontal: 10), child: CustomPaint(painter: ParabolaPainter(selectedPart, pValue), child: Container())),
-
-          // Formula section
-          if (showFormula) Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.blue[50], borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.blue[200]!)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Standard Form: x² = 4py', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue[800])), SizedBox(height: 8), Text('• Vertex at origin (0, 0)\n• Focus at (0, p)\n• Directrix: y = -p\n• Latus Rectum length: |4p|', style: TextStyle(fontSize: 14, color: Colors.blue[700]))])),
-
-          // Parts list
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              children:
-                  ['Vertex', 'Focus', 'Directrix', 'Axis of Symmetry', 'Focal Chord', 'Latus Rectum', 'Distance p'].map((part) {
-                    final isSelected = selectedPart == part;
-                    return GestureDetector(onTap: () => selectPart(part), child: Card(elevation: isSelected ? 6 : 2, color: isSelected ? Colors.purple[100] : Colors.white, margin: const EdgeInsets.symmetric(vertical: 4), child: ListTile(title: Text(part, style: TextStyle(fontSize: 16, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal, color: isSelected ? Colors.purple[800] : Colors.black87)), trailing: Icon(Icons.arrow_forward_ios, size: 16, color: isSelected ? Colors.purple[600] : Colors.grey[600]))));
-                  }).toList(),
-            ),
-          ),
-
-          // Description and audio section
-          if (selectedPart.isNotEmpty)
-            Column(
-              children: [
-                Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.amber[50], borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.amber[200]!)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(selectedPart, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amber[800])), SizedBox(height: 8), Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 15, color: Colors.black87))])),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [IconButton(icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, size: 26, color: Colors.blue), onPressed: togglePlayPause), IconButton(icon: Icon(Icons.stop, size: 26, color: Colors.red), onPressed: stopAudio)]),
-                SizedBox(height: 10),
-              ],
-            ),
-        ],
+            // Description and audio section
+            if (selectedPart.isNotEmpty)
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        icon: Icon(Icons.close, size: 20),
+                        onPressed: () {
+                          setState(() {
+                            selectedPart = '';
+                            if (isPlaying) {
+                              stopAudio(); // Stop audio if playing
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                    Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.amber[50], borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.amber[200]!)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(selectedPart, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amber[800])), SizedBox(height: 8), Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 15, color: Colors.black87))])),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [IconButton(icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, size: 26, color: Colors.blue), onPressed: togglePlayPause), IconButton(icon: Icon(Icons.stop, size: 26, color: Colors.red), onPressed: stopAudio)]),
+                    SizedBox(height: 10),
+                  ],
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

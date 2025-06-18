@@ -108,113 +108,141 @@ class _HyperbolaPartsScreenState extends State<HyperbolaPartsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Hyperbola Parts"), backgroundColor: Colors.indigo[100], actions: [IconButton(icon: Icon(Icons.functions), onPressed: toggleFormula, tooltip: 'Show Formula'), IconButton(icon: Icon(Icons.rotate_90_degrees_ccw), onPressed: toggleOrientation, tooltip: 'Toggle Orientation')]),
-      body: Column(
-        children: [
-          SizedBox(height: 15),
-          Text("${isHorizontal ? 'Horizontal' : 'Vertical'} Hyperbola", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.indigo[800])),
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) async {
+        await player.stop();
+      },
+      child: Scaffold(
+        appBar: AppBar(title: Text("Hyperbola Parts"), backgroundColor: Colors.indigo[100], actions: [IconButton(icon: Icon(Icons.functions), onPressed: toggleFormula, tooltip: 'Show Formula'), IconButton(icon: Icon(Icons.rotate_90_degrees_ccw), onPressed: toggleOrientation, tooltip: 'Toggle Orientation')]),
+        body: Column(
+          children: [
+            SizedBox(height: 15),
+            Text("${isHorizontal ? 'Horizontal' : 'Vertical'} Hyperbola", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.indigo[800])),
 
-          // Parameter controls
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-            child: Column(
-              children: [
-                Row(
+            // Parameter controls
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text('a = ${aValue.toInt()}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                      Expanded(
+                        child: Slider(
+                          value: aValue,
+                          min: 20.0,
+                          max: 60.0,
+                          divisions: 40,
+                          onChanged: (value) {
+                            setState(() {
+                              aValue = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text('b = ${bValue.toInt()}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                      Expanded(
+                        child: Slider(
+                          value: bValue,
+                          min: 15.0,
+                          max: 50.0,
+                          divisions: 35,
+                          onChanged: (value) {
+                            setState(() {
+                              bValue = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text('c = ${cValue.toStringAsFixed(1)}', style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+                ],
+              ),
+            ),
+
+            // Hyperbola visualization
+            Container(height: 260, margin: EdgeInsets.symmetric(horizontal: 10), child: CustomPaint(painter: HyperbolaPainter(selectedPart, aValue, bValue, isHorizontal), child: Container())),
+
+            // Formula section
+            if (selectedPart.isNotEmpty)
+              SingleChildScrollView(
+                child: Column(
                   children: [
-                    Text('a = ${aValue.toInt()}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                    Expanded(
-                      child: Slider(
-                        value: aValue,
-                        min: 20.0,
-                        max: 60.0,
-                        divisions: 40,
-                        onChanged: (value) {
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        icon: Icon(Icons.close, size: 20),
+                        onPressed: () {
                           setState(() {
-                            aValue = value;
+                            selectedPart = '';
+                            if (isPlaying) {
+                              player.stop(); // Stop audio if playing
+                            }
                           });
                         },
                       ),
                     ),
+                    Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.amber[50], borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.amber[200]!)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(selectedPart, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amber[800])), SizedBox(height: 8), Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 15, color: Colors.black87))])),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [IconButton(icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, size: 26, color: Colors.blue), onPressed: togglePlayPause), IconButton(icon: Icon(Icons.stop, size: 26, color: Colors.red), onPressed: togglePlayPause)]),
+                    SizedBox(height: 10),
                   ],
                 ),
-                Row(
-                  children: [
-                    Text('b = ${bValue.toInt()}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                    Expanded(
-                      child: Slider(
-                        value: bValue,
-                        min: 15.0,
-                        max: 50.0,
-                        divisions: 35,
-                        onChanged: (value) {
-                          setState(() {
-                            bValue = value;
-                          });
+              ),
+
+            // Parts list
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                children:
+                    ['Center', 'Foci', 'Vertices', 'Co-vertices', 'Major Axis', 'Minor Axis', 'Transverse Axis', 'Conjugate Axis', 'Asymptotes', 'Latus Rectum'].map((part) {
+                      final isSelected = selectedPart == part;
+                      return GestureDetector(onTap: () => selectPart(part), child: Card(elevation: isSelected ? 6 : 2, color: isSelected ? Colors.indigo[100] : Colors.white, margin: const EdgeInsets.symmetric(vertical: 3), child: ListTile(title: Text(part, style: TextStyle(fontSize: 14, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal, color: isSelected ? Colors.indigo[800] : Colors.black87)), trailing: Icon(Icons.arrow_forward_ios, size: 14, color: isSelected ? Colors.indigo[600] : Colors.grey[600]))));
+                    }).toList(),
+              ),
+            ),
+
+            // Description and audio section
+            if (selectedPart.isNotEmpty)
+              Column(
+                children: [
+                  Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Color.fromARGB(255, 7, 78, 129), borderRadius: BorderRadius.circular(8)), child: Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 16, color: Colors.white))),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, size: 36, color: Colors.blue),
+                        onPressed: () async {
+                          if (isPlaying) {
+                            await player.pause();
+                            setState(() {
+                              isPlaying = false;
+                            });
+                          } else {
+                            await playAudio();
+                          }
                         },
                       ),
-                    ),
-                  ],
-                ),
-                Text('c = ${cValue.toStringAsFixed(1)}', style: TextStyle(fontSize: 12, color: Colors.grey[600])),
-              ],
-            ),
-          ),
-
-          // Hyperbola visualization
-          Container(height: 260, margin: EdgeInsets.symmetric(horizontal: 10), child: CustomPaint(painter: HyperbolaPainter(selectedPart, aValue, bValue, isHorizontal), child: Container())),
-
-          // Formula section
-          if (showFormula) Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.blue[50], borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.blue[200]!)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(isHorizontal ? 'Horizontal: x²/a² - y²/b² = 1' : 'Vertical: y²/a² - x²/b² = 1', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue[800])), SizedBox(height: 8), Text('• Center: (0, 0)\n• c² = a² + b² = ${(aValue * aValue + bValue * bValue).toStringAsFixed(0)}\n• Eccentricity: e = c/a = ${(cValue / aValue).toStringAsFixed(2)}\n• Latus Rectum: 2b²/a = ${(2 * bValue * bValue / aValue).toStringAsFixed(1)}', style: TextStyle(fontSize: 12, color: Colors.blue[700]))])),
-
-          // Parts list
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              children:
-                  ['Center', 'Foci', 'Vertices', 'Co-vertices', 'Major Axis', 'Minor Axis', 'Transverse Axis', 'Conjugate Axis', 'Asymptotes', 'Latus Rectum'].map((part) {
-                    final isSelected = selectedPart == part;
-                    return GestureDetector(onTap: () => selectPart(part), child: Card(elevation: isSelected ? 6 : 2, color: isSelected ? Colors.indigo[100] : Colors.white, margin: const EdgeInsets.symmetric(vertical: 3), child: ListTile(title: Text(part, style: TextStyle(fontSize: 14, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal, color: isSelected ? Colors.indigo[800] : Colors.black87)), trailing: Icon(Icons.arrow_forward_ios, size: 14, color: isSelected ? Colors.indigo[600] : Colors.grey[600]))));
-                  }).toList(),
-            ),
-          ),
-
-          // Description and audio section
-          if (selectedPart.isNotEmpty)
-            Column(
-              children: [
-                Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Color.fromARGB(255, 7, 78, 129), borderRadius: BorderRadius.circular(8)), child: Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 16, color: Colors.white))),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, size: 36, color: Colors.blue),
-                      onPressed: () async {
-                        if (isPlaying) {
-                          await player.pause();
+                      IconButton(
+                        icon: Icon(Icons.stop, size: 36, color: Colors.red),
+                        onPressed: () async {
+                          await player.stop();
                           setState(() {
                             isPlaying = false;
                           });
-                        } else {
-                          await playAudio();
-                        }
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.stop, size: 36, color: Colors.red),
-                      onPressed: () async {
-                        await player.stop();
-                        setState(() {
-                          isPlaying = false;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-              ],
-            ),
-        ],
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                ],
+              ),
+          ],
+        ),
       ),
     );
   }
