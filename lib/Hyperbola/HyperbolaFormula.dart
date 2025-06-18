@@ -41,6 +41,7 @@ class _FormulasHyperbolaSectionState extends State<FormulasHyperbolaSection> {
     final currentStepData = steps[currentStep];
 
     return Scaffold(
+      appBar: AppBar(title: Text('Hyperbola Formula')),
       body: Column(
         children: [
           // Progress indicator

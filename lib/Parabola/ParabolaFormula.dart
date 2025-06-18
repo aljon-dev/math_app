@@ -42,6 +42,7 @@ class _FormulasSectionState extends State<FormulasParabolaSection> {
     final currentStepData = parabolaSteps[currentStep];
 
     return Scaffold(
+      appBar: AppBar(title: Text('Parabola Formula')),
       body: Column(
         children: [
           // Progress indicator

@@ -42,6 +42,7 @@ class _FormulasSectionState extends State<FormulasEllipseSection> {
     final currentStepData = steps[currentStep];
 
     return Scaffold(
+      appBar: AppBar(title: Text('Ellipse Formula')),
       body: Column(
         children: [
           // Progress indicator

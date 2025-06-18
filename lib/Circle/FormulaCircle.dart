@@ -49,6 +49,7 @@ class _FormulasSectionState extends State<FormulasSection> {
     final currentStepData = steps[currentStep];
 
     return Scaffold(
+      appBar: AppBar(title: Text('Circle Formula')),
       body: Column(
         children: [
           // Progress indicator

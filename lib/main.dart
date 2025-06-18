@@ -19,28 +19,25 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(height: 80),
-              Column(children: [Text('Cone-Nic', style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.amber)), Text('CURVES', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.blue[900]))]),
-              SizedBox(height: 5),
-              Padding(padding: EdgeInsets.fromLTRB(50, 0, 0, 0), child: Image.asset('assets/images/Conic_Sections_Shapes.png', height: 300)),
+      body: Stack(
+        children: [
+          // Background image - fullscreen
+          Container(width: double.infinity, height: double.infinity, child: Image.asset('assets/background.jpg', fit: BoxFit.fill)),
 
-              SizedBox(height: 50),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => IntroScreen()));
-                },
-                child: Text('GET STARTED', style: TextStyle(color: Colors.white, fontSize: 18)),
-              ),
-              SizedBox(height: 80),
-            ],
+          // Button positioned at bottom
+          Positioned(
+            bottom: 80,
+            left: 20,
+            right: 20,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ConicSectionIntroPage()));
+              },
+              child: Text('GET STARTED', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

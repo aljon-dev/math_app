@@ -8,70 +8,70 @@ class QuizScreenParabola extends StatefulWidget {
 class _QuizScreenParabolaState extends State<QuizScreenParabola> {
   final List<Map<String, dynamic>> questions = [
     {
-      'question': '1. What is the standard form equation of a vertically opening parabola with vertex at the origin?',
+      'question': 'What is the standard form equation of a vertically opening parabola with vertex at the origin?',
       'options': ['a. (x - h)² = 4p(y - k)', 'b. y² = 4px', 'c. x² = 4py', 'd. (y - k)² = 4p(x - h)'],
       'correctIndex': 2,
       'solution': 'Answer: c. x² = 4py\n\nFor a vertical parabola with vertex at origin, the standard form is x² = 4py',
       'image': null,
     },
     {
-      'question': '2. The vertex of a parabola is the point that...',
+      'question': ' The vertex of a parabola is the point that...',
       'options': ['a. Is the midpoint of the focus and directrix', 'b. Lies at the center of the parabola', 'c. Is always at (0,0)', 'd. Lies on the directrix'],
       'correctIndex': 0,
       'solution': 'Answer: a. Is the midpoint of the focus and directrix\n\nThe vertex is equidistant between the focus and directrix',
       'image': null,
     },
     {
-      'question': '3. What is the directrix of a parabola?',
+      'question': ' What is the directrix of a parabola?',
       'options': ['a. A point inside the parabola', 'b. A fixed straight line used to define the parabola', 'c. The longest chord of the parabola', 'd. A line perpendicular to the axis of symmetry'],
       'correctIndex': 1,
       'solution': 'Answer: b. A fixed straight line used to define the parabola\n\nThe directrix is a fixed line that, with the focus, defines the parabola',
       'image': null,
     },
     {
-      'question': '4. The equation (y - 2)² = 8(x - 3) represents a parabola that opens...',
+      'question': ' The equation (y - 2)² = 8(x - 3) represents a parabola that opens...',
       'options': ['a. Upward', 'b. Downward', 'c. To the left', 'd. To the right'],
       'correctIndex': 3,
       'solution': 'Solution:\n4p = 8 → p = 2\nSince p > 0 and it\'s a y² equation, it opens to the right',
       'image': null,
     },
     {
-      'question': '5. Find the vertex of (y - 1)² = -4(x + 3)',
+      'question': ' Find the vertex of (y - 1)² = -4(x + 3)',
       'options': ['a. (3, -1)', 'b. (3, 1)', 'c. (-3, 1)', 'd. (-3, -1)'],
       'correctIndex': 2,
       'solution': 'Solution: (h, k) = (-3, 1)\nStandard form is (y - k)² = 4p(x - h)',
       'image': null,
     },
     {
-      'question': '6. Find the focus of (y - 1)² = -4(x + 3)',
+      'question': ' Find the focus of (y - 1)² = -4(x + 3)',
       'options': ['a. (-4, 1)', 'b. (1, -4)', 'c. (-1, 4)', 'd. (-1, -4)'],
       'correctIndex': 0,
       'solution': 'Solution:\n4p = -4 → p = -1\nFocus = (h + p, k) = (-3 + (-1), 1) = (-4, 1)',
       'image': null,
     },
     {
-      'question': '7. Find the directrix of (y - 1)² = -4(x + 3)',
+      'question': 'Find the directrix of (y - 1)² = -4(x + 3)',
       'options': ['a. x = -2', 'b. x = 2', 'c. y = -2', 'd. y = 2'],
       'correctIndex': 0,
       'solution': 'Solution:\np = -1\nDirectrix: x = h - p = -3 - (-1) = -2',
       'image': null,
     },
     {
-      'question': '8. Find the latus rectum of (y - 1)² = -4(x + 3)',
+      'question': ' Find the latus rectum of (y - 1)² = -4(x + 3)',
       'options': ['a. 1 unit', 'b. 2 units', 'c. 3 units', 'd. 4 units'],
       'correctIndex': 3,
       'solution': 'Solution:\nLatus rectum = |4p| = |-4| = 4 units',
       'image': null,
     },
     {
-      'question': '9. Find the endpoints of latus rectum for (y - 1)² = -4(x + 3)',
+      'question': ' Find the endpoints of latus rectum for (y - 1)² = -4(x + 3)',
       'options': ['a. E₁(4,3) and E₂(4,1)', 'b. E₁(-4,3) and E₂(-4,-1)', 'c. E₁(3,4) and E₂(1,4)', 'd. E₁(-3,4) and E₂(-1,-4)'],
       'correctIndex': 1,
       'solution': 'Solution:\np = -1\nEndpoints = (h - p, k ± 2p)\n= (-3 - (-1), 1 ± 2(-1))\n= (-4, 1 ± (-2))\n= (-4,3) and (-4,-1)',
       'image': null,
     },
     {
-      'question': '10. Write the equation of a parabola with vertex at (1,-3), opens right, and latus rectum of 8 units',
+      'question': '. Write the equation of a parabola with vertex at (1,-3), opens right, and latus rectum of 8 units',
       'options': ['a. (x + 3)² = 8(y - 1)', 'b. (y + 3)² = 8(x - 1)', 'c. (x - 3)² = -8(y - 1)', 'd. (y + 3)² = -8(x - 1)'],
       'correctIndex': 1,
       'solution': 'Solution:\nStandard form: (y - k)² = 4p(x - h)\n4p = 8 → p = 2\nVertex (1,-3)\nEquation: (y + 3)² = 8(x - 1)',
@@ -160,43 +160,52 @@ class _QuizScreenParabolaState extends State<QuizScreenParabola> {
 
     return Scaffold(
       appBar: AppBar(title: Text('Parabola Quiz (${currentQuestionIndex + 1}/${questions.length})'), backgroundColor: Colors.purple, foregroundColor: Colors.white, actions: [Padding(padding: EdgeInsets.all(8.0), child: Center(child: Text('Score: $score/${questions.length}', style: TextStyle(color: Colors.white))))]),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Card(elevation: 4, child: Padding(padding: const EdgeInsets.all(16.0), child: Text(currentQuestion['question'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))),
-            _buildQuestionImage(currentQuestion['image']),
-            SizedBox(height: 20),
-            ...List.generate(currentQuestion['options'].length, (index) {
-              return Card(
-                elevation: 2,
-                color: getOptionColor(index),
-                child: ListTile(
-                  title: Text(currentQuestion['options'][index]),
-                  onTap: () => answerQuestion(index),
-                  leading: Icon(
-                    isAnswered && index == selectedOptionIndex
-                        ? (selectedOptionIndex == currentQuestion['correctIndex'] ? Icons.check_circle : Icons.cancel)
-                        : isAnswered && index == currentQuestion['correctIndex']
-                        ? Icons.check_circle
-                        : Icons.radio_button_unchecked,
-                    color:
-                        isAnswered && index == currentQuestion['correctIndex']
-                            ? Colors.green
-                            : isAnswered && index == selectedOptionIndex
-                            ? Colors.red
-                            : Colors.grey,
-                  ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Card(elevation: 4, child: Padding(padding: const EdgeInsets.all(16.0), child: Text(currentQuestion['question'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))),
+                    _buildQuestionImage(currentQuestion['image']),
+                    SizedBox(height: 20),
+                    ...List.generate(currentQuestion['options'].length, (index) {
+                      return Card(
+                        elevation: 2,
+                        color: getOptionColor(index),
+                        child: ListTile(
+                          title: Text(currentQuestion['options'][index]),
+                          onTap: () => answerQuestion(index),
+                          leading: Icon(
+                            isAnswered && index == selectedOptionIndex
+                                ? (selectedOptionIndex == currentQuestion['correctIndex'] ? Icons.check_circle : Icons.cancel)
+                                : isAnswered && index == currentQuestion['correctIndex']
+                                ? Icons.check_circle
+                                : Icons.radio_button_unchecked,
+                            color:
+                                isAnswered && index == currentQuestion['correctIndex']
+                                    ? Colors.green
+                                    : isAnswered && index == selectedOptionIndex
+                                    ? Colors.red
+                                    : Colors.grey,
+                          ),
+                        ),
+                      );
+                    }),
+                    SizedBox(height: 20),
+                    if (isAnswered) Card(color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green.shade50 : Colors.red.shade50, child: Padding(padding: const EdgeInsets.all(16.0), child: Column(children: [Text(selectedOptionIndex == currentQuestion['correctIndex'] ? '✓ Correct!' : '✗ Incorrect!', style: TextStyle(fontWeight: FontWeight.bold, color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green : Colors.red, fontSize: 20)), SizedBox(height: 10), Text(currentQuestion['solution'], style: TextStyle(fontSize: 14))]))),
+                    SizedBox(height: 20), // Add some spacing before the button
+                  ],
                 ),
-              );
-            }),
-            SizedBox(height: 20),
-            if (isAnswered) Card(color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green.shade50 : Colors.red.shade50, child: Padding(padding: const EdgeInsets.all(16.0), child: Column(children: [Text(selectedOptionIndex == currentQuestion['correctIndex'] ? '✓ Correct!' : '✗ Incorrect!', style: TextStyle(fontWeight: FontWeight.bold, color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green : Colors.red, fontSize: 20)), SizedBox(height: 10), Text(currentQuestion['solution'], style: TextStyle(fontSize: 14))]))),
-            Spacer(),
-            ElevatedButton(onPressed: isAnswered ? nextQuestion : null, style: ElevatedButton.styleFrom(backgroundColor: Colors.purple, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)), child: Text(currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz', style: TextStyle(fontSize: 18))),
-          ],
-        ),
+              ),
+            ),
+          ),
+          // Fixed button at the bottom
+          Padding(padding: const EdgeInsets.all(16.0), child: ElevatedButton(onPressed: isAnswered ? nextQuestion : null, style: ElevatedButton.styleFrom(backgroundColor: Colors.purple, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)), child: Text(currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz', style: TextStyle(fontSize: 18)))),
+        ],
       ),
     );
   }
