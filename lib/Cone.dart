@@ -27,6 +27,12 @@ class _ConicSectionVisualizationState extends State<ConicSectionVisualization> w
   double _lastPanX = 0;
   double _lastPanY = 0;
 
+  // Control zoom Parameters
+  double _zoomLevel = 1.0;
+  double _baseZoomLevel = 1.0;
+  final double _minZoom = 0.5;
+  final double _maxZoom = 3.0;
+
   @override
   void initState() {
     super.initState();
@@ -59,10 +65,10 @@ class _ConicSectionVisualizationState extends State<ConicSectionVisualization> w
     // Determine the type of conic section based on the angle
     if (_planeAngle < 0.1) {
       _currentType = "Circle";
-    } else if (_planeAngle < 0.5) {
+    } else if (_planeAngle < 0.8) {
       // Changed from 0.7 to 0.5
       _currentType = "Ellipse";
-    } else if (_planeAngle < 0.9) {
+    } else if (_planeAngle < 1.17) {
       // Changed from 1.2 to 0.9
       _currentType = "Parabola";
     } else {
@@ -97,28 +103,34 @@ class _ConicSectionVisualizationState extends State<ConicSectionVisualization> w
           ),
           Expanded(
             flex: 3,
-            child: GestureDetector(
-              onPanStart: (details) {
-                _lastPanX = details.localPosition.dx;
-                _lastPanY = details.localPosition.dy;
+            child: // Replace your existing GestureDetector with this fixed version:
+                GestureDetector(
+              onScaleStart: (details) {
+                _lastPanX = details.localFocalPoint.dx;
+                _lastPanY = details.localFocalPoint.dy;
+                _baseZoomLevel = _zoomLevel;
               },
-              onPanUpdate: (details) {
+              onScaleUpdate: (details) {
                 setState(() {
-                  // Calculate the delta
-                  final dx = details.localPosition.dx - _lastPanX;
-                  final dy = details.localPosition.dy - _lastPanY;
+                  // Handle rotation (pan gesture)
+                  final dx = details.localFocalPoint.dx - _lastPanX;
+                  final dy = details.localFocalPoint.dy - _lastPanY;
 
-                  // Update rotations
-                  _horizontalRotation += dx * 0.01;
-                  _planeAngle = (_planeAngle - dy * 0.01).clamp(0, math.pi / 2);
+                  // Only apply rotation if it's primarily a single finger drag
+                  if (details.scale == 1.0) {
+                    _horizontalRotation += dx * 0.01;
+                    _planeAngle = (_planeAngle - dy * 0.01).clamp(0, math.pi / 2);
+                    _updateConicType();
+                  }
 
-                  _lastPanX = details.localPosition.dx;
-                  _lastPanY = details.localPosition.dy;
+                  // Handle zoom (pinch gesture)
+                  _zoomLevel = (_baseZoomLevel * details.scale).clamp(_minZoom, _maxZoom);
 
-                  _updateConicType();
+                  _lastPanX = details.localFocalPoint.dx;
+                  _lastPanY = details.localFocalPoint.dy;
                 });
               },
-              child: CustomPaint(painter: ConicSectionPainter(planeAngle: _planeAngle, horizontalRotation: _horizontalRotation, verticalPosition: _verticalPosition), child: Container()),
+              child: CustomPaint(painter: ConicSectionPainter(planeAngle: _planeAngle, horizontalRotation: _horizontalRotation, verticalPosition: _verticalPosition, zoomLevel: _zoomLevel), child: Container()),
             ),
           ),
           Divider(),
@@ -154,6 +166,13 @@ class _ConicSectionVisualizationState extends State<ConicSectionVisualization> w
                         _updateConicType();
                       });
                     }),
+                    _buildSlider("Zoom", _zoomLevel, _minZoom, _maxZoom, (value) {
+                      setState(() {
+                        _zoomLevel = value;
+                      });
+                    }),
+
+                    Text(_planeAngle.toString()),
                   ],
                 ),
               ),
@@ -185,12 +204,18 @@ class ConicSectionPainter extends CustomPainter {
   final double planeAngle;
   final double horizontalRotation;
   final double verticalPosition;
+  final double zoomLevel;
 
   // Constants
   final double _coneHeight = 2.0;
   final double _coneRadius = 1.0;
 
-  ConicSectionPainter({required this.planeAngle, required this.horizontalRotation, required this.verticalPosition});
+  ConicSectionPainter({
+    required this.planeAngle,
+    required this.horizontalRotation,
+    required this.verticalPosition,
+    required this.zoomLevel, // Add this
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -203,6 +228,8 @@ class ConicSectionPainter extends CustomPainter {
 
     // Project 3D vertices to 2D
     final projectedVertices = _projectVertices(scene, centerX, centerY, scale);
+
+    _drawCartesianGrid(canvas, size);
 
     // Draw the upside-down cone (upper cone)
     _drawUpperCone(canvas, projectedVertices);
@@ -238,36 +265,45 @@ class ConicSectionPainter extends CustomPainter {
     }
 
     // CRITICAL: Use consistent plane transformation
-    final planeWidth = _coneRadius * 2.5;
+    // Adjust plane size based on zoom level
+    final planeWidth = _coneRadius * 2.5 * (1 + (zoomLevel - 1) * 0.5);
     final planeVertices2D = [vector_math.Vector3(-planeWidth, 0, -planeWidth), vector_math.Vector3(planeWidth, 0, -planeWidth), vector_math.Vector3(planeWidth, 0, planeWidth), vector_math.Vector3(-planeWidth, 0, planeWidth)];
 
-    // Apply the SAME transformation in both plane drawing and intersection calculation
+    // Apply transformation
     final rotationMatrix = vector_math.Matrix4.rotationX(planeAngle);
     rotationMatrix.translate(0.0, verticalPosition * _coneHeight, 0.0);
 
+    // Scale the plane position based on zoom
+    final planeScale = 1.0 + (zoomLevel - 1) * 0.3;
+    final scaleMatrix = vector_math.Matrix4.identity();
+    scaleMatrix.scale(planeScale, planeScale, planeScale);
+
     for (final vertex in planeVertices2D) {
-      vertices.add(rotationMatrix.transformed3(vertex));
+      vertices.add((rotationMatrix * scaleMatrix).transformed3(vertex));
     }
 
     return vertices;
   }
 
   List<Offset> _projectVertices(List<vector_math.Vector3> vertices, double centerX, double centerY, double scale) {
-    // Camera settings
-    final cameraPosition = vector_math.Vector3(0, 0, 5);
+    // Stabilize zoom factor to prevent extreme distortion
+    final zoomFactor = math.pow(zoomLevel.clamp(0.5, 2.0), 1.2).toDouble();
+
+    // Keep camera at reasonable distance
+    final cameraDistance = (4.0 / zoomFactor).clamp(2.0, 8.0);
+    final cameraPosition = vector_math.Vector3(0, 0, cameraDistance);
     final cameraLookAt = vector_math.Vector3(0, 0, 0);
     final cameraUp = vector_math.Vector3(0, 1, 0);
+
+    // Apply moderate zoom to scale, not extreme
+    final adjustedScale = scale * (1.0 + (zoomLevel - 1.0) * 0.5);
 
     // Compute view matrix
     final viewMatrix = vector_math.makeViewMatrix(cameraPosition, cameraLookAt, cameraUp);
 
-    // Compute projection matrix (perspective)
-    final projectionMatrix = vector_math.makePerspectiveMatrix(
-      45 * math.pi / 180, // FOV
-      1.0, // Aspect ratio
-      0.1, // Near plane
-      100.0, // Far plane
-    );
+    // Use consistent FOV to prevent distortion
+    final fov = (50 * math.pi / 180).clamp(30 * math.pi / 180, 70 * math.pi / 180);
+    final projectionMatrix = vector_math.makePerspectiveMatrix(fov, 1.0, 0.1, 100.0);
 
     // Compute model matrix (rotate the scene)
     final modelMatrix = vector_math.Matrix4.rotationY(horizontalRotation);
@@ -277,20 +313,102 @@ class ConicSectionPainter extends CustomPainter {
 
     // Project 3D vertices to 2D screen space
     return vertices.map((v) {
-      // Apply MVP transformation
       final projected = mvpMatrix.transformed3(v);
 
-      // Perspective division
-      final x = projected.x / projected.z;
-      final y = projected.y / projected.z;
+      // Add safety check for perspective division
+      final z = math.max(projected.z, 0.01); // Prevent division by zero or negative
+      final x = projected.x / z;
+      final y = projected.y / z;
 
-      // Map to screen coordinates
-      return Offset(
-        centerX + x * scale,
-        centerY - y * scale, // Flip Y for screen coordinates
-      );
+      // Clamp values to prevent extreme coordinates
+      final clampedX = x.clamp(-10.0, 10.0);
+      final clampedY = y.clamp(-10.0, 10.0);
+
+      return Offset(centerX + clampedX * adjustedScale, centerY - clampedY * adjustedScale);
     }).toList();
   }
+
+  void _drawCartesianGrid(Canvas canvas, Size size) {
+    final centerX = size.width / 2;
+    final centerY = size.height / 2;
+
+    final gridPaint =
+        Paint()
+          ..color = Colors.grey.withOpacity(0.3)
+          ..strokeWidth = 1.0;
+
+    final axisPaint =
+        Paint()
+          ..color = Colors.black.withOpacity(0.7)
+          ..strokeWidth = 2.0;
+
+    // Stabilize font size scaling
+    final fontSize = (12 * zoomLevel.clamp(0.8, 1.3)).clamp(10.0, 16.0);
+    final labelStyle = TextStyle(color: Colors.black87, fontSize: fontSize, fontWeight: FontWeight.w500);
+
+    // Prevent grid from becoming too dense or sparse
+    final baseSpacing = 40.0;
+    final gridSpacing = (baseSpacing / zoomLevel.clamp(0.7, 1.5)).clamp(20.0, 80.0);
+    final maxGridLines = (8 * zoomLevel.clamp(0.8, 1.5)).round().clamp(6, 12);
+
+    // Draw grid lines with controlled density
+    for (int i = -maxGridLines; i <= maxGridLines; i++) {
+      if (i == 0) continue;
+
+      final offset = i * gridSpacing;
+
+      // Vertical grid lines
+      final x = centerX + offset;
+      if (x >= 0 && x <= size.width) {
+        canvas.drawLine(Offset(x, 0), Offset(x, size.height), gridPaint);
+
+        // Only show labels when zoom is reasonable
+        if (zoomLevel > 0.8 && zoomLevel < 2.0) {
+          final textPainter = TextPainter(textDirection: TextDirection.ltr, text: TextSpan(text: '${i.abs()}', style: labelStyle));
+          textPainter.layout();
+          textPainter.paint(canvas, Offset(x - textPainter.width / 2, centerY + 5));
+        }
+      }
+
+      // Horizontal grid lines
+      final y = centerY + offset;
+      if (y >= 0 && y <= size.height) {
+        canvas.drawLine(Offset(0, y), Offset(size.width, y), gridPaint);
+
+        if (zoomLevel > 0.8 && zoomLevel < 2.0) {
+          final textPainter = TextPainter(textDirection: TextDirection.ltr, text: TextSpan(text: '${i.abs()}', style: labelStyle));
+          textPainter.layout();
+          textPainter.paint(canvas, Offset(centerX + 5, y - textPainter.height / 2));
+        }
+      }
+    }
+
+    // Draw main axes
+    canvas.drawLine(Offset(0, centerY), Offset(size.width, centerY), axisPaint);
+    canvas.drawLine(Offset(centerX, 0), Offset(centerX, size.height), axisPaint);
+
+    // Add axis labels with controlled size
+    final axisLabelStyle = labelStyle.copyWith(fontSize: (fontSize * 1.2).clamp(12.0, 18.0), fontWeight: FontWeight.bold);
+
+    final textPainter = TextPainter(textDirection: TextDirection.ltr);
+
+    // X-axis label
+    textPainter.text = TextSpan(text: 'X', style: axisLabelStyle);
+    textPainter.layout();
+    textPainter.paint(canvas, Offset(size.width - 20, centerY + 5));
+
+    // Y-axis label
+    textPainter.text = TextSpan(text: 'Y', style: axisLabelStyle);
+    textPainter.layout();
+    textPainter.paint(canvas, Offset(centerX + 5, 15));
+
+    // Origin label
+    textPainter.text = TextSpan(text: '0', style: labelStyle);
+    textPainter.layout();
+    textPainter.paint(canvas, Offset(centerX + 5, centerY + 5));
+  }
+
+  // 2. Update the _projectVertices method to apply zoom
 
   void _drawUpperCone(Canvas canvas, List<Offset> projectedVertices) {
     // Create gradient for upper cone
@@ -440,17 +558,17 @@ class ConicSectionPainter extends CustomPainter {
   }
 
   void _drawCombinedPlaneAndConic(Canvas canvas, Size size, List<Offset> projectedVertices) {
-    // Draw the plane
+    final planeAlpha = (0.3 / zoomLevel).clamp(0.15, 0.5);
     final planePaint =
         Paint()
-          ..color = Colors.lightBlue.withOpacity(0.3)
+          ..color = Colors.lightBlue.withOpacity(planeAlpha)
           ..style = PaintingStyle.fill;
 
     final planeOutlinePaint =
         Paint()
           ..color = const Color.fromARGB(255, 213, 9, 37)
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 1.5;
+          ..strokeWidth = 1.5 * zoomLevel.clamp(0.8, 1.5);
 
     final planeVertices = projectedVertices.sublist(projectedVertices.length - 4);
     final planePath =
@@ -467,12 +585,13 @@ class ConicSectionPainter extends CustomPainter {
     // Determine the current conic type based on plane angle
     String currentType = _getCurrentConicType();
 
+    final conicStrokeWidth = 3.0 * zoomLevel.clamp(0.8, 1.5);
     // Draw the conic section with dynamic color
     final conicPaint =
         Paint()
           ..color = _getConicColor(currentType)
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 3.0;
+          ..strokeWidth = conicStrokeWidth;
 
     // For hyperbola case, we need to draw both branches
     if (planeAngle > 0.8) {
@@ -507,7 +626,7 @@ class ConicSectionPainter extends CustomPainter {
         for (int i = 1; i < points.length; i++) {
           path.lineTo(points[i].dx, points[i].dy);
         }
-        if (planeAngle < 0.7) path.close(); // Close for circles/ellipses
+        if (planeAngle < 0.9) path.close(); // Close for circles/ellipses
         canvas.drawPath(path, conicPaint);
       }
     }
@@ -517,11 +636,11 @@ class ConicSectionPainter extends CustomPainter {
   String _getCurrentConicType() {
     if (planeAngle < 0.1) {
       return 'Circle';
-    } else if (planeAngle < 0.5) {
-      // Changed from 0.5 to match _updateConicType
+    } else if (planeAngle < 0.8) {
+      // Changed from 0.8 to match _updateConicType
       return 'Ellipse';
-    } else if (planeAngle < 0.9) {
-      // Changed from 0.9 to match _updateConicType
+    } else if (planeAngle < 1.17) {
+      // Changed from 0.17 to match _updateConicType
       return 'Parabola';
     } else {
       return 'Hyperbola';
@@ -693,7 +812,7 @@ class ConicSectionPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(ConicSectionPainter oldDelegate) {
-    return oldDelegate.planeAngle != planeAngle || oldDelegate.horizontalRotation != horizontalRotation || oldDelegate.verticalPosition != verticalPosition;
+    return oldDelegate.planeAngle != planeAngle || oldDelegate.horizontalRotation != horizontalRotation || oldDelegate.verticalPosition != verticalPosition || oldDelegate.zoomLevel != zoomLevel; // Add this line
   }
 }
 

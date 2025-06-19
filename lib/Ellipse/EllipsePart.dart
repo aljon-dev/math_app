@@ -218,10 +218,10 @@ class EllipsePainter extends CustomPainter {
     if (selectedPart == 'Latus Rectum') {
       final paint =
           Paint()
-            ..strokeWidth = 2
+            ..strokeWidth = 4
             ..color = Colors.deepPurple;
-      canvas.drawLine(Offset(center.dx - c, center.dy - 10), Offset(center.dx - c, center.dy + 10), paint);
-      canvas.drawLine(Offset(center.dx + c, center.dy - 10), Offset(center.dx + c, center.dy + 10), paint);
+      canvas.drawLine(Offset(center.dx - c, center.dy - 45), Offset(center.dx - c, center.dy + 47), paint);
+      canvas.drawLine(Offset(center.dx + c, center.dy - 45), Offset(center.dx + c, center.dy + 47), paint);
     }
 
     // Eccentricity (visual representation via text only)

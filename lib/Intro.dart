@@ -60,8 +60,10 @@ class _ConicSectionIntroPageState extends State<ConicSectionIntroPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Video Container - Made Smaller
             Container(
               margin: const EdgeInsets.all(16),
+              height: 220, // Fixed height to make it smaller
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 8, offset: const Offset(0, 4))]),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -69,7 +71,7 @@ class _ConicSectionIntroPageState extends State<ConicSectionIntroPage> {
                     _controller.value.isInitialized
                         ? Stack(
                           children: [
-                            AspectRatio(aspectRatio: _controller.value.aspectRatio, child: VideoPlayer(_controller)),
+                            SizedBox(height: 220, child: Center(child: AspectRatio(aspectRatio: _controller.value.aspectRatio, child: VideoPlayer(_controller)))),
                             Positioned.fill(
                               child: GestureDetector(
                                 onTap: () {
@@ -85,21 +87,21 @@ class _ConicSectionIntroPageState extends State<ConicSectionIntroPage> {
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        Expanded(child: Center(child: GestureDetector(onTap: () => togglePause(), child: Container(padding: EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.black.withOpacity(0.7), shape: BoxShape.circle), child: Icon(_controller.value.isPlaying ? Icons.pause : Icons.play_arrow, size: 32))))),
+                                        Expanded(child: Container()), // Empty space instead of play button
                                         Container(
-                                          padding: const EdgeInsets.all(16),
+                                          padding: const EdgeInsets.all(12),
                                           child: Column(
                                             children: [
                                               VideoProgressIndicator(_controller, allowScrubbing: true, colors: VideoProgressColors(playedColor: Colors.blue, bufferedColor: Colors.grey.withOpacity(0.5), backgroundColor: Colors.grey.withOpacity(0.3))),
 
-                                              const SizedBox(height: 8),
+                                              const SizedBox(height: 6),
 
                                               Row(
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
-                                                  Text('${formatDuration(_controller.value.position)} / ${formatDuration(_controller.value.duration)}'),
+                                                  Text('${formatDuration(_controller.value.position)} / ${formatDuration(_controller.value.duration)}', style: TextStyle(fontSize: 12)),
 
-                                                  Row(children: [IconButton(onPressed: () => togglePause(), icon: Icon(_controller.value.isPlaying ? Icons.pause : Icons.play_arrow, color: Colors.white))]),
+                                                  Row(children: [IconButton(onPressed: () => togglePause(), icon: Icon(_controller.value.isPlaying ? Icons.pause : Icons.play_arrow, color: Colors.white, size: 20))]),
                                                 ],
                                               ),
                                             ],
@@ -113,7 +115,7 @@ class _ConicSectionIntroPageState extends State<ConicSectionIntroPage> {
                             ),
                           ],
                         )
-                        : Container(height: 200, color: Colors.grey[200], child: const Center(child: CircularProgressIndicator())),
+                        : Container(height: 220, color: Colors.grey[200], child: const Center(child: CircularProgressIndicator())),
               ),
             ),
 
@@ -126,7 +128,7 @@ class _ConicSectionIntroPageState extends State<ConicSectionIntroPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Title
-                  Row(children: [Icon(Icons.school, color: Colors.blue[600], size: 28), const SizedBox(width: 12), const Expanded(child: Text('What are Conic Sections?', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87)))]),
+                  Row(children: [Icon(Icons.school, color: Colors.blue[600], size: 28), const SizedBox(width: 12), const Expanded(child: Text('What is Conic Sections?', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87)))]),
 
                   const SizedBox(height: 20),
 

@@ -291,7 +291,7 @@ class ParabolaPainter extends CustomPainter {
     }
 
     // Draw latus rectum
-    if (selectedPart == 'Latus Rectum' || selectedPart == 'Focal Chord') {
+    if (selectedPart == 'Latus Rectum') {
       final latusRectumLength = 2 * pValue; // Half length on each side
       canvas.drawLine(Offset(center.dx - latusRectumLength, focusPoint.dy), Offset(center.dx + latusRectumLength, focusPoint.dy), selectedPart == 'Latus Rectum' ? latusRectumPaint : focalChordPaint);
     }

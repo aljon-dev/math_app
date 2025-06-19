@@ -8,26 +8,55 @@ class MenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: const Text('Shapes', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)), actions: []),
+      appBar: AppBar(centerTitle: true, title: const Text('Menu', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)), actions: []),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Top content that can scroll if needed
-            Expanded(child: SingleChildScrollView(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [const Text('Select Shapes', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)), Padding(padding: EdgeInsets.fromLTRB(50, 0, 0, 0), child: Image.asset('assets/images/Conic_Sections_Shapes.png')), const SizedBox(height: 20), ButtonMenu(context, Colors.red, 'Circle', Icons.circle), const SizedBox(height: 15), ButtonMenu(context, Colors.orange, 'Ellipse', Icons.egg_alt), const SizedBox(height: 15), ButtonMenu(context, Colors.green, 'Parabola', Icons.stacked_line_chart), const SizedBox(height: 15), ButtonMenu(context, Colors.blue, 'Hyperbola', Icons.all_inclusive)]))),
-            // Bottom button that stays at bottom
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ConicSectionsQuiz()));
-                },
-                icon: const Icon(Icons.quiz),
-                label: const Text('General Quiz', style: TextStyle(fontSize: 18)),
-                style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), backgroundColor: Colors.orange, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: const BorderSide(color: Colors.black, width: 2))),
-              ),
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/backgroundmenu.jpg'), // Add your background image here
+              fit: BoxFit.cover, // You can change this to BoxFit.fill, BoxFit.contain, etc.
+              // Adjust opacity so content remains readable (0.0 to 1.0)
             ),
-          ],
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            children: [
+              // Top content that can scroll if needed
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 200),
+
+                      ButtonMenu(context, Colors.red, 'Circle', Icons.circle),
+                      const SizedBox(height: 15),
+                      ButtonMenu(context, Colors.orange, 'Ellipse', Icons.egg_alt),
+                      const SizedBox(height: 15),
+                      ButtonMenu(context, Colors.green, 'Parabola', Icons.stacked_line_chart),
+                      const SizedBox(height: 15),
+                      ButtonMenu(context, Colors.blue, 'Hyperbola', Icons.all_inclusive),
+                      const SizedBox(height: 30),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ConicSectionsQuiz()));
+                          },
+                          icon: const Icon(Icons.quiz),
+                          label: const Text('General Quiz', style: TextStyle(fontSize: 18)),
+                          style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), backgroundColor: const Color.fromARGB(255, 51, 1, 54), foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: const BorderSide(color: Colors.black, width: 2))),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Bottom button that stays at bottom
+            ],
+          ),
         ),
       ),
     );
