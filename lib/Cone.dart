@@ -65,10 +65,10 @@ class _ConicSectionVisualizationState extends State<ConicSectionVisualization> w
     // Determine the type of conic section based on the angle
     if (_planeAngle < 0.1) {
       _currentType = "Circle";
-    } else if (_planeAngle < 0.8) {
+    } else if (_planeAngle < 0.9) {
       // Changed from 0.7 to 0.5
       _currentType = "Ellipse";
-    } else if (_planeAngle < 1.17) {
+    } else if (_planeAngle < 1.19) {
       // Changed from 1.2 to 0.9
       _currentType = "Parabola";
     } else {
@@ -594,7 +594,7 @@ class ConicSectionPainter extends CustomPainter {
           ..strokeWidth = conicStrokeWidth;
 
     // For hyperbola case, we need to draw both branches
-    if (planeAngle > 0.8) {
+    if (planeAngle > 1.19) {
       // Upper branch (from upper cone)
       final upperPoints = _calculateIntersectionPoints(size: size, upperCone: true);
       if (upperPoints.isNotEmpty) {
@@ -636,10 +636,10 @@ class ConicSectionPainter extends CustomPainter {
   String _getCurrentConicType() {
     if (planeAngle < 0.1) {
       return 'Circle';
-    } else if (planeAngle < 0.8) {
+    } else if (planeAngle < 0.9) {
       // Changed from 0.8 to match _updateConicType
       return 'Ellipse';
-    } else if (planeAngle < 1.17) {
+    } else if (planeAngle < 1.19) {
       // Changed from 0.17 to match _updateConicType
       return 'Parabola';
     } else {
