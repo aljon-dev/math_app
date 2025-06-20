@@ -636,7 +636,7 @@ class ConicSectionPainter extends CustomPainter {
   String _getCurrentConicType() {
     if (planeAngle < 0.1) {
       return 'Circle';
-    } else if (planeAngle < 0.9) {
+    } else if (planeAngle < 1.0) {
       // Changed from 0.8 to match _updateConicType
       return 'Ellipse';
     } else if (planeAngle < 1.19) {

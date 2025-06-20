@@ -296,13 +296,42 @@ class ParabolaPainter extends CustomPainter {
       canvas.drawLine(Offset(center.dx - latusRectumLength, focusPoint.dy), Offset(center.dx + latusRectumLength, focusPoint.dy), selectedPart == 'Latus Rectum' ? latusRectumPaint : focalChordPaint);
     }
 
-    // Draw a sample focal chord
     if (selectedPart == 'Focal Chord') {
-      // Draw another focal chord at an angle
-      final chordY = center.dy - pValue * 1.5;
-      if (chordY > 0) {
-        final chordX = math.sqrt(4 * pValue * (center.dy - chordY));
-        canvas.drawLine(Offset(center.dx - chordX, chordY), Offset(center.dx + chordX, chordY), focalChordPaint);
+      // Draw a focal chord that passes through the focus
+      // Using a simple approach: draw a chord at 45-degree angle through focus
+
+      // For parabola x² = 4py, if we want a line through focus (0, p) with slope m
+      // Line equation: y = mx + p
+      // Substituting into parabola: x² = 4p(mx + p)
+      // Simplifying: x² - 4pmx - 4p² = 0
+
+      final double slope = 0.5; // You can adjust this angle
+      final double a = 1.0;
+      final double b = -4 * pValue * slope;
+      final double c = -4 * pValue * pValue;
+
+      final double discriminant = b * b - 4 * a * c;
+
+      if (discriminant >= 0) {
+        final double sqrtDiscriminant = math.sqrt(discriminant);
+        final double x1 = (-b - sqrtDiscriminant) / (2 * a);
+        final double x2 = (-b + sqrtDiscriminant) / (2 * a);
+
+        // Calculate corresponding y values on the parabola
+        final double y1 = (x1 * x1) / (4 * pValue);
+        final double y2 = (x2 * x2) / (4 * pValue);
+
+        // Convert to screen coordinates
+        final point1 = Offset(center.dx + x1, center.dy - y1);
+        final point2 = Offset(center.dx + x2, center.dy - y2);
+
+        // Draw the focal chord
+        canvas.drawLine(point1, point2, focalChordPaint);
+
+        // Optional: Draw small circles at the endpoints
+        canvas.drawCircle(point1, 3, focalChordPaint..style = PaintingStyle.fill);
+        canvas.drawCircle(point2, 3, focalChordPaint..style = PaintingStyle.fill);
+        focalChordPaint.style = PaintingStyle.stroke; // Reset to stroke
       }
     }
 
