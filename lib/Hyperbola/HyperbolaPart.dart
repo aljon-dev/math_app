@@ -168,32 +168,6 @@ class _HyperbolaPartsScreenState extends State<HyperbolaPartsScreen> {
             // Hyperbola visualization
             Container(height: 260, margin: EdgeInsets.symmetric(horizontal: 10), child: CustomPaint(painter: HyperbolaPainter(selectedPart, aValue, bValue, isHorizontal), child: Container())),
 
-            // Formula section
-            if (selectedPart.isNotEmpty)
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                        icon: Icon(Icons.close, size: 20),
-                        onPressed: () {
-                          setState(() {
-                            selectedPart = '';
-                            if (isPlaying) {
-                              player.stop(); // Stop audio if playing
-                            }
-                          });
-                        },
-                      ),
-                    ),
-                    Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.amber[50], borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.amber[200]!)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(selectedPart, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amber[800])), SizedBox(height: 8), Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 15, color: Colors.black87))])),
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [IconButton(icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, size: 26, color: Colors.blue), onPressed: togglePlayPause), IconButton(icon: Icon(Icons.stop, size: 26, color: Colors.red), onPressed: togglePlayPause)]),
-                    SizedBox(height: 10),
-                  ],
-                ),
-              ),
-
             // Parts list
             Expanded(
               child: ListView(
@@ -208,38 +182,33 @@ class _HyperbolaPartsScreenState extends State<HyperbolaPartsScreen> {
 
             // Description and audio section
             if (selectedPart.isNotEmpty)
-              Column(
-                children: [
-                  Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Color.fromARGB(255, 7, 78, 129), borderRadius: BorderRadius.circular(8)), child: Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 16, color: Colors.white))),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, size: 36, color: Colors.blue),
-                        onPressed: () async {
-                          if (isPlaying) {
-                            await player.pause();
-                            setState(() {
-                              isPlaying = false;
-                            });
-                          } else {
-                            await playAudio();
-                          }
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.stop, size: 36, color: Colors.red),
-                        onPressed: () async {
-                          await player.stop();
-                          setState(() {
-                            isPlaying = false;
-                          });
-                        },
-                      ),
-                    ],
+              Expanded(
+                // Make sure this is inside a parent Column or Row
+                child: SafeArea(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: Icon(Icons.close, size: 20),
+                            onPressed: () {
+                              setState(() {
+                                selectedPart = '';
+                                if (isPlaying) {
+                                  player.stop();
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                        Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.amber[50], borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.amber[200]!)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(selectedPart, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amber[800])), SizedBox(height: 8), Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 15, color: Colors.black87))])),
+                        Row(mainAxisAlignment: MainAxisAlignment.center, children: [IconButton(icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, size: 26, color: Colors.blue), onPressed: togglePlayPause), IconButton(icon: Icon(Icons.stop, size: 26, color: Colors.red), onPressed: togglePlayPause)]),
+                        SizedBox(height: 10),
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 20),
-                ],
+                ),
               ),
           ],
         ),
