@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math_app/Menu.dart';
 
 class QuizScreenParabola extends StatefulWidget {
   @override
@@ -170,7 +171,7 @@ class _QuizScreenParabolaState extends State<QuizScreenParabola> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Card(elevation: 4, child: Padding(padding: const EdgeInsets.all(16.0), child: Text(currentQuestion['question'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))),
-                    _buildQuestionImage(currentQuestion['image']),
+                    _BuildZoomableImage(context, currentQuestion['image']),
                     SizedBox(height: 20),
                     ...List.generate(currentQuestion['options'].length, (index) {
                       return Card(
@@ -209,6 +210,16 @@ class _QuizScreenParabolaState extends State<QuizScreenParabola> {
       ),
     );
   }
+
+  Widget _BuildZoomableImage(BuildContext context, String? imagePath) {
+    if (imagePath == null) return SizedBox.shrink();
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => _ZoomableImageScreen(imagePath: imagePath)));
+      },
+      child: Hero(tag: 'image-$imagePath', child: Image.asset(imagePath, height: 100, fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image Not FOund ', style: TextStyle(color: Colors.grey))))),
+    );
+  }
 }
 
 class ResultsScreen extends StatelessWidget {
@@ -243,6 +254,12 @@ class ResultsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
+          },
+        ),
         title: Text('Quiz Results'),
         backgroundColor: Colors.purple,
         foregroundColor: Colors.white,
@@ -332,6 +349,75 @@ class ResultsScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ZoomableImageScreen extends StatefulWidget {
+  final String imagePath;
+
+  const _ZoomableImageScreen({Key? key, required this.imagePath}) : super(key: key);
+
+  @override
+  State<_ZoomableImageScreen> createState() => _ZoombaleStateImageScreenState();
+}
+
+class _ZoombaleStateImageScreenState extends State<_ZoomableImageScreen> {
+  final TransformationController _controller = TransformationController();
+  double _currentScale = 1.0;
+  final double _minScale = 0.5;
+  final double _maxScale = 4.0;
+  final double _scaleStep = 0.5;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _zoomIn() {
+    setState(() {
+      _currentScale = (_currentScale + _scaleStep).clamp(_minScale, _maxScale);
+      _controller.value = Matrix4.identity()..scale(_currentScale);
+    });
+  }
+
+  void _zoomOut() {
+    setState(() {
+      _currentScale = (_currentScale - _scaleStep).clamp(_minScale, _maxScale);
+      _controller.value = Matrix4.identity()..scale(_currentScale);
+    });
+  }
+
+  void _resetZoom() {
+    setState(() {
+      _currentScale = 1.0;
+      _controller.value = Matrix4.identity();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Image Preview'), actions: [IconButton(onPressed: _resetZoom, icon: Icon(Icons.refresh))]),
+      body: Stack(
+        children: [
+          Center(
+            child: InteractiveViewer(
+              transformationController: _controller,
+              minScale: _minScale,
+              maxScale: _maxScale,
+              onInteractionUpdate: (details) {
+                setState(() {
+                  _currentScale = _controller.value.getMaxScaleOnAxis();
+                });
+              },
+              child: Image.asset(widget.imagePath, width: double.infinity, height: double.infinity, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey)))),
+            ),
+          ),
+          Positioned(right: 16, bottom: 100, child: Column(children: [FloatingActionButton(mini: true, onPressed: _currentScale < _maxScale ? _zoomIn : null, child: Icon(Icons.zoom_in)), SizedBox(height: 8), FloatingActionButton(mini: true, onPressed: _currentScale > _minScale ? _zoomOut : null, child: Icon(Icons.zoom_out))])),
+        ],
       ),
     );
   }

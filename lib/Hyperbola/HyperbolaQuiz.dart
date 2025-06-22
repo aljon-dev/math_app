@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:math_app/Menu.dart';
+
 class QuizScreenHyperBola extends StatefulWidget {
   @override
   _QuizScreenState createState() => _QuizScreenState();
@@ -80,7 +82,6 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
     },
   ];
 
-  // Rest of your existing code remains the same...
   int currentQuestionIndex = 0;
   int? selectedOptionIndex;
   bool isAnswered = false;
@@ -147,7 +148,12 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
   Widget _buildQuestionImage(String? imagePath) {
     if (imagePath == null) return SizedBox.shrink();
 
-    return Container(margin: EdgeInsets.symmetric(vertical: 10), decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(8)), child: Image.asset(imagePath, width: 200, height: 120, fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey)))));
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Scaffold(appBar: AppBar(title: Text('Image Preview')), body: Center(child: InteractiveViewer(panEnabled: true, minScale: 0.5, maxScale: 4.0, child: Image.asset(imagePath, fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey)))))))));
+      },
+      child: Hero(tag: 'image-$imagePath', child: Container(margin: EdgeInsets.symmetric(vertical: 10), decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(8)), child: Image.asset(imagePath, width: 200, height: 120, fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey)))))),
+    );
   }
 
   @override
@@ -198,13 +204,12 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
                     }),
                     SizedBox(height: 20),
                     if (isAnswered) Card(color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green.shade50 : Colors.red.shade50, child: Padding(padding: const EdgeInsets.all(16.0), child: Column(children: [Text(selectedOptionIndex == currentQuestion['correctIndex'] ? '✓ Correct!' : '✗ Incorrect!', style: TextStyle(fontWeight: FontWeight.bold, color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green : Colors.red, fontSize: 20)), SizedBox(height: 10), Text(currentQuestion['solution'], style: TextStyle(fontSize: 14))]))),
-                    SizedBox(height: 20), // Add some spacing before the button
+                    SizedBox(height: 20),
                   ],
                 ),
               ),
             ),
           ),
-          // Fixed button at the bottom
           Padding(padding: const EdgeInsets.all(16.0), child: ElevatedButton(onPressed: isAnswered ? nextQuestion : null, style: ElevatedButton.styleFrom(backgroundColor: Colors.purple, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)), child: Text(currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz', style: TextStyle(fontSize: 18)))),
         ],
       ),
@@ -240,10 +245,27 @@ class ResultsScreen extends StatelessWidget {
     return Colors.red;
   }
 
+  Widget _buildZoomableImage(BuildContext context, String? imagePath) {
+    if (imagePath == null) return SizedBox.shrink();
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Scaffold(appBar: AppBar(title: Text('Image Preview')), body: Center(child: InteractiveViewer(panEnabled: true, minScale: 0.5, maxScale: 4.0, child: Image.asset(imagePath, fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey)))))))));
+      },
+      child: Hero(tag: 'image-$imagePath', child: Image.asset(imagePath, height: 100, fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey))))),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
+          },
+        ),
         title: Text('Quiz Results'),
         backgroundColor: Colors.purple,
         foregroundColor: Colors.white,
@@ -309,7 +331,7 @@ class ResultsScreen extends StatelessWidget {
                           SizedBox(height: 8),
                           Text(answer['question']),
                           SizedBox(height: 8),
-                          if (answer['image'] != null) Container(height: 100, child: Image.asset(answer['image'], fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey))))),
+                          if (answer['image'] != null) _buildZoomableImage(context, answer['image']),
                           SizedBox(height: 8.0),
                           Text('Your answer: ${answer['selected'] != null ? question['options'][answer['selected']] : 'Not answered'}', style: TextStyle(color: answer['isCorrect'] ? Colors.green.shade900 : Colors.red.shade900, fontWeight: FontWeight.w500)),
                           Text('Correct answer: ${question['options'][answer['correct']]}', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green.shade900)),
