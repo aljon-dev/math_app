@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math_app/Cone.dart';
 import 'package:math_app/DynamicShapes.dart';
 import 'package:math_app/GeneralQuiz.dart';
 
@@ -8,7 +9,17 @@ class MenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: const Text('Menu', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)), actions: []),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ConicSectionVisualization()));
+          },
+        ),
+        centerTitle: true,
+        title: const Text('Menu', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
+        actions: [],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Container(
