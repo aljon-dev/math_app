@@ -262,7 +262,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
           'options': ['(x+3)² = 8(y-1)', '(y+3)² = 8(x-1)', '(x-3)² = -8(y-1)', '(y+3)² = -8(x-1)'],
           'correctIndex': 1,
           'solution': 'SOLUTION: (y+3)² = 8(x-1)',
-          'image': '',
+          'image': null,
         },
         {
           'shape': 'Parabola',
@@ -435,7 +435,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
             children: [
               Card(elevation: 4, child: Padding(padding: const EdgeInsets.all(16.0), child: Column(children: [Text(currentQuestion['shape'], style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.deepPurple)), SizedBox(height: 8), Text(currentQuestion['question'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))]))),
 
-              _buildQuestionImage(currentQuestion['image']),
+              _buildZoomableImage(context, currentQuestion['image']),
 
               SizedBox(height: 20),
 
@@ -474,6 +474,17 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildZoomableImage(BuildContext context, String? imagePath) {
+    if (imagePath == null) return SizedBox.shrink();
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => _ZoomableImageScreen(imagePath: imagePath)));
+      },
+      child: Hero(tag: 'image-$imagePath', child: Image.asset(imagePath, height: 100, fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('', style: TextStyle(color: Colors.grey))))),
     );
   }
 }
@@ -600,6 +611,91 @@ class ResultsScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ZoomableImageScreen extends StatefulWidget {
+  final String imagePath;
+
+  const _ZoomableImageScreen({required this.imagePath});
+
+  @override
+  _ZoomableImageScreenState createState() => _ZoomableImageScreenState();
+}
+
+class _ZoomableImageScreenState extends State<_ZoomableImageScreen> {
+  final TransformationController _controller = TransformationController();
+  double _currentScale = 1.0;
+  final double _minScale = 0.5;
+  final double _maxScale = 4.0;
+  final double _scaleStep = 0.5;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _zoomIn() {
+    setState(() {
+      _currentScale = (_currentScale + _scaleStep).clamp(_minScale, _maxScale);
+      _controller.value = Matrix4.identity()..scale(_currentScale);
+    });
+  }
+
+  void _zoomOut() {
+    setState(() {
+      _currentScale = (_currentScale - _scaleStep).clamp(_minScale, _maxScale);
+      _controller.value = Matrix4.identity()..scale(_currentScale);
+    });
+  }
+
+  void _resetZoom() {
+    setState(() {
+      _currentScale = 1.0;
+      _controller.value = Matrix4.identity();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Image Preview'), actions: [IconButton(icon: Icon(Icons.refresh), onPressed: _resetZoom, tooltip: 'Reset Zoom')]),
+      body: Stack(
+        children: [
+          Center(
+            child: InteractiveViewer(
+              transformationController: _controller,
+              panEnabled: true,
+              minScale: _minScale,
+              maxScale: _maxScale,
+              onInteractionUpdate: (details) {
+                // Update current scale when user uses touch zoom
+                setState(() {
+                  _currentScale = _controller.value.getMaxScaleOnAxis();
+                });
+              },
+              child: Image.asset(height: double.infinity, width: double.infinity, widget.imagePath, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey)))),
+            ),
+          ),
+          // Zoom control buttons
+          Positioned(
+            right: 16,
+            bottom: 100,
+            child: Column(
+              children: [
+                FloatingActionButton(mini: true, onPressed: _currentScale < _maxScale ? _zoomIn : null, child: Icon(Icons.zoom_in), backgroundColor: _currentScale < _maxScale ? Theme.of(context).primaryColor : Colors.grey),
+                SizedBox(height: 8),
+                FloatingActionButton(mini: true, onPressed: _currentScale > _minScale ? _zoomOut : null, child: Icon(Icons.zoom_out), backgroundColor: _currentScale > _minScale ? Theme.of(context).primaryColor : Colors.grey),
+                SizedBox(height: 8),
+                // Zoom level indicator
+                Container(padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(12)), child: Text('${(_currentScale * 100).round()}%', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold))),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
