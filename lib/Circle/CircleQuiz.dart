@@ -23,42 +23,42 @@ class _QuizScreenState extends State<QuizScreen> {
   // Questions list with ABCD options and solutions
   final List<Map<String, dynamic>> questions = [
     {
-      'question': '1. What is the standard form equation of the circle if the radius is 15 and the center is (5,8)?',
+      'question': ' What is the standard form equation of the circle if the radius is 15 and the center is (5,8)?',
       'options': ['a. (x-5)² + (y+8)² = 225', 'b. (x-5)² + (y-8)² = 225', 'c. (x+5)² + (y+8)² = 225', 'd. (x+5)² + (y+8)² = 225'],
       'correctIndex': 1,
       'solution': 'Using the standard form (x-h)² + (y-k)² = r² with h=5, k=8, r=15. Remember to change the signs of h and k!',
       'image': null,
     },
     {
-      'question': '2. What is the center and radius of the circle (x+4)² + (y-7)² = 36?',
+      'question': ' What is the center and radius of the circle (x+4)² + (y-7)² = 36?',
       'options': ['a. Center (2,4), radius=3', 'b. Center (-4,7), radius=6', 'c. Center (4,-7), radius=36', 'd. Center (-4,-7), radius=36²'],
       'correctIndex': 1,
       'solution': 'Standard form shows center at (-h,-k), so (-4,7). Radius is √36=6.',
       'image': null,
     },
     {
-      'question': '3. What is the radius of the equation (x-7)² + (y-8)² = 49?',
+      'question': ' What is the radius of the equation (x-7)² + (y-8)² = 49?',
       'options': ['a. 5', 'b. 7', 'c. 14', 'd. 48'],
       'correctIndex': 1,
       'solution': 'The equation is in standard form where r²=49, so r=√49=7.',
       'image': null,
     },
     {
-      'question': '4. What is the Center for the general equation x² + y² + 4x + 2y - 4 = 0?',
+      'question': ' What is the Center for the general equation x² + y² + 4x + 2y - 4 = 0?',
       'options': ['a. (0,0)', 'b. (1,2)', 'c. (2,1)', 'd. (1,3)'],
       'correctIndex': 2,
       'solution': 'Complete the square: (x²+4x+4) + (y²+2y+1) = 4+4+1 → (x+2)² + (y+1)² = 9. Center is (-h,-k) = (2,1).',
       'image': null,
     },
     {
-      'question': '5. What is the Radius for the general equation x² + y² + 4x + 2y - 4 = 0?',
+      'question': ' What is the Radius for the general equation x² + y² + 4x + 2y - 4 = 0?',
       'options': ['a. 1', 'b. 2', 'c. 3', 'd. 4'],
       'correctIndex': 2,
       'solution': 'After completing the square: (x+2)² + (y+1)² = 9. Radius is √9=3.',
       'image': null,
     },
     {
-      'question': '6. What is the general equation for (x+5)² + (y-2)² = 8²?',
+      'question': ' What is the general equation for (x+5)² + (y-2)² = 8²?',
       'options': ['a. x²-y²-10x-4y-35=0', 'b. x²+y²-10x-4y-35=0', 'c. x²+y²+10x-4y+35=0', 'd. x²+y²+10x-4y-35=0'],
       'correctIndex': 3,
       'solution': 'Expand: (x+5)²=x²+10x+25, (y-2)²=y²-4y+4. Combine: x²+y²+10x-4y+29=64 → x²+y²+10x-4y-35=0',
@@ -72,7 +72,7 @@ class _QuizScreenState extends State<QuizScreen> {
       'image': null,
     },
     {
-      'question': '8. A satellite orbits the earth in a circular path. If the two opposite points on its path are at coordinates (-4,6) and (8,-2), what is the center of its orbit?',
+      'question': ' A satellite orbits the earth in a circular path. If the two opposite points on its path are at coordinates (-4,6) and (8,-2), what is the center of its orbit?',
       'options': ['a. (-2,2)', 'b. (2,2)', 'c. (4,4)', 'd. (-4,4)'],
       'correctIndex': 1,
       'solution': 'Using midpoint formula: ((-4+8)/2 = 2, (6+(-2))/2 = 2) → Center at (2,2)',
