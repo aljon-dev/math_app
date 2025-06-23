@@ -12,9 +12,9 @@ class ParabolaFromPropertiesScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildPropertiesExample(equation: '(y - 1)² = -8(x + 2)', properties: [_buildProperty('Opening', 'To the left'), _buildProperty('Vertex', '(-2, 1)'), _buildProperty('Focus', '(-4, 1)'), _buildProperty('Directrix', 'x = 0'), _buildProperty('Axis of Symmetry', 'y = 1'), _buildProperty('Latus Rectum', '8 units'), _buildProperty('Endpoints', '(-4, 5) and (-4, -3)')], graphImage: 'assets/parabola_graph1.jpg'),
+            _buildPropertiesExample(equation: '(y - 1)² = -8(x + 2)', properties: [_buildProperty('Opening', 'To the left'), _buildProperty('Vertex', '(-2, 1)'), _buildProperty('Focus', '(-4, 1)'), _buildProperty('Directrix', 'x = 0'), _buildProperty('Axis of Symmetry', 'y = 1'), _buildProperty('Latus Rectum', '8 units'), _buildProperty('Endpoints', '(-4, 5) and (-4, -3)')]),
             const SizedBox(height: 24),
-            _buildPropertiesExample(equation: 'y = 2x² - 4x + 3 → (x - 1)² = ½(y - 1)', properties: [_buildProperty('Opening', 'Upward'), _buildProperty('Vertex', '(1, 1)'), _buildProperty('Focus', '(1, 9/8)'), _buildProperty('Directrix', 'y = 7/8'), _buildProperty('Axis of Symmetry', 'x = 1'), _buildProperty('Latus Rectum', '½ unit'), _buildProperty('Endpoints', '(5/4, 9/8) and (3/4, 9/8)')], graphImage: 'assets/parabola_graph2.jpg'),
+            _buildPropertiesExample(equation: 'y = 2x² - 4x + 3 → (x - 1)² = ½(y - 1)', properties: [_buildProperty('Opening', 'Upward'), _buildProperty('Vertex', '(1, 1)'), _buildProperty('Focus', '(1, 9/8)'), _buildProperty('Directrix', 'y = 7/8'), _buildProperty('Axis of Symmetry', 'x = 1'), _buildProperty('Latus Rectum', '½ unit'), _buildProperty('Endpoints', '(5/4, 9/8) and (3/4, 9/8)')]),
           ],
         ),
       ),
