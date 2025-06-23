@@ -181,40 +181,42 @@ class _QuizScreenState extends State<QuizScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Card(elevation: 4, child: Padding(padding: const EdgeInsets.all(16.0), child: Text(currentQuestion['question'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))),
-            _buildZoomableImage(context, currentQuestion['image']),
-            SizedBox(height: 20),
-            ...List.generate(currentQuestion['options'].length, (index) {
-              return Card(
-                elevation: 2,
-                color: getOptionColor(index),
-                child: ListTile(
-                  title: Text(currentQuestion['options'][index], style: TextStyle(fontSize: 16)),
-                  onTap: () => answerQuestion(index),
-                  leading: Icon(
-                    isAnswered && index == selectedOptionIndex
-                        ? (selectedOptionIndex == currentQuestion['correctIndex'] ? Icons.check_circle : Icons.cancel)
-                        : isAnswered && index == currentQuestion['correctIndex']
-                        ? Icons.check_circle
-                        : Icons.radio_button_unchecked,
-                    color:
-                        isAnswered && index == currentQuestion['correctIndex']
-                            ? Colors.green
-                            : isAnswered && index == selectedOptionIndex
-                            ? Colors.red
-                            : Colors.grey,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Card(elevation: 4, child: Padding(padding: const EdgeInsets.all(16.0), child: Text(currentQuestion['question'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))),
+              _buildZoomableImage(context, currentQuestion['image']),
+              SizedBox(height: 20),
+              ...List.generate(currentQuestion['options'].length, (index) {
+                return Card(
+                  elevation: 2,
+                  color: getOptionColor(index),
+                  child: ListTile(
+                    title: Text(currentQuestion['options'][index], style: TextStyle(fontSize: 16)),
+                    onTap: () => answerQuestion(index),
+                    leading: Icon(
+                      isAnswered && index == selectedOptionIndex
+                          ? (selectedOptionIndex == currentQuestion['correctIndex'] ? Icons.check_circle : Icons.cancel)
+                          : isAnswered && index == currentQuestion['correctIndex']
+                          ? Icons.check_circle
+                          : Icons.radio_button_unchecked,
+                      color:
+                          isAnswered && index == currentQuestion['correctIndex']
+                              ? Colors.green
+                              : isAnswered && index == selectedOptionIndex
+                              ? Colors.red
+                              : Colors.grey,
+                    ),
                   ),
-                ),
-              );
-            }),
-            SizedBox(height: 20),
-            if (isAnswered) Card(color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green.shade50 : Colors.red.shade50, child: Padding(padding: const EdgeInsets.all(16.0), child: Column(children: [Text(selectedOptionIndex == currentQuestion['correctIndex'] ? '✓ Correct!' : '✗ Incorrect!', style: TextStyle(fontWeight: FontWeight.bold, color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green : Colors.red, fontSize: 20)), SizedBox(height: 10), Text('Solution: ${currentQuestion['solution']}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14))]))),
-            Spacer(),
-            ElevatedButton(onPressed: isAnswered ? nextQuestion : null, style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)), child: Text(currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz', style: TextStyle(fontSize: 18))),
-          ],
+                );
+              }),
+              SizedBox(height: 20),
+              if (isAnswered) Card(color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green.shade50 : Colors.red.shade50, child: Padding(padding: const EdgeInsets.all(16.0), child: Column(children: [Text(selectedOptionIndex == currentQuestion['correctIndex'] ? '✓ Correct!' : '✗ Incorrect!', style: TextStyle(fontWeight: FontWeight.bold, color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green : Colors.red, fontSize: 20)), SizedBox(height: 10), Text('Solution: ${currentQuestion['solution']}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14))]))),
+              Spacer(),
+              ElevatedButton(onPressed: isAnswered ? nextQuestion : null, style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)), child: Text(currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz', style: TextStyle(fontSize: 18))),
+            ],
+          ),
         ),
       ),
     );

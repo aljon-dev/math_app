@@ -65,7 +65,7 @@ class _ConicSectionVisualizationState extends State<ConicSectionVisualization> w
     // Determine the type of conic section based on the angle
     if (_planeAngle < 0.1) {
       _currentType = "Circle";
-    } else if (_planeAngle < 0.9) {
+    } else if (_planeAngle < 1.0) {
       // Changed from 0.7 to 0.5
       _currentType = "Ellipse";
     } else if (_planeAngle < 1.19) {

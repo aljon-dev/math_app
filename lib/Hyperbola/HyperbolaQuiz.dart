@@ -346,6 +346,7 @@ class ResultsScreen extends StatelessWidget {
             SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
+                Navigator.pop(context);
                 onRestart();
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.purple, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)),
