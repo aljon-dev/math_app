@@ -165,7 +165,6 @@ class _QuizScreenState extends State<QuizScreen> {
           title: Text('Circle Geometry Quiz (${currentQuestionIndex + 1}/${questions.length})'),
           backgroundColor: Colors.blue,
           foregroundColor: Colors.white,
-          actions: [Padding(padding: EdgeInsets.all(8.0), child: Center(child: Text('Score: $score/${questions.length}', style: TextStyle(color: Colors.white))))],
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -235,6 +234,11 @@ class ResultsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopScope(
+      onPopInvokedWithResult: (did, result) {
+        if (did) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
+        }
+      },
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
