@@ -5,7 +5,7 @@ class EllipseFromPropertiesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PopScope(child:  Scaffold(
       appBar: AppBar(title: const Text('Ellipse from Properties')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -58,7 +58,7 @@ class EllipseFromPropertiesScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildPropertyCard(BuildContext context, String title, String given, String solution) {

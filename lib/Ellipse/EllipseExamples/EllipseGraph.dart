@@ -5,7 +5,7 @@ class EllipseFromGraphScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PopScope(child:  Scaffold(
       appBar: AppBar(title: const Text('Ellipse from Graphs')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -54,7 +54,7 @@ class EllipseFromGraphScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildGraphExample(BuildContext context, String title, String description, String solution, String imagePath) {

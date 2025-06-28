@@ -10,7 +10,22 @@ class EllipseExamplesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: const Text('Ellipse Examples')), body: ListView(children: [_buildSectionCard(context, 'Real-life Examples', Icons.public, Colors.indigo, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const EllipseIntroScreen()))), _buildSectionCard(context, 'Equation Conversions', Icons.swap_horiz, Colors.teal, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const EllipseConversionsScreen()))), _buildSectionCard(context, 'From Properties', Icons.tune, Colors.orange, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const EllipseFromPropertiesScreen()))), _buildSectionCard(context, 'From Graphs', Icons.graphic_eq, Colors.purple, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const EllipseFromGraphScreen()))), _buildSectionCard(context, 'Real-world Problems', Icons.architecture, Colors.green, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const EllipseRealWorldScreen())))]));
+    return PopScope(
+      child:  Scaffold(
+      appBar: AppBar(title: const Text('Ellipse Examples')),
+     body: ListView(children: [
+      _buildSectionCard(context, 'Real-life Examples', Icons.public, Colors.indigo, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const EllipseIntroScreen()))),
+       _buildSectionCard(context, 'Equation Conversions', Icons.swap_horiz, Colors.teal, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const EllipseConversionsScreen()))), 
+       _buildSectionCard(context, 'From Properties', Icons.tune, Colors.orange, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const EllipseFromPropertiesScreen()))),
+        _buildSectionCard(context, 'From Graphs', Icons.graphic_eq, Colors.purple, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const EllipseFromGraphScreen()))),
+         _buildSectionCard(context, 'Real-world Problems', Icons.architecture, Colors.green, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const EllipseRealWorldScreen()
+       )
+       )
+      )
+      ]
+    )
+      )
+    );
   }
 
   Widget _buildSectionCard(BuildContext context, String title, IconData icon, Color color, VoidCallback onTap) {

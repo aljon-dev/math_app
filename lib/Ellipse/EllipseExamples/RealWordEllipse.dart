@@ -5,7 +5,7 @@ class EllipseRealWorldScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PopScope(child: Scaffold(
       appBar: AppBar(title: const Text('Real-world Ellipse Problems')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -46,7 +46,7 @@ class EllipseRealWorldScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildProblemCard(BuildContext context, String title, String problem, String solution, String imagePath) {

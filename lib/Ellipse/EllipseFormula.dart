@@ -41,7 +41,8 @@ class _FormulasSectionState extends State<FormulasEllipseSection> {
   Widget build(BuildContext context) {
     final currentStepData = steps[currentStep];
 
-    return Scaffold(
+    return PopScope(child: 
+    Scaffold(
       appBar: AppBar(title: Text('Ellipse Formula')),
       body: Column(
         children: [
@@ -101,7 +102,7 @@ class _FormulasSectionState extends State<FormulasEllipseSection> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Color _getFormulaBackgroundColor(String? type) {
