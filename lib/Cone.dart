@@ -143,10 +143,11 @@ class _ConicSectionVisualizationState extends State<ConicSectionVisualization> w
                   children: [
                     Align(
                       alignment: Alignment.centerRight,
-                      child: TextButton(
+                      child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
                         },
+                        style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                         child: Text('Skip'),
                       ),
                     ),

@@ -14,6 +14,8 @@ class _DefinitionSectionState extends State<DefinitionSection> {
   bool isPlaying = false;
   final player = AudioPlayer();
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   Future<void> play() async {
     try {
       await player.setAsset('assets/Audio/Circle_definition.wav');
@@ -53,6 +55,13 @@ class _DefinitionSectionState extends State<DefinitionSection> {
     }
   }
 
+  void navigateToStep(int index) {
+    setState(() {
+      currentStep = index;
+    });
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentStepData = steps[currentStep];
@@ -62,6 +71,7 @@ class _DefinitionSectionState extends State<DefinitionSection> {
         await player.pause();
       },
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: const Text('Circle'),
           actions: [
@@ -88,7 +98,26 @@ class _DefinitionSectionState extends State<DefinitionSection> {
                 icon: Icon(Icons.pause_circle),
                 label: Text('Pause'),
               ),
+            IconButton(
+              onPressed: () {
+                _scaffoldKey.currentState?.openEndDrawer();
+              },
+              icon: Icon(Icons.menu),
+            ),
           ],
+        ),
+        endDrawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              ...steps.asMap().entries.map((entry) {
+                final index = entry.key;
+                final step = entry.value;
+
+                return ListTile(title: Text(step['title']), selected: currentStep == index, selectedTileColor: Colors.blue.withOpacity(0.1), onTap: () => navigateToStep(index));
+              }).toList(),
+            ],
+          ),
         ),
         body: Column(
           children: [

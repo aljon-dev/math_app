@@ -170,12 +170,6 @@ class _ConicSectionIntroPageState extends State<ConicSectionIntroPage> {
                   const SizedBox(height: 20),
 
                   // Types header
-                  const Text('Types of Conic Sections:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black87)),
-
-                  const SizedBox(height: 12),
-
-                  // Types list
-                  ..._buildConicTypes(),
                 ],
               ),
             ),

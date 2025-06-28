@@ -8,65 +8,71 @@ class MenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ConicSectionVisualization()));
-          },
-        ),
-        centerTitle: true,
-        title: const Text('Menu', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-        actions: [],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/backgroundmenu.jpg'), // Add your background image here
-              fit: BoxFit.cover, // You can change this to BoxFit.fill, BoxFit.contain, etc.
-              // Adjust opacity so content remains readable (0.0 to 1.0)
-            ),
-            borderRadius: BorderRadius.circular(12),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ConicSectionVisualization()));
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ConicSectionVisualization()));
+            },
           ),
-          child: Column(
-            children: [
-              // Top content that can scroll if needed
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 200),
+          centerTitle: true,
+          title: const Text('Menu', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
+          actions: [],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/backgroundmenu.jpg'), // Add your background image here
+                fit: BoxFit.cover, // You can change this to BoxFit.fill, BoxFit.contain, etc.
+                // Adjust opacity so content remains readable (0.0 to 1.0)
+              ),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              children: [
+                // Top content that can scroll if needed
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 200),
 
-                      ButtonMenu(context, Colors.red, 'Circle', Icons.circle),
-                      const SizedBox(height: 15),
-                      ButtonMenu(context, Colors.orange, 'Ellipse', Icons.egg_alt),
-                      const SizedBox(height: 15),
-                      ButtonMenu(context, Colors.green, 'Parabola', Icons.stacked_line_chart),
-                      const SizedBox(height: 15),
-                      ButtonMenu(context, Colors.blue, 'Hyperbola', Icons.all_inclusive),
-                      const SizedBox(height: 30),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ConicSectionsQuiz()));
-                          },
-                          icon: const Icon(Icons.quiz),
-                          label: const Text('General Quiz', style: TextStyle(fontSize: 18)),
-                          style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), backgroundColor: const Color.fromARGB(255, 51, 1, 54), foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: const BorderSide(color: Colors.black, width: 2))),
+                        ButtonMenu(context, Colors.red, 'Circle', Icons.circle),
+                        const SizedBox(height: 15),
+                        ButtonMenu(context, Colors.orange, 'Ellipse', Icons.egg_alt),
+                        const SizedBox(height: 15),
+                        ButtonMenu(context, Colors.green, 'Parabola', Icons.stacked_line_chart),
+                        const SizedBox(height: 15),
+                        ButtonMenu(context, Colors.blue, 'Hyperbola', Icons.all_inclusive),
+                        const SizedBox(height: 30),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => ConicSectionsQuiz()));
+                            },
+                            icon: const Icon(Icons.quiz),
+                            label: const Text('General Quiz', style: TextStyle(fontSize: 18)),
+                            style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16), backgroundColor: const Color.fromARGB(255, 51, 1, 54), foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: const BorderSide(color: Colors.black, width: 2))),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              // Bottom button that stays at bottom
-            ],
+                // Bottom button that stays at bottom
+              ],
+            ),
           ),
         ),
       ),

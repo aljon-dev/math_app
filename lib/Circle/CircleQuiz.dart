@@ -96,7 +96,6 @@ class _QuizScreenState extends State<QuizScreen> {
 
   int currentQuestionIndex = 0;
   int? selectedOptionIndex;
-  bool isAnswered = false;
   int score = 0;
   List<int> questionOrder = [];
   List<Map<String, dynamic>> userAnswers = [];
@@ -112,26 +111,22 @@ class _QuizScreenState extends State<QuizScreen> {
       questionOrder = List.generate(questions.length, (index) => index)..shuffle();
       currentQuestionIndex = 0;
       selectedOptionIndex = null;
-      isAnswered = false;
       score = 0;
       userAnswers = List.generate(questions.length, (index) => {'question': questions[index]['question'], 'selected': null, 'correct': questions[index]['correctIndex'], 'solution': questions[index]['solution'], 'isCorrect': false, 'image': questions[index]['image']});
     });
   }
 
   void answerQuestion(int optionIndex) {
-    if (!isAnswered) {
-      setState(() {
-        selectedOptionIndex = optionIndex;
-        isAnswered = true;
+    setState(() {
+      selectedOptionIndex = optionIndex;
 
-        final originalIndex = questionOrder[currentQuestionIndex];
-        userAnswers[originalIndex] = {...userAnswers[originalIndex], 'selected': optionIndex, 'isCorrect': optionIndex == questions[originalIndex]['correctIndex']};
+      final originalIndex = questionOrder[currentQuestionIndex];
+      userAnswers[originalIndex] = {...userAnswers[originalIndex], 'selected': optionIndex, 'isCorrect': optionIndex == questions[originalIndex]['correctIndex']};
 
-        if (optionIndex == questions[originalIndex]['correctIndex']) {
-          score++;
-        }
-      });
-    }
+      if (optionIndex == questions[originalIndex]['correctIndex']) {
+        score++;
+      }
+    });
   }
 
   void nextQuestion() {
@@ -139,22 +134,10 @@ class _QuizScreenState extends State<QuizScreen> {
       setState(() {
         currentQuestionIndex++;
         selectedOptionIndex = null;
-        isAnswered = false;
       });
     } else {
       Navigator.push(context, MaterialPageRoute(builder: (context) => ResultsScreen(score: score, totalQuestions: questions.length, userAnswers: userAnswers, questionOrder: questionOrder, questions: questions, onRestart: resetQuiz)));
     }
-  }
-
-  Color getOptionColor(int optionIndex) {
-    if (!isAnswered) return Colors.white;
-    final originalIndex = questionOrder[currentQuestionIndex];
-    if (optionIndex == questions[originalIndex]['correctIndex']) {
-      return Colors.green.shade100;
-    } else if (optionIndex == selectedOptionIndex) {
-      return Colors.red.shade100;
-    }
-    return Colors.white;
   }
 
   @override
@@ -166,56 +149,40 @@ class _QuizScreenState extends State<QuizScreen> {
     final originalIndex = questionOrder[currentQuestionIndex];
     final currentQuestion = questions[originalIndex];
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
-          },
-          icon: Icon(Icons.arrow_back),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MenuButton()));
+        return false; // Prevent default back behavior
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
+            },
+            icon: Icon(Icons.arrow_back),
+          ),
+          title: Text('Circle Geometry Quiz (${currentQuestionIndex + 1}/${questions.length})'),
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+          actions: [Padding(padding: EdgeInsets.all(8.0), child: Center(child: Text('Score: $score/${questions.length}', style: TextStyle(color: Colors.white))))],
         ),
-        title: Text('Circle Geometry Quiz (${currentQuestionIndex + 1}/${questions.length})'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-        actions: [Padding(padding: EdgeInsets.all(8.0), child: Center(child: Text('Score: $score/${questions.length}', style: TextStyle(color: Colors.white))))],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Card(elevation: 4, child: Padding(padding: const EdgeInsets.all(16.0), child: Text(currentQuestion['question'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))),
-              _buildZoomableImage(context, currentQuestion['image']),
-              SizedBox(height: 20),
-              ...List.generate(currentQuestion['options'].length, (index) {
-                return Card(
-                  elevation: 2,
-                  color: getOptionColor(index),
-                  child: ListTile(
-                    title: Text(currentQuestion['options'][index], style: TextStyle(fontSize: 16)),
-                    onTap: () => answerQuestion(index),
-                    leading: Icon(
-                      isAnswered && index == selectedOptionIndex
-                          ? (selectedOptionIndex == currentQuestion['correctIndex'] ? Icons.check_circle : Icons.cancel)
-                          : isAnswered && index == currentQuestion['correctIndex']
-                          ? Icons.check_circle
-                          : Icons.radio_button_unchecked,
-                      color:
-                          isAnswered && index == currentQuestion['correctIndex']
-                              ? Colors.green
-                              : isAnswered && index == selectedOptionIndex
-                              ? Colors.red
-                              : Colors.grey,
-                    ),
-                  ),
-                );
-              }),
-              SizedBox(height: 20),
-              if (isAnswered) Card(color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green.shade50 : Colors.red.shade50, child: Padding(padding: const EdgeInsets.all(16.0), child: Column(children: [Text(selectedOptionIndex == currentQuestion['correctIndex'] ? '✓ Correct!' : '✗ Incorrect!', style: TextStyle(fontWeight: FontWeight.bold, color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green : Colors.red, fontSize: 20)), SizedBox(height: 10), Text('Solution: ${currentQuestion['solution']}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14))]))),
-              Spacer(),
-              ElevatedButton(onPressed: isAnswered ? nextQuestion : null, style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)), child: Text(currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz', style: TextStyle(fontSize: 18))),
-            ],
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Card(elevation: 4, child: Padding(padding: const EdgeInsets.all(16.0), child: Text(currentQuestion['question'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))),
+                _buildZoomableImage(context, currentQuestion['image']),
+                SizedBox(height: 20),
+                ...List.generate(currentQuestion['options'].length, (index) {
+                  return Card(elevation: 2, child: ListTile(title: Text(currentQuestion['options'][index], style: TextStyle(fontSize: 16)), onTap: () => answerQuestion(index), leading: Icon(selectedOptionIndex == index ? Icons.radio_button_checked : Icons.radio_button_unchecked, color: selectedOptionIndex == index ? Colors.blue : Colors.grey)));
+                }),
+                SizedBox(height: 20),
+                ElevatedButton(onPressed: selectedOptionIndex != null ? nextQuestion : null, style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)), child: Text(currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz', style: TextStyle(fontSize: 18))),
+              ],
+            ),
           ),
         ),
       ),
@@ -225,11 +192,14 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget _buildZoomableImage(BuildContext context, String? imagePath) {
     if (imagePath == null) return SizedBox.shrink();
 
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => _ZoomableImageScreen(imagePath: imagePath)));
-      },
-      child: Hero(tag: 'image-$imagePath', child: Image.asset(imagePath, height: 100, fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey))))),
+    return SizedBox(
+      height: 100,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => _ZoomableImageScreen(imagePath: imagePath)));
+        },
+        child: Hero(tag: 'image-$imagePath', child: Image.asset(imagePath, fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey))))),
+      ),
     );
   }
 }
@@ -264,102 +234,104 @@ class ResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
-          },
-        ),
-        title: Text('Quiz Results'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.refresh),
+    return PopScope(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
-              onRestart();
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
             },
           ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Card(
-              elevation: 8,
-              color: Colors.blue.shade50,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    Icon(Icons.emoji_events, size: 60, color: Colors.blue),
-                    SizedBox(height: 10),
-                    Text('Your Score', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
-                    Text('$score out of $totalQuestions', style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
-                    Container(width: double.infinity, height: 20, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.grey.shade300), child: FractionallySizedBox(alignment: Alignment.centerLeft, widthFactor: score / totalQuestions, child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: _getGradeColor())))),
-                    SizedBox(height: 15),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(children: [Text('${((score / totalQuestions) * 100).toStringAsFixed(1)}%', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)), Text('Percentage', style: TextStyle(color: Colors.grey))]),
-                        Column(children: [Text(_getGrade(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: _getGradeColor())), Text('Grade', style: TextStyle(color: Colors.grey))]),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                itemCount: totalQuestions,
-                itemBuilder: (context, displayIndex) {
-                  final originalIndex = questionOrder[displayIndex];
-                  final answer = userAnswers[originalIndex];
-                  final question = questions[originalIndex];
-
-                  return Card(
-                    margin: EdgeInsets.only(bottom: 10),
-                    elevation: 3,
-                    color: answer['isCorrect'] ? Colors.green.shade50 : Colors.red.shade50,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(children: [Icon(answer['isCorrect'] ? Icons.check_circle : Icons.cancel, color: answer['isCorrect'] ? Colors.green : Colors.red, size: 20), SizedBox(width: 8), Expanded(child: Text('Question ${displayIndex + 1}', style: TextStyle(fontWeight: FontWeight.bold, color: answer['isCorrect'] ? Colors.green.shade900 : Colors.red.shade900, fontSize: 16)))]),
-                          SizedBox(height: 8),
-                          Text(answer['question'], style: TextStyle(fontSize: 14)),
-                          SizedBox(height: 8),
-                          if (answer['image'] != null) Container(height: 100, child: Image.asset(answer['image'], fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey))))),
-                          SizedBox(height: 8.0),
-                          Text('Your answer: ${answer['selected'] != null ? question['options'][answer['selected']] : 'Not answered'}', style: TextStyle(color: answer['isCorrect'] ? Colors.green.shade900 : Colors.red.shade900, fontWeight: FontWeight.w500)),
-                          Text('Correct answer: ${question['options'][answer['correct']]}', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green.shade900)),
-                          SizedBox(height: 8),
-                          Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.circular(4)), child: Text('Solution: ${answer['solution']}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 13, color: Colors.blue.shade800))),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(
+          title: Text('Quiz Results'),
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.refresh),
               onPressed: () {
                 Navigator.pop(context);
                 onRestart();
               },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)),
-              child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.refresh), SizedBox(width: 8), Text('Restart Quiz', style: TextStyle(fontSize: 18))]),
             ),
           ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Card(
+                elevation: 8,
+                color: Colors.blue.shade50,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      Icon(Icons.emoji_events, size: 60, color: Colors.blue),
+                      SizedBox(height: 10),
+                      Text('Your Score', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 10),
+                      Text('$score out of $totalQuestions', style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 10),
+                      Container(width: double.infinity, height: 20, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.grey.shade300), child: FractionallySizedBox(alignment: Alignment.centerLeft, widthFactor: score / totalQuestions, child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: _getGradeColor())))),
+                      SizedBox(height: 15),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(children: [Text('${((score / totalQuestions) * 100).toStringAsFixed(1)}%', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)), Text('Percentage', style: TextStyle(color: Colors.grey))]),
+                          Column(children: [Text(_getGrade(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: _getGradeColor())), Text('Grade', style: TextStyle(color: Colors.grey))]),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: totalQuestions,
+                  itemBuilder: (context, displayIndex) {
+                    final originalIndex = questionOrder[displayIndex];
+                    final answer = userAnswers[originalIndex];
+                    final question = questions[originalIndex];
+
+                    return Card(
+                      margin: EdgeInsets.only(bottom: 10),
+                      elevation: 3,
+                      color: answer['isCorrect'] ? Colors.green.shade50 : Colors.red.shade50,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(children: [Icon(answer['isCorrect'] ? Icons.check_circle : Icons.cancel, color: answer['isCorrect'] ? Colors.green : Colors.red, size: 20), SizedBox(width: 8), Expanded(child: Text('Question ${displayIndex + 1}', style: TextStyle(fontWeight: FontWeight.bold, color: answer['isCorrect'] ? Colors.green.shade900 : Colors.red.shade900, fontSize: 16)))]),
+                            SizedBox(height: 8),
+                            Text(answer['question'], style: TextStyle(fontSize: 14)),
+                            SizedBox(height: 8),
+                            if (answer['image'] != null) Container(height: 100, child: Image.asset(answer['image'], fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey))))),
+                            SizedBox(height: 8.0),
+                            Text('Your answer: ${answer['selected'] != null ? question['options'][answer['selected']] : 'Not answered'}', style: TextStyle(color: answer['isCorrect'] ? Colors.green.shade900 : Colors.red.shade900, fontWeight: FontWeight.w500)),
+                            Text('Correct answer: ${question['options'][answer['correct']]}', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green.shade900)),
+                            SizedBox(height: 8),
+                            Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.circular(4)), child: Text('Solution: ${answer['solution']}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 13, color: Colors.blue.shade800))),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  onRestart();
+                },
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)),
+                child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.refresh), SizedBox(width: 8), Text('Restart Quiz', style: TextStyle(fontSize: 18))]),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -422,7 +394,6 @@ class _ZoomableImageScreenState extends State<_ZoomableImageScreen> {
               minScale: _minScale,
               maxScale: _maxScale,
               onInteractionUpdate: (details) {
-                // Update current scale when user uses touch zoom
                 setState(() {
                   _currentScale = _controller.value.getMaxScaleOnAxis();
                 });
@@ -430,21 +401,7 @@ class _ZoomableImageScreenState extends State<_ZoomableImageScreen> {
               child: Image.asset(height: double.infinity, width: double.infinity, widget.imagePath, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey)))),
             ),
           ),
-          // Zoom control buttons
-          Positioned(
-            right: 16,
-            bottom: 100,
-            child: Column(
-              children: [
-                FloatingActionButton(mini: true, onPressed: _currentScale < _maxScale ? _zoomIn : null, child: Icon(Icons.zoom_in), backgroundColor: _currentScale < _maxScale ? Theme.of(context).primaryColor : Colors.grey),
-                SizedBox(height: 8),
-                FloatingActionButton(mini: true, onPressed: _currentScale > _minScale ? _zoomOut : null, child: Icon(Icons.zoom_out), backgroundColor: _currentScale > _minScale ? Theme.of(context).primaryColor : Colors.grey),
-                SizedBox(height: 8),
-                // Zoom level indicator
-                Container(padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(12)), child: Text('${(_currentScale * 100).round()}%', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold))),
-              ],
-            ),
-          ),
+          Positioned(right: 16, bottom: 100, child: Column(children: [FloatingActionButton(mini: true, onPressed: _currentScale < _maxScale ? _zoomIn : null, child: Icon(Icons.zoom_in), backgroundColor: _currentScale < _maxScale ? Theme.of(context).primaryColor : Colors.grey), SizedBox(height: 8), FloatingActionButton(mini: true, onPressed: _currentScale > _minScale ? _zoomOut : null, child: Icon(Icons.zoom_out), backgroundColor: _currentScale > _minScale ? Theme.of(context).primaryColor : Colors.grey), SizedBox(height: 8), Container(padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(12)), child: Text('${(_currentScale * 100).round()}%', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)))])),
         ],
       ),
     );
