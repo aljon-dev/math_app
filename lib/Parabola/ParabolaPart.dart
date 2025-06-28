@@ -171,29 +171,94 @@ class _ParabolaPartsScreenState extends State<ParabolaPartsScreen> {
 
             // Description and audio section
             if (selectedPart.isNotEmpty)
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                        icon: Icon(Icons.close, size: 20),
-                        onPressed: () {
-                          setState(() {
-                            selectedPart = '';
-                            if (isPlaying) {
-                              stopAudio(); // Stop audio if playing
-                            }
-                          });
-                        },
-                      ),
+  Container(
+    height: 300,
+    width: double.infinity,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Close button
+        Container(
+          height: 40,
+          alignment: Alignment.centerRight,
+          child: IconButton(
+            icon: Icon(Icons.close, size: 20),
+            onPressed: () {
+              setState(() {
+                selectedPart = '';
+                if (isPlaying) player.stop();
+              });
+            },
+          ),
+        ),
+        // Content area - Now wraps content size
+        Flexible(
+          child: Container(
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(horizontal: 12),
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.amber[50],
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.amber[200]!),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                  Text(
+                    selectedPart,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.amber[800],
                     ),
-                    Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.amber[50], borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.amber[200]!)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(selectedPart, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amber[800])), SizedBox(height: 8), Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 15, color: Colors.black87))])),
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [IconButton(icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, size: 26, color: Colors.blue), onPressed: togglePlayPause), IconButton(icon: Icon(Icons.stop, size: 26, color: Colors.red), onPressed: stopAudio)]),
-                    SizedBox(height: 10),
-                  ],
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    descriptions[selectedPart] ?? '',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black87,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+        // Audio controls - fixed height
+        Container(
+          height: 60,
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: Icon(
+                  isPlaying ? Icons.pause : Icons.play_arrow,
+                  size: 28,
+                  color: Colors.blue,
                 ),
+                onPressed: togglePlayPause,
               ),
+              SizedBox(width: 20),
+              IconButton(
+                icon: Icon(
+                  Icons.stop,
+                  size: 28,
+                  color: Colors.red,
+                ),
+                onPressed: () async {
+                  await player.stop();
+                  setState(() => isPlaying = false);
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  ),
           ],
         ),
       ),

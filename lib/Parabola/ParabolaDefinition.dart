@@ -13,6 +13,7 @@ class _DefinitionSectionState extends State<ParabolaDefinitionSection> {
   bool isPlaying = false;
   final player = AudioPlayer();
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   Future<void> play() async {
     try {
       await player.setAsset('assets/Audio/PARABOLA_definition.mp3');
@@ -51,6 +52,14 @@ class _DefinitionSectionState extends State<ParabolaDefinitionSection> {
     }
   }
 
+  
+  void navigateToStep(int index) {
+    setState(() {
+      currentStep = index;
+    });
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentStepData = steps[currentStep];
@@ -60,6 +69,7 @@ class _DefinitionSectionState extends State<ParabolaDefinitionSection> {
         await player.pause();
       },
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text('Parabola', textAlign: TextAlign.center),
           actions: [
@@ -86,7 +96,27 @@ class _DefinitionSectionState extends State<ParabolaDefinitionSection> {
                 icon: Icon(Icons.pause_circle),
                 label: Text('Pause'),
               ),
+
+              
+            IconButton(
+              onPressed: () {
+                _scaffoldKey.currentState?.openEndDrawer();
+              },
+              icon: Icon(Icons.menu),
+            ),
           ],
+        ),
+         endDrawer: Drawer(
+          child: ListView(
+            children: [
+              ...steps.asMap().entries.map((entry) {
+                final index = entry.key;
+                final step = entry.value;
+
+                return ListTile(title: Text(step['title']), selected: currentStep == index, selectedTileColor: Colors.blue.withOpacity(0.1), onTap: () => navigateToStep(index));
+              }).toList(),
+            ],
+          ),
         ),
         body: Column(
           children: [

@@ -5,7 +5,7 @@ class HyperbolaFromPropertiesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PopScope(child: Scaffold(
       appBar: AppBar(title: const Text('Hyperbola Properties')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -18,7 +18,7 @@ class HyperbolaFromPropertiesScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildPropertiesExample({required String equation, required List<Widget> properties, String? graphImage}) {

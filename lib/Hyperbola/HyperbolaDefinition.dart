@@ -13,6 +13,8 @@ class _DefinitionSectionState extends State<DefinitionHyperBolaSection> {
   bool isPlaying = false;
   final player = AudioPlayer();
 
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   Future<void> play() async {
     try {
       await player.setAsset('assets/Audio/HYPERBOLA_definition.wav');
@@ -49,6 +51,13 @@ class _DefinitionSectionState extends State<DefinitionHyperBolaSection> {
       });
     }
   }
+    void navigateToStep(int index) {
+    setState(() {
+      currentStep = index;
+    });
+    Navigator.of(context).pop();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +68,7 @@ class _DefinitionSectionState extends State<DefinitionHyperBolaSection> {
         await player.pause();
       },
       child: Scaffold(
+         key: _scaffoldKey,
         appBar: AppBar(
           title: Text('Hyperbola', textAlign: TextAlign.center),
           actions: [
@@ -85,7 +95,27 @@ class _DefinitionSectionState extends State<DefinitionHyperBolaSection> {
                 icon: Icon(Icons.pause_circle),
                 label: Text('Pause'),
               ),
+
+               IconButton(
+              onPressed: () {
+                _scaffoldKey.currentState?.openEndDrawer();
+              },
+              icon: Icon(Icons.menu),
+            ),
           ],
+        ),
+         endDrawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              ...steps.asMap().entries.map((entry) {
+                final index = entry.key;
+                final step = entry.value;
+
+                return ListTile(title: Text(step['title']), selected: currentStep == index, selectedTileColor: Colors.blue.withOpacity(0.1), onTap: () => navigateToStep(index));
+              }).toList(),
+            ],
+          ),
         ),
         body: Column(
           children: [

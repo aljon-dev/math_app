@@ -40,7 +40,7 @@ class _FormulasHyperbolaSectionState extends State<FormulasHyperbolaSection> {
   Widget build(BuildContext context) {
     final currentStepData = steps[currentStep];
 
-    return Scaffold(
+    return PopScope(child:  Scaffold(
       appBar: AppBar(title: Text('Hyperbola Formula')),
       body: Column(
         children: [
@@ -100,7 +100,7 @@ class _FormulasHyperbolaSectionState extends State<FormulasHyperbolaSection> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Color _getFormulaBackgroundColor(String? type) {

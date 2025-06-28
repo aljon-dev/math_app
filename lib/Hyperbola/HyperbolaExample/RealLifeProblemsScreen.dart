@@ -5,7 +5,7 @@ class HyperbolaRealWorldScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PopScope(child: Scaffold(
       appBar: AppBar(title: const Text('Real-world Hyperbola Problems')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -18,7 +18,7 @@ class HyperbolaRealWorldScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildProblem({required String problem, required List<String> solution, String? image}) {

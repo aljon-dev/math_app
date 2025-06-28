@@ -5,7 +5,7 @@ class HyperbolaConversionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PopScope(child: Scaffold(
       appBar: AppBar(title: const Text('Hyperbola Equation Conversions')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -18,7 +18,7 @@ class HyperbolaConversionsScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildConversionExample({required String title, required String problem, required List<String> steps, required String answer, String? graphImage}) {

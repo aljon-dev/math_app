@@ -5,7 +5,7 @@ class ParabolaConversionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PopScope(child: Scaffold(
       appBar: AppBar(title: const Text('Parabola Equation Conversions')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -30,7 +30,7 @@ class ParabolaConversionsScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildConversionSection({required String title, required List<Widget> examples}) {

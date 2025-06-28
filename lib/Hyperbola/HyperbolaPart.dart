@@ -17,7 +17,18 @@ class _HyperbolaPartsScreenState extends State<HyperbolaPartsScreen> {
   final AudioPlayer player = AudioPlayer();
   bool isPlaying = false;
 
-  final Map<String, String> descriptions = {'Center': 'The midpoint of the line joining the two foci. The major and minor axes intersect at this point. Center is at (h, k).', 'Foci': 'The hyperbola has two foci. For horizontal: F₁(-c, 0) and F₂(c, 0). For vertical: F₁(0, -c) and F₂(0, c), where c² = a² + b².', 'Vertices': 'The points where the hyperbola intersects the transverse axis. For horizontal: (±a, 0). For vertical: (0, ±a).', 'Co-vertices': 'Points on the conjugate axis that are equidistant from the center. For horizontal: (0, ±b). For vertical: (±b, 0).', 'Major Axis': 'The distance between the vertices. Also called the transverse axis. Length = 2a units.', 'Minor Axis': 'The distance between the co-vertices. Also called the conjugate axis. Length = 2b units.', 'Transverse Axis': 'The line passing through the two foci and center. Determines if hyperbola is horizontal (x-axis) or vertical (y-axis).', 'Conjugate Axis': 'The line passing through the center perpendicular to the transverse axis.', 'Asymptotes': 'Lines that pass through the center. The hyperbola branches approach but never touch these lines. Equations: y = ±(b/a)x for horizontal.', 'Latus Rectum': 'A line perpendicular to the transverse axis passing through the foci. Length = 2b²/a units.'};
+  final Map<String, String> descriptions = {
+    'Center': 'The midpoint of the line joining the two foci. The major and minor axes intersect at this point. Center is at (h, k).',
+    'Foci': 'The hyperbola has two foci. For horizontal: F₁(-c, 0) and F₂(c, 0). For vertical: F₁(0, -c) and F₂(0, c), where c² = a² + b².',
+    'Vertices': 'The points where the hyperbola intersects the transverse axis. For horizontal: (±a, 0). For vertical: (0, ±a).',
+    'Co-vertices': 'Points on the conjugate axis that are equidistant from the center. For horizontal: (0, ±b). For vertical: (±b, 0).',
+    'Major Axis': 'The distance between the vertices. Also called the transverse axis. Length = 2a units.',
+    'Minor Axis': 'The distance between the co-vertices. Also called the conjugate axis. Length = 2b units.',
+    'Transverse Axis': 'The line passing through the two foci and center. Determines if hyperbola is horizontal (x-axis) or vertical (y-axis).',
+    'Conjugate Axis': 'The line passing through the center perpendicular to the transverse axis.',
+    'Asymptotes': 'Lines that pass through the center. The hyperbola branches approach but never touch these lines. Equations: y = ±(b/a)x for horizontal.',
+    'Latus Rectum': 'A line perpendicular to the transverse axis passing through the foci. Length = 2b²/a units.'
+  };
 
   Future<void> selectPart(String part) async {
     setState(() {
@@ -113,11 +124,87 @@ class _HyperbolaPartsScreenState extends State<HyperbolaPartsScreen> {
         await player.stop();
       },
       child: Scaffold(
-        appBar: AppBar(title: Text("Hyperbola Parts"), backgroundColor: Colors.indigo[100], actions: [IconButton(icon: Icon(Icons.functions), onPressed: toggleFormula, tooltip: 'Show Formula'), IconButton(icon: Icon(Icons.rotate_90_degrees_ccw), onPressed: toggleOrientation, tooltip: 'Toggle Orientation')]),
+        appBar: AppBar(
+          title: Text("Hyperbola Parts"),
+          backgroundColor: Colors.indigo[100],
+          actions: [
+            IconButton(
+              icon: Icon(Icons.functions),
+              onPressed: toggleFormula,
+              tooltip: 'Show Formula',
+            ),
+            IconButton(
+              icon: Icon(Icons.rotate_90_degrees_ccw),
+              onPressed: toggleOrientation,
+              tooltip: 'Toggle Orientation',
+            ),
+          ],
+        ),
         body: Column(
           children: [
             SizedBox(height: 15),
-            Text("${isHorizontal ? 'Horizontal' : 'Vertical'} Hyperbola", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.indigo[800])),
+            Text(
+              "${isHorizontal ? 'Horizontal' : 'Vertical'} Hyperbola",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.indigo[800],
+              ),
+            ),
+
+            // Show formula when toggled
+            if (showFormula)
+              Container(
+                padding: EdgeInsets.all(16),
+                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.blue[50],
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.blue[200]!),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      "Standard Equation:",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.blue[800],
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      isHorizontal
+                          ? "(x²/${aValue.toStringAsFixed(1)}²) - (y²/${bValue.toStringAsFixed(1)}²) = 1"
+                          : "(y²/${aValue.toStringAsFixed(1)}²) - (x²/${bValue.toStringAsFixed(1)}²) = 1",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.indigo,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      "Asymptotes:",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.blue[800],
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      isHorizontal
+                          ? "y = ±(${bValue.toStringAsFixed(1)}/${aValue.toStringAsFixed(1)})x"
+                          : "y = ±(${aValue.toStringAsFixed(1)}/${bValue.toStringAsFixed(1)})x",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.indigo,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
             // Parameter controls
             Padding(
@@ -126,7 +213,10 @@ class _HyperbolaPartsScreenState extends State<HyperbolaPartsScreen> {
                 children: [
                   Row(
                     children: [
-                      Text('a = ${aValue.toInt()}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                      Text(
+                        'a = ${aValue.toInt()}',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
                       Expanded(
                         child: Slider(
                           value: aValue,
@@ -144,7 +234,10 @@ class _HyperbolaPartsScreenState extends State<HyperbolaPartsScreen> {
                   ),
                   Row(
                     children: [
-                      Text('b = ${bValue.toInt()}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                      Text(
+                        'b = ${bValue.toInt()}',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
                       Expanded(
                         child: Slider(
                           value: bValue,
@@ -160,56 +253,161 @@ class _HyperbolaPartsScreenState extends State<HyperbolaPartsScreen> {
                       ),
                     ],
                   ),
-                  Text('c = ${cValue.toStringAsFixed(1)}', style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+                  Text(
+                    'c = ${cValue.toStringAsFixed(1)}',
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                  ),
                 ],
               ),
             ),
 
             // Hyperbola visualization
-            Container(height: 260, margin: EdgeInsets.symmetric(horizontal: 10), child: CustomPaint(painter: HyperbolaPainter(selectedPart, aValue, bValue, isHorizontal), child: Container())),
+            Container(
+              height: 260,
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              child: CustomPaint(
+                painter: HyperbolaPainter(selectedPart, aValue, bValue, isHorizontal),
+                child: Container(),
+              ),
+            ),
 
             // Parts list
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                children:
-                    ['Center', 'Foci', 'Vertices', 'Co-vertices', 'Major Axis', 'Minor Axis', 'Transverse Axis', 'Conjugate Axis', 'Asymptotes', 'Latus Rectum'].map((part) {
-                      final isSelected = selectedPart == part;
-                      return GestureDetector(onTap: () => selectPart(part), child: Card(elevation: isSelected ? 6 : 2, color: isSelected ? Colors.indigo[100] : Colors.white, margin: const EdgeInsets.symmetric(vertical: 3), child: ListTile(title: Text(part, style: TextStyle(fontSize: 14, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal, color: isSelected ? Colors.indigo[800] : Colors.black87)), trailing: Icon(Icons.arrow_forward_ios, size: 14, color: isSelected ? Colors.indigo[600] : Colors.grey[600]))));
-                    }).toList(),
-              ),
-            ),
-
-            // Description and audio section
-            if (selectedPart.isNotEmpty)
-              Expanded(
-                // Make sure this is inside a parent Column or Row
-                child: SafeArea(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: IconButton(
-                            icon: Icon(Icons.close, size: 20),
-                            onPressed: () {
-                              setState(() {
-                                selectedPart = '';
-                                if (isPlaying) {
-                                  player.stop();
-                                }
-                              });
-                            },
+                children: [
+                  'Center',
+                  'Foci',
+                  'Vertices',
+                  'Co-vertices',
+                  'Major Axis',
+                  'Minor Axis',
+                  'Transverse Axis',
+                  'Conjugate Axis',
+                  'Asymptotes',
+                  'Latus Rectum'
+                ].map((part) {
+                  final isSelected = selectedPart == part;
+                  return GestureDetector(
+                    onTap: () => selectPart(part),
+                    child: Card(
+                      elevation: isSelected ? 6 : 2,
+                      color: isSelected ? Colors.indigo[100] : Colors.white,
+                      margin: const EdgeInsets.symmetric(vertical: 3),
+                      child: ListTile(
+                        title: Text(
+                          part,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            color: isSelected ? Colors.indigo[800] : Colors.black87,
                           ),
                         ),
-                        Container(width: double.infinity, margin: const EdgeInsets.all(12), padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.amber[50], borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.amber[200]!)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(selectedPart, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amber[800])), SizedBox(height: 8), Text(descriptions[selectedPart] ?? '', style: TextStyle(fontSize: 15, color: Colors.black87))])),
-                        Row(mainAxisAlignment: MainAxisAlignment.center, children: [IconButton(icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow, size: 26, color: Colors.blue), onPressed: togglePlayPause), IconButton(icon: Icon(Icons.stop, size: 26, color: Colors.red), onPressed: togglePlayPause)]),
-                        SizedBox(height: 10),
-                      ],
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          size: 14,
+                          color: isSelected ? Colors.indigo[600] : Colors.grey[600],
+                        ),
                     ),
                   ),
-                ),
+                  );
+                }).toList(),
               ),
+            ),
+            // Replace your entire "if (selectedPart.isNotEmpty)" section with this:
+
+  // Replace your entire "if (selectedPart.isNotEmpty)" section with this:
+if (selectedPart.isNotEmpty)
+  Container(
+    height: 300,
+    width: double.infinity,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Close button
+        Container(
+          height: 40,
+          alignment: Alignment.centerRight,
+          child: IconButton(
+            icon: Icon(Icons.close, size: 20),
+            onPressed: () {
+              setState(() {
+                selectedPart = '';
+                if (isPlaying) player.stop();
+              });
+            },
+          ),
+        ),
+        // Content area - Now wraps content size
+        Flexible(
+          child: Container(
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(horizontal: 12),
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.amber[50],
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.amber[200]!),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                  Text(
+                    selectedPart,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.amber[800],
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    descriptions[selectedPart] ?? '',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black87,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+        // Audio controls - fixed height
+        Container(
+          height: 60,
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: Icon(
+                  isPlaying ? Icons.pause : Icons.play_arrow,
+                  size: 28,
+                  color: Colors.blue,
+                ),
+                onPressed: togglePlayPause,
+              ),
+              SizedBox(width: 20),
+              IconButton(
+                icon: Icon(
+                  Icons.stop,
+                  size: 28,
+                  color: Colors.red,
+                ),
+                onPressed: () async {
+                  await player.stop();
+                  setState(() => isPlaying = false);
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  ),
+  
+         
           ],
         ),
       ),
@@ -233,43 +431,36 @@ class HyperbolaPainter extends CustomPainter {
     final scale = 2.5;
 
     // Paint styles
-    final hyperbolaPaint =
-        Paint()
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 3
-          ..color = Colors.indigo[700]!;
+    final hyperbolaPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3
+      ..color = Colors.indigo[700]!;
 
-    final axisPaint =
-        Paint()
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 1.5
-          ..color = Colors.grey[400]!;
+    final axisPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5
+      ..color = Colors.grey[400]!;
 
-    final selectedPaint =
-        Paint()
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 4
-          ..color = Colors.red;
+    final selectedPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4
+      ..color = Colors.red;
 
-    final focusPaint =
-        Paint()
-          ..style = PaintingStyle.fill
-          ..color = selectedPart == 'Foci' ? Colors.red : Colors.blue[700]!;
+    final focusPaint = Paint()
+      ..style = PaintingStyle.fill
+      ..color = selectedPart == 'Foci' ? Colors.red : Colors.blue[700]!;
 
-    final centerPaint =
-        Paint()
-          ..style = PaintingStyle.fill
-          ..color = selectedPart == 'Center' ? Colors.red : Colors.green[700]!;
+    final centerPaint = Paint()
+      ..style = PaintingStyle.fill
+      ..color = selectedPart == 'Center' ? Colors.red : Colors.green[700]!;
 
-    final vertexPaint =
-        Paint()
-          ..style = PaintingStyle.fill
-          ..color = selectedPart == 'Vertices' ? Colors.red : Colors.purple[600]!;
+    final vertexPaint = Paint()
+      ..style = PaintingStyle.fill
+      ..color = selectedPart == 'Vertices' ? Colors.red : Colors.purple[600]!;
 
-    final coVertexPaint =
-        Paint()
-          ..style = PaintingStyle.fill
-          ..color = selectedPart == 'Co-vertices' ? Colors.red : Colors.orange[600]!;
+    final coVertexPaint = Paint()
+      ..style = PaintingStyle.fill
+      ..color = selectedPart == 'Co-vertices' ? Colors.red : Colors.orange[600]!;
 
     // Draw coordinate axes
     canvas.drawLine(Offset(0, center.dy), Offset(size.width, center.dy), axisPaint);
@@ -339,12 +530,11 @@ class HyperbolaPainter extends CustomPainter {
 
     // Draw asymptotes
     if (selectedPart == 'Asymptotes') {
-      final asymptotePaint =
-          Paint()
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = 2
-            ..color = Colors.red
-            ..strokeCap = StrokeCap.round;
+      final asymptotePaint = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2
+        ..color = Colors.red
+        ..strokeCap = StrokeCap.round;
 
       double slope = isHorizontal ? bValue / aValue : aValue / bValue;
 
@@ -355,11 +545,10 @@ class HyperbolaPainter extends CustomPainter {
     // Draw latus rectum
     if (selectedPart == 'Latus Rectum') {
       final latusLength = (bValue * bValue / aValue) * scale;
-      final latusPaint =
-          Paint()
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = 3
-            ..color = Colors.red;
+      final latusPaint = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 3
+        ..color = Colors.red;
 
       if (isHorizontal) {
         final focus1X = center.dx - cValue * scale;
@@ -478,7 +667,10 @@ class HyperbolaPainter extends CustomPainter {
   }
 
   void _drawText(Canvas canvas, String text, double x, double y, TextStyle style) {
-    final textPainter = TextPainter(text: TextSpan(text: text, style: style), textDirection: TextDirection.ltr);
+    final textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      textDirection: TextDirection.ltr,
+    );
     textPainter.layout();
     textPainter.paint(canvas, Offset(x, y));
   }

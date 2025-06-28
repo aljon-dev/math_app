@@ -106,20 +106,17 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
     });
   }
 
-  void answerQuestion(int optionIndex) {
-    if (!isAnswered) {
-      setState(() {
-        selectedOptionIndex = optionIndex;
-        isAnswered = true;
+ void answerQuestion(int optionIndex) {
+    setState(() {
+      selectedOptionIndex = optionIndex;
 
-        final originalIndex = questionOrder[currentQuestionIndex];
-        userAnswers[originalIndex] = {...userAnswers[originalIndex], 'selected': optionIndex, 'isCorrect': optionIndex == questions[originalIndex]['correctIndex']};
+      final originalIndex = questionOrder[currentQuestionIndex];
+      userAnswers[originalIndex] = {...userAnswers[originalIndex], 'selected': optionIndex, 'isCorrect': optionIndex == questions[originalIndex]['correctIndex']};
 
-        if (optionIndex == questions[originalIndex]['correctIndex']) {
-          score++;
-        }
-      });
-    }
+      if (optionIndex == questions[originalIndex]['correctIndex']) {
+        score++;
+      }
+    });
   }
 
   void nextQuestion() {
@@ -165,54 +162,29 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
     final originalIndex = questionOrder[currentQuestionIndex];
     final currentQuestion = questions[originalIndex];
 
-    return Scaffold(
-      appBar: AppBar(title: Text('Hyperbola Quiz (${currentQuestionIndex + 1}/${questions.length})'), backgroundColor: Colors.purple, foregroundColor: Colors.white, actions: [Padding(padding: EdgeInsets.all(8.0), child: Center(child: Text('Score: $score/${questions.length}', style: TextStyle(color: Colors.white))))]),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Card(elevation: 4, child: Padding(padding: const EdgeInsets.all(16.0), child: Text(currentQuestion['question'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))),
-                    _BuildZoomableImage(context, currentQuestion['image']),
-                    SizedBox(height: 20),
-                    ...List.generate(currentQuestion['options'].length, (index) {
-                      return Card(
-                        elevation: 2,
-                        color: getOptionColor(index),
-                        child: ListTile(
-                          title: Text(currentQuestion['options'][index]),
-                          onTap: () => answerQuestion(index),
-                          leading: Icon(
-                            isAnswered && index == selectedOptionIndex
-                                ? (selectedOptionIndex == currentQuestion['correctIndex'] ? Icons.check_circle : Icons.cancel)
-                                : isAnswered && index == currentQuestion['correctIndex']
-                                ? Icons.check_circle
-                                : Icons.radio_button_unchecked,
-                            color:
-                                isAnswered && index == currentQuestion['correctIndex']
-                                    ? Colors.green
-                                    : isAnswered && index == selectedOptionIndex
-                                    ? Colors.red
-                                    : Colors.grey,
-                          ),
-                        ),
-                      );
-                    }),
-                    SizedBox(height: 20),
-                    if (isAnswered) Card(color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green.shade50 : Colors.red.shade50, child: Padding(padding: const EdgeInsets.all(16.0), child: Column(children: [Text(selectedOptionIndex == currentQuestion['correctIndex'] ? '✓ Correct!' : '✗ Incorrect!', style: TextStyle(fontWeight: FontWeight.bold, color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green : Colors.red, fontSize: 20)), SizedBox(height: 10), Text(currentQuestion['solution'], style: TextStyle(fontSize: 14))]))),
-                    SizedBox(height: 20),
-                  ],
-                ),
-              ),
+    return WillPopScope(
+      onWillPop: () async => true,
+      child: Scaffold(
+      appBar: AppBar(title: Text('Hyperbola Quiz (${currentQuestionIndex + 1}/${questions.length})'), backgroundColor: Colors.purple, foregroundColor: Colors.white, ),
+      body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Card(elevation: 4, child: Padding(padding: const EdgeInsets.all(16.0), child: Text(currentQuestion['question'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))),
+                _BuildZoomableImage(context, currentQuestion['image']),
+                SizedBox(height: 20),
+                ...List.generate(currentQuestion['options'].length, (index) {
+                  return Card(elevation: 2, child: ListTile(title: Text(currentQuestion['options'][index], style: TextStyle(fontSize: 16)), onTap: () => answerQuestion(index), leading: Icon(selectedOptionIndex == index ? Icons.radio_button_checked : Icons.radio_button_unchecked, color: selectedOptionIndex == index ? Colors.blue : Colors.grey)));
+                }),
+                SizedBox(height: 20),
+                ElevatedButton(onPressed: selectedOptionIndex != null ? nextQuestion : null, style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)), child: Text(currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz', style: TextStyle(fontSize: 18))),
+              ],
             ),
           ),
-          Padding(padding: const EdgeInsets.all(16.0), child: ElevatedButton(onPressed: isAnswered ? nextQuestion : null, style: ElevatedButton.styleFrom(backgroundColor: Colors.purple, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)), child: Text(currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz', style: TextStyle(fontSize: 18)))),
-        ],
-      ),
+        ),
+    )
     );
   }
 
