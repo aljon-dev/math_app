@@ -40,51 +40,57 @@ class _HyperbolaPartsScreenState extends State<HyperbolaPartsScreen> {
     });
   }
 
-  Future<void> playAudio() async {
-    try {
-      if (selectedPart.isEmpty) return;
+ Future<void> playAudio() async {
+  try {
+    if (selectedPart.isEmpty) return;
 
-      // Audio file paths based on selected part
-      if (selectedPart == 'Center') {
-        await player.setAsset('assets/Audio/Hyperbola_(center).wav');
-      } else if (selectedPart == 'Foci') {
-        await player.setAsset('assets/Audio/Hyperbola_(foci).wav');
-      } else if (selectedPart == 'Vertices') {
-        await player.setAsset('assets/Audio/HYperbola_(vertices).wav');
-      } else if (selectedPart == 'Co-vertices') {
-        await player.setAsset('assets/Audio/Hyperbola_(co-vertex).wav');
-      } else if (selectedPart == 'Major Axis') {
-        await player.setAsset('assets/Audio/Hyperbola_(major axis).wav');
-      } else if (selectedPart == 'Minor Axis') {
-        await player.setAsset('assets/Audio/Hyperbola_(minor axis).wav');
-      } else if (selectedPart == 'Transverse Axis') {
-        await player.setAsset('assets/Audio/Hyperbola_(transverse axis).wav');
-      } else if (selectedPart == 'Conjugate Axis') {
-        await player.setAsset('assets/Audio/Hyperbola(conjugate_axis).wav');
-      } else if (selectedPart == 'Asymptotes') {
-        await player.setAsset('assets/Audio/Hyperbola_(asymptote).wav');
-      } else if (selectedPart == 'Latus Rectum') {
-        await player.setAsset('assets/Audio/Hyperbola_(latus rectum).wav');
-      }
-
-      await player.play();
-      setState(() {
-        isPlaying = true;
-      });
-
-      player.playerStateStream.listen((state) {
-        if (state.processingState == ProcessingState.completed) {
-          setState(() {
-            isPlaying = false;
-          });
-        }
-      });
-    } on PlayerException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: ${e.message}')));
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+    // Audio file paths based on selected part
+    if (selectedPart == 'Center') {
+      await player.setAsset('assets/Audio/Hyperbola_(center).wav');
+    } else if (selectedPart == 'Foci') {
+      await player.setAsset('assets/Audio/Hyperbola_(foci).wav');
+    } else if (selectedPart == 'Vertices') {
+      await player.setAsset('assets/Audio/Hyperbola_(vertices).wav');
+    } else if (selectedPart == 'Co-vertices') {
+      await player.setAsset('assets/Audio/Hyperbola_(co-vertex).wav');
+    } else if (selectedPart == 'Major Axis') {
+      await player.setAsset('assets/Audio/Hyperbola_(major axis).wav');
+    } else if (selectedPart == 'Minor Axis') {
+      await player.setAsset('assets/Audio/Hyperbola_(minor axis).wav');
+    } else if (selectedPart == 'Transverse Axis') {
+      await player.setAsset('assets/Audio/Hyperbola_(transverse axis).wav');
+    } else if (selectedPart == 'Conjugate Axis') {
+      await player.setAsset('assets/Audio/Hyperbola_(conjugate axis).wav');
+    } else if (selectedPart == 'Asymptotes') {
+      await player.setAsset('assets/Audio/Hyperbola_(asymptote).mp3');
+    } else if (selectedPart == 'Latus Rectum') {
+      await player.setAsset('assets/Audio/Hyperbola_(latus rectum).wav');
     }
+
+    await player.play();
+    setState(() {
+      isPlaying = true;
+    });
+
+    // Listen for when audio completes
+    player.playerStateStream.listen((state) {
+      if (state.processingState == ProcessingState.completed) {
+        setState(() {
+          isPlaying = false;
+        });
+      }
+    });
+
+  } on PlayerException catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Audio Player Error: ${e.message}'))
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Unexpected Error: $e'))
+    );
   }
+}
 
   Future<void> togglePlayPause() async {
     if (isPlaying) {
