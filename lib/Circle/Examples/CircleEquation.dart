@@ -5,58 +5,60 @@ class CircleEquationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Circle Equations')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildExampleCard(
-              context,
-              'Finding Center and Radius',
-              '(x + 2)² + (y - 1)² = 36',
-              '1. Compare with standard form: (x - h)² + (y - k)² = r²\n'
-                  '2. Identify values:\n'
-                  '   h = -2 (change sign of x term)\n'
-                  '   k = 1 (keep sign of y term)\n'
-                  '   r² = 36 ⇒ r = √36 = 6\n'
-                  '3. Center: (-2, 1), Radius: 6',
-            ),
-            const SizedBox(height: 20),
-            _buildExampleCard(
-              context,
-              'Equation from Center and Radius (1)',
-              'Center: (0,0), Radius: 5',
-              '1. Use standard form: (x - h)² + (y - k)² = r²\n'
-                  '2. Substitute values:\n'
-                  '   (x - 0)² + (y - 0)² = 5²\n'
-                  '3. Simplify:\n'
-                  '   x² + y² = 25',
-            ),
-            const SizedBox(height: 20),
-            _buildExampleCard(
-              context,
-              'Equation from Center and Radius (2)',
-              'Center: (3,-4), Radius: 3',
-              '1. Use standard form: (x - h)² + (y - k)² = r²\n'
-                  '2. Substitute values:\n'
-                  '   (x - 3)² + (y - (-4))² = 3²\n'
-                  '3. Simplify:\n'
-                  '   (x - 3)² + (y + 4)² = 9',
-            ),
-            const SizedBox(height: 20),
-            _buildExampleCard(
-              context,
-              'Finding Center and Radius (Special Case)',
-              '9x² + 9y² = 81',
-              '1. Divide all terms by 9:\n'
-                  '   x² + y² = 9\n'
-                  '2. Compare with standard form:\n'
-                  '   (x - 0)² + (y - 0)² = 3²\n'
-                  '3. Center: (0,0), Radius: 3',
-            ),
-          ],
+    return PopScope(
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Circle Equations')),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildExampleCard(
+                context,
+                'Finding Center and Radius',
+                '(x + 2)² + (y - 1)² = 36',
+                '1. Compare with standard form: (x - h)² + (y - k)² = r²\n'
+                    '2. Identify values:\n'
+                    '   h = -2 (change sign of x term)\n'
+                    '   k = 1 (keep sign of y term)\n'
+                    '   r² = 36 ⇒ r = √36 = 6\n'
+                    '3. Center: (-2, 1), Radius: 6',
+              ),
+              const SizedBox(height: 20),
+              _buildExampleCard(
+                context,
+                'Equation from Center and Radius (1)',
+                'Center: (0,0), Radius: 5',
+                '1. Use standard form: (x - h)² + (y - k)² = r²\n'
+                    '2. Substitute values:\n'
+                    '   (x - 0)² + (y - 0)² = 5²\n'
+                    '3. Simplify:\n'
+                    '   x² + y² = 25',
+              ),
+              const SizedBox(height: 20),
+              _buildExampleCard(
+                context,
+                'Equation from Center and Radius (2)',
+                'Center: (3,-4), Radius: 3',
+                '1. Use standard form: (x - h)² + (y - k)² = r²\n'
+                    '2. Substitute values:\n'
+                    '   (x - 3)² + (y - (-4))² = 3²\n'
+                    '3. Simplify:\n'
+                    '   (x - 3)² + (y + 4)² = 9',
+              ),
+              const SizedBox(height: 20),
+              _buildExampleCard(
+                context,
+                'Finding Center and Radius (Special Case)',
+                '9x² + 9y² = 81',
+                '1. Divide all terms by 9:\n'
+                    '   x² + y² = 9\n'
+                    '2. Compare with standard form:\n'
+                    '   (x - 0)² + (y - 0)² = 3²\n'
+                    '3. Center: (0,0), Radius: 3',
+              ),
+            ],
+          ),
         ),
       ),
     );

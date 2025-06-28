@@ -5,62 +5,64 @@ class DistanceMidpointScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Distance & Midpoint Formulas')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildExampleCard(
-              context,
-              'Finding Center from Diameter Endpoints',
-              'Endpoints: (-5,6) and (3,-2)',
-              '1. Use midpoint formula:\n'
-                  '   M = ((x₁ + x₂)/2, (y₁ + y₂)/2)\n'
-                  '2. Substitute values:\n'
-                  '   M = ((-5 + 3)/2, (6 + (-2))/2)\n'
-                  '   M = (-2/2, 4/2)\n'
-                  '3. Center: (-1, 2)',
-            ),
-            const SizedBox(height: 20),
-            _buildExampleCard(
-              context,
-              'Finding Radius from Endpoints',
-              'Center: (-1,2), Endpoint: (3,-2)',
-              '1. Use distance formula:\n'
-                  '   d = √[(x₂ - x₁)² + (y₂ - y₁)²]\n'
-                  '2. Substitute values:\n'
-                  '   d = √[(3 - (-1))² + (-2 - 2)²]\n'
-                  '   d = √[(4)² + (-4)²] = √[16 + 16] = √32\n'
-                  '3. Simplify: 4√2\n'
-                  '4. Radius: 4√2',
-            ),
-            const SizedBox(height: 20),
-            _buildExampleCard(
-              context,
-              'Writing Equation from Diameter',
-              'Endpoints: (-5,6) and (3,-2)',
-              '1. Find center (midpoint): (-1,2)\n'
-                  '2. Find radius (distance): 4√2\n'
-                  '3. Write standard form:\n'
-                  '   (x - (-1))² + (y - 2)² = (4√2)²\n'
-                  '4. Simplify:\n'
-                  '   (x + 1)² + (y - 2)² = 32',
-            ),
-            const SizedBox(height: 20),
-            _buildExampleCard(
-              context,
-              'Finding Center from Diameter (Another Example)',
-              'Endpoints: (-6,2) and (4,-8)',
-              '1. Use midpoint formula:\n'
-                  '   M = ((x₁ + x₂)/2, (y₁ + y₂)/2)\n'
-                  '2. Substitute values:\n'
-                  '   M = ((-6 + 4)/2, (2 + (-8))/2)\n'
-                  '   M = (-2/2, -6/2)\n'
-                  '3. Center: (-1, -3)',
-            ),
-          ],
+    return PopScope(
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Distance & Midpoint Formulas')),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildExampleCard(
+                context,
+                'Finding Center from Diameter Endpoints',
+                'Endpoints: (-5,6) and (3,-2)',
+                '1. Use midpoint formula:\n'
+                    '   M = ((x₁ + x₂)/2, (y₁ + y₂)/2)\n'
+                    '2. Substitute values:\n'
+                    '   M = ((-5 + 3)/2, (6 + (-2))/2)\n'
+                    '   M = (-2/2, 4/2)\n'
+                    '3. Center: (-1, 2)',
+              ),
+              const SizedBox(height: 20),
+              _buildExampleCard(
+                context,
+                'Finding Radius from Endpoints',
+                'Center: (-1,2), Endpoint: (3,-2)',
+                '1. Use distance formula:\n'
+                    '   d = √[(x₂ - x₁)² + (y₂ - y₁)²]\n'
+                    '2. Substitute values:\n'
+                    '   d = √[(3 - (-1))² + (-2 - 2)²]\n'
+                    '   d = √[(4)² + (-4)²] = √[16 + 16] = √32\n'
+                    '3. Simplify: 4√2\n'
+                    '4. Radius: 4√2',
+              ),
+              const SizedBox(height: 20),
+              _buildExampleCard(
+                context,
+                'Writing Equation from Diameter',
+                'Endpoints: (-5,6) and (3,-2)',
+                '1. Find center (midpoint): (-1,2)\n'
+                    '2. Find radius (distance): 4√2\n'
+                    '3. Write standard form:\n'
+                    '   (x - (-1))² + (y - 2)² = (4√2)²\n'
+                    '4. Simplify:\n'
+                    '   (x + 1)² + (y - 2)² = 32',
+              ),
+              const SizedBox(height: 20),
+              _buildExampleCard(
+                context,
+                'Finding Center from Diameter (Another Example)',
+                'Endpoints: (-6,2) and (4,-8)',
+                '1. Use midpoint formula:\n'
+                    '   M = ((x₁ + x₂)/2, (y₁ + y₂)/2)\n'
+                    '2. Substitute values:\n'
+                    '   M = ((-6 + 4)/2, (2 + (-8))/2)\n'
+                    '   M = (-2/2, -6/2)\n'
+                    '3. Center: (-1, -3)',
+              ),
+            ],
+          ),
         ),
       ),
     );

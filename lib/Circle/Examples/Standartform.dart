@@ -5,39 +5,41 @@ class StandardFormScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Standard Form of Circle')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildDerivationCard(context),
-            const SizedBox(height: 20),
-            _buildConversionCard(
-              context,
-              'General to Standard Form',
-              'x² + y² + 6x - 4y - 3 = 0',
-              '1. Group x and y terms: x² + 6x + y² - 4y = 3\n'
-                  '2. Complete the square:\n'
-                  '   For x: (6/2)² = 9\n'
-                  '   For y: (-4/2)² = 4\n'
-                  '3. Add to both sides: x² + 6x + 9 + y² - 4y + 4 = 3 + 9 + 4\n'
-                  '4. Rewrite: (x + 3)² + (y - 2)² = 16\n'
-                  '5. Final form: (x + 3)² + (y - 2)² = 4²',
-            ),
-            const SizedBox(height: 20),
-            _buildConversionCard(
-              context,
-              'Standard to General Form',
-              '(x + 4)² + (y - 1)² = 7²',
-              '1. Expand squared terms:\n'
-                  '   (x + 4)(x + 4) + (y - 1)(y - 1) = 49\n'
-                  '2. Multiply: x² + 8x + 16 + y² - 2y + 1 = 49\n'
-                  '3. Combine like terms: x² + y² + 8x - 2y + 17 = 49\n'
-                  '4. Final form: x² + y² + 8x - 2y - 32 = 0',
-            ),
-          ],
+    return PopScope(
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Standard Form of Circle')),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildDerivationCard(context),
+              const SizedBox(height: 20),
+              _buildConversionCard(
+                context,
+                'General to Standard Form',
+                'x² + y² + 6x - 4y - 3 = 0',
+                '1. Group x and y terms: x² + 6x + y² - 4y = 3\n'
+                    '2. Complete the square:\n'
+                    '   For x: (6/2)² = 9\n'
+                    '   For y: (-4/2)² = 4\n'
+                    '3. Add to both sides: x² + 6x + 9 + y² - 4y + 4 = 3 + 9 + 4\n'
+                    '4. Rewrite: (x + 3)² + (y - 2)² = 16\n'
+                    '5. Final form: (x + 3)² + (y - 2)² = 4²',
+              ),
+              const SizedBox(height: 20),
+              _buildConversionCard(
+                context,
+                'Standard to General Form',
+                '(x + 4)² + (y - 1)² = 7²',
+                '1. Expand squared terms:\n'
+                    '   (x + 4)(x + 4) + (y - 1)(y - 1) = 49\n'
+                    '2. Multiply: x² + 8x + 16 + y² - 2y + 1 = 49\n'
+                    '3. Combine like terms: x² + y² + 8x - 2y + 17 = 49\n'
+                    '4. Final form: x² + y² + 8x - 2y - 32 = 0',
+              ),
+            ],
+          ),
         ),
       ),
     );
