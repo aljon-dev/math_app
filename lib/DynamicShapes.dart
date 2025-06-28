@@ -35,7 +35,7 @@ class DynamicShapes extends StatefulWidget {
 
 class _ConicSectionVisualizationState extends State<DynamicShapes> with TickerProviderStateMixin {
   // Conic section type
-  String _currentType = "Circle";
+ String _currentType = "Circle";
 
   // Control parameters
   double _planeAngle = 0.0; // Angle of the cutting plane
@@ -50,107 +50,241 @@ class _ConicSectionVisualizationState extends State<DynamicShapes> with TickerPr
   double _lastPanX = 0;
   double _lastPanY = 0;
 
-  Future<void> Menu() async {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      builder: (BuildContext context) {
-        return SizedBox(
-          height: 300, // <-- control height here
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ButtonMenu(
-                        _currentType == 'Circle'
-                            ? Colors.red
-                            : _currentType == 'Ellipse'
-                            ? Colors.orange
-                            : _currentType == 'Parabola'
-                            ? Colors.green
-                            : _currentType == 'Hyperbola'
-                            ? Colors.blue
-                            : Colors.red,
-                        'Definition',
-                        _currentType,
-                      ),
-                      ButtonMenu(
-                        _currentType == 'Circle'
-                            ? Colors.red
-                            : _currentType == 'Ellipse'
-                            ? Colors.orange
-                            : _currentType == 'Parabola'
-                            ? Colors.green
-                            : _currentType == 'Hyperbola'
-                            ? Colors.blue
-                            : Colors.red,
-                        'Parts',
-                        _currentType,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ButtonMenu(
-                        _currentType == 'Circle'
-                            ? Colors.red
-                            : _currentType == 'Ellipse'
-                            ? Colors.orange
-                            : _currentType == 'Parabola'
-                            ? Colors.green
-                            : _currentType == 'Hyperbola'
-                            ? Colors.blue
-                            : Colors.red,
-                        'Formulas',
-                        _currentType,
-                      ),
-                      ButtonMenu(
-                        _currentType == 'Circle'
-                            ? Colors.red
-                            : _currentType == 'Ellipse'
-                            ? Colors.orange
-                            : _currentType == 'Parabola'
-                            ? Colors.green
-                            : _currentType == 'Hyperbola'
-                            ? Colors.blue
-                            : Colors.red,
-                        'Examples',
-                        _currentType,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Center(
-                    child: ButtonMenu(
-                      _currentType == 'Circle'
-                          ? Colors.red
-                          : _currentType == 'Ellipse'
-                          ? Colors.orange
-                          : _currentType == 'Parabola'
-                          ? Colors.green
-                          : _currentType == 'Hyperbola'
-                          ? Colors.blue
-                          : Colors.red,
-                      'Quiz',
-                      _currentType,
-                    ),
-                  ),
-                ],
+  // Control zoom Parameters
+  double _zoomLevel = 0.9;
+  double _baseZoomLevel = 1.0;
+  final double _minZoom = 0.5;
+  final double _maxZoom = 3.0;
+
+
+// Improved Menu Method
+Future<void> Menu() async {
+  showModalBottomSheet(
+    context: context,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20))
+    ),
+    builder: (BuildContext context) {
+      return Container(
+        height: 240, // Further reduced height
+        padding: const EdgeInsets.all(16), // Reduced padding
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header with current type indicator
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
               ),
             ),
-          ),
-        );
-      },
-    );
+            const SizedBox(height: 8),
+            
+            // Title
+            Text(
+              '$_currentType Menu',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            
+            // Menu buttons - back to row layout for better sizing
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: ButtonMenu(_getCurrentColor(), 'Definition', _currentType),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: ButtonMenu(_getCurrentColor(), 'Parts', _currentType),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: ButtonMenu(_getCurrentColor(), 'Formulas', _currentType),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: ButtonMenu(_getCurrentColor(), 'Examples', _currentType),
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 12),
+            
+            // Quiz button (full width)
+            SizedBox(
+              width: double.infinity,
+              height: 40, // Much smaller quiz button
+              child: ElevatedButton(
+                onPressed: () => _navigateToScreen(_currentType, 'Quiz'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _getCurrentColor(),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: const BorderSide(color: Colors.black, width: 1.5),
+                  ),
+                  elevation: 2,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.quiz, size: 20),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Take Quiz',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+// Helper method to get current color
+
+// Helper method to get current color
+Color _getCurrentColor() {
+  switch (_currentType) {
+    case 'Circle':
+      return Colors.red;
+    case 'Ellipse':
+      return Colors.orange;
+    case 'Parabola':
+      return Colors.green;
+    case 'Hyperbola':
+      return Colors.blue;
+    default:
+      return Colors.red;
   }
+}
+Widget ButtonMenu(Color color, String menuTitle, String shape) {
+  return Container(
+    height: 50, // Very small button height
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(8),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.1),
+          blurRadius: 2,
+          offset: const Offset(0, 1),
+        ),
+      ],
+    ),
+    child: ElevatedButton(
+      onPressed: () => _navigateToScreen(shape, menuTitle),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: const BorderSide(color: Colors.black, width: 1.5),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+        elevation: 0,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            _getIconForMenu(menuTitle),
+            size: 16, // Very small icon
+          ),
+          const SizedBox(width: 1),
+          Text(
+            menuTitle,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    ),
+  );
+}
+// Navigation method (unchanged)
+void _navigateToScreen(String shape, String menuTitle) {
+  final Map<String, Map<String, Widget Function()>> shapeRoutes = {
+    'Circle': {
+      'Definition': () => DefinitionSection(),
+      'Formulas': () => FormulasSection(),
+      'Parts': () => CirclePartsScreen(),
+      'Examples': () => CircleExamplesApp(),
+      'Quiz': () => QuizScreen(),
+    },
+    'Ellipse': {
+      'Definition': () => DefinitionSectionEllipse(),
+      'Formulas': () => FormulasEllipseSection(),
+      'Parts': () => EllipsePartsScreen(),
+      'Examples': () => EllipseExamplesApp(),
+      'Quiz': () => QuizScreenEllipse(),
+    },
+    'Parabola': {
+      'Definition': () => ParabolaDefinitionSection(),
+      'Formulas': () => FormulasParabolaSection(),
+      'Parts': () => ParabolaPartsScreen(),
+      'Examples': () => ParabolaExamplesApp(),
+      'Quiz': () => QuizScreenParabola(),
+    },
+    'Hyperbola': {
+      'Definition': () => DefinitionHyperBolaSection(),
+      'Formulas': () => FormulasHyperbolaSection(),
+      'Parts': () => HyperbolaPartsScreen(),
+      'Examples': () => HyperbolaExamplesApp(),
+      'Quiz': () => QuizScreenHyperBola(),
+    },
+  };
+
+  final routeBuilder = shapeRoutes[shape]?[menuTitle];
+  if (routeBuilder != null) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => routeBuilder()));
+  }
+}
+
+// Icon method (unchanged)
+IconData _getIconForMenu(String menuTitle) {
+  switch (menuTitle) {
+    case 'Definition':
+      return Icons.info_outline;
+    case 'Formulas':
+      return Icons.functions_outlined;
+    case 'Parts':
+      return Icons.architecture_outlined;
+    case 'Examples':
+      return Icons.lightbulb_outline;
+    case 'Quiz':
+      return Icons.quiz;
+    default:
+      return Icons.help_outline;
+  }
+}
+
+
+
 
   @override
   void initState() {
@@ -198,9 +332,11 @@ class _ConicSectionVisualizationState extends State<DynamicShapes> with TickerPr
     // Determine the type of conic section based on the angle
     if (_planeAngle < 0.1) {
       _currentType = "Circle";
-    } else if (_planeAngle < 0.7) {
+    } else if (_planeAngle < 1.0) {
+
       _currentType = "Ellipse";
-    } else if (_planeAngle < 1.2) {
+    } else if (_planeAngle < 1.19) {
+ 
       _currentType = "Parabola";
     } else {
       _currentType = "Hyperbola";
@@ -214,30 +350,54 @@ class _ConicSectionVisualizationState extends State<DynamicShapes> with TickerPr
       appBar: AppBar(title: Text('CONIC SECTION: $_currentType'), actions: [IconButton(icon: Icon(_isAnimating ? Icons.pause : Icons.play_arrow), onPressed: _toggleAnimation)]),
       body: Column(
         children: [
+          const SizedBox(height: 20),
+          Text(
+            _currentType,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 30,
+              color:
+                  _currentType == 'Circle'
+                      ? Colors.red
+                      : _currentType == 'Ellipse'
+                      ? Colors.orange
+                      : _currentType == 'Parabola'
+                      ? Colors.green
+                      : _currentType == 'Hyperbola'
+                      ? Colors.blue
+                      : Colors.black,
+            ),
+          ),
           Expanded(
             flex: 3,
-            child: GestureDetector(
-              onPanStart: (details) {
-                _lastPanX = details.localPosition.dx;
-                _lastPanY = details.localPosition.dy;
+            child: // Replace your existing GestureDetector with this fixed version:
+                GestureDetector(
+              onScaleStart: (details) {
+                _lastPanX = details.localFocalPoint.dx;
+                _lastPanY = details.localFocalPoint.dy;
+                _baseZoomLevel = _zoomLevel;
               },
-              onPanUpdate: (details) {
+              onScaleUpdate: (details) {
                 setState(() {
-                  // Calculate the delta
-                  final dx = details.localPosition.dx - _lastPanX;
-                  final dy = details.localPosition.dy - _lastPanY;
+                  // Handle rotation (pan gesture)
+                  final dx = details.localFocalPoint.dx - _lastPanX;
+                  final dy = details.localFocalPoint.dy - _lastPanY;
 
-                  // Update rotations
-                  _horizontalRotation += dx * 0.01;
-                  _planeAngle = (_planeAngle - dy * 0.01).clamp(0, math.pi / 2);
+                  // Only apply rotation if it's primarily a single finger drag
+                  if (details.scale == 1.0) {
+                    _horizontalRotation += dx * 0.01;
+                    _planeAngle = (_planeAngle - dy * 0.01).clamp(0, math.pi / 2);
+                    _updateConicType();
+                  }
 
-                  _lastPanX = details.localPosition.dx;
-                  _lastPanY = details.localPosition.dy;
+                  // Handle zoom (pinch gesture)
+                  _zoomLevel = (_baseZoomLevel * details.scale).clamp(_minZoom, _maxZoom);
 
-                  _updateConicType();
+                  _lastPanX = details.localFocalPoint.dx;
+                  _lastPanY = details.localFocalPoint.dy;
                 });
               },
-              child: CustomPaint(painter: ConicSectionPainter(planeAngle: _planeAngle, horizontalRotation: _horizontalRotation, verticalPosition: _verticalPosition), child: Container()),
+              child: CustomPaint(painter: ConicSectionPainter(planeAngle: _planeAngle, horizontalRotation: _horizontalRotation, verticalPosition: _verticalPosition, zoomLevel: _zoomLevel), child: Container()),
             ),
           ),
           Divider(),
@@ -248,6 +408,16 @@ class _ConicSectionVisualizationState extends State<DynamicShapes> with TickerPr
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Menu();
+                        },
+                        style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+                        child: Text('Open Menu'),
+                      ),
+                    ),
                     _buildSlider("Left and Right", _horizontalRotation, 0, 2 * math.pi, (value) {
                       setState(() {
                         _horizontalRotation = value;
@@ -264,6 +434,13 @@ class _ConicSectionVisualizationState extends State<DynamicShapes> with TickerPr
                         _updateConicType();
                       });
                     }),
+                    _buildSlider("Zoom", _zoomLevel, _minZoom, _maxZoom, (value) {
+                      setState(() {
+                        _zoomLevel = value;
+                      });
+                    }),
+
+                    Text(_planeAngle.toString()),
                   ],
                 ),
               ),
@@ -290,119 +467,24 @@ class _ConicSectionVisualizationState extends State<DynamicShapes> with TickerPr
     );
   }
 
-  Widget ButtonMenu(Color color, String menuTitle, String Shape) {
-    return SizedBox(
-      height: 80,
-      width: 150,
-      child: ElevatedButton(
-        onPressed: () {
-          if (Shape == 'Circle') {
-            switch (menuTitle) {
-              case 'Definition':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => DefinitionSection()));
-
-                break;
-              case 'Formulas':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => FormulasSection()));
-                break;
-              case 'Parts':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CirclePartsScreen()));
-                break;
-              case 'Examples':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CircleExamplesApp()));
-                break;
-              case 'Quiz':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => QuizScreen()));
-
-              default:
-                break;
-            }
-          }
-
-          if (Shape == 'Ellipse') {
-            switch (menuTitle) {
-              case 'Definition':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => DefinitionSectionEllipse()));
-                break;
-              case 'Formulas':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => FormulasEllipseSection()));
-                break;
-              case 'Parts':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => EllipsePartsScreen()));
-                break;
-              case 'Examples':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => EllipseExamplesApp()));
-                break;
-
-              case 'Quiz':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => QuizScreenEllipse()));
-
-              default:
-                break;
-            }
-          }
-
-          if (Shape == 'Parabola') {
-            switch (menuTitle) {
-              case 'Definition':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ParabolaDefinitionSection()));
-                break;
-              case 'Formulas':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => FormulasParabolaSection()));
-                break;
-              case 'Parts':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ParabolaPartsScreen()));
-                break;
-              case 'Examples':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ParabolaExamplesApp()));
-                break;
-              case 'Quiz':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => QuizScreenParabola()));
-
-              default:
-                break;
-            }
-          }
-
-          if (Shape == 'Hyperbola') {
-            switch (menuTitle) {
-              case 'Definition':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => DefinitionHyperBolaSection()));
-                break;
-              case 'Formulas':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => FormulasHyperbolaSection()));
-                break;
-              case 'Parts':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => HyperbolaPartsScreen()));
-                break;
-              case 'Examples':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => HyperbolaExamplesApp()));
-                break;
-              case 'Quiz':
-                Navigator.push(context, MaterialPageRoute(builder: (context) => QuizScreenHyperBola()));
-
-              default:
-                break;
-            }
-          }
-        },
-        style: ElevatedButton.styleFrom(backgroundColor: color, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: const BorderSide(color: Colors.black, width: 2))),
-        child: Text(menuTitle, style: TextStyle(fontSize: 20)),
-      ),
-    );
-  }
 }
 
 class ConicSectionPainter extends CustomPainter {
   final double planeAngle;
   final double horizontalRotation;
   final double verticalPosition;
+  final double zoomLevel;
 
   // Constants
   final double _coneHeight = 2.0;
   final double _coneRadius = 1.0;
 
-  ConicSectionPainter({required this.planeAngle, required this.horizontalRotation, required this.verticalPosition});
+  ConicSectionPainter({
+    required this.planeAngle,
+    required this.horizontalRotation,
+    required this.verticalPosition,
+    required this.zoomLevel, // Add this
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -415,6 +497,8 @@ class ConicSectionPainter extends CustomPainter {
 
     // Project 3D vertices to 2D
     final projectedVertices = _projectVertices(scene, centerX, centerY, scale);
+
+    _drawCartesianGrid(canvas, size);
 
     // Draw the upside-down cone (upper cone)
     _drawUpperCone(canvas, projectedVertices);
@@ -450,36 +534,45 @@ class ConicSectionPainter extends CustomPainter {
     }
 
     // CRITICAL: Use consistent plane transformation
-    final planeWidth = _coneRadius * 2.5;
+    // Adjust plane size based on zoom level
+    final planeWidth = _coneRadius * 2.5 * (1 + (zoomLevel - 1) * 0.5);
     final planeVertices2D = [vector_math.Vector3(-planeWidth, 0, -planeWidth), vector_math.Vector3(planeWidth, 0, -planeWidth), vector_math.Vector3(planeWidth, 0, planeWidth), vector_math.Vector3(-planeWidth, 0, planeWidth)];
 
-    // Apply the SAME transformation in both plane drawing and intersection calculation
+    // Apply transformation
     final rotationMatrix = vector_math.Matrix4.rotationX(planeAngle);
     rotationMatrix.translate(0.0, verticalPosition * _coneHeight, 0.0);
 
+    // Scale the plane position based on zoom
+    final planeScale = 1.0 + (zoomLevel - 1) * 0.3;
+    final scaleMatrix = vector_math.Matrix4.identity();
+    scaleMatrix.scale(planeScale, planeScale, planeScale);
+
     for (final vertex in planeVertices2D) {
-      vertices.add(rotationMatrix.transformed3(vertex));
+      vertices.add((rotationMatrix * scaleMatrix).transformed3(vertex));
     }
 
     return vertices;
   }
 
   List<Offset> _projectVertices(List<vector_math.Vector3> vertices, double centerX, double centerY, double scale) {
-    // Camera settings
-    final cameraPosition = vector_math.Vector3(0, 0, 5);
+    // Stabilize zoom factor to prevent extreme distortion
+    final zoomFactor = math.pow(zoomLevel.clamp(0.5, 2.0), 1.2).toDouble();
+
+    // Keep camera at reasonable distance
+    final cameraDistance = (4.0 / zoomFactor).clamp(2.0, 8.0);
+    final cameraPosition = vector_math.Vector3(0, 0, cameraDistance);
     final cameraLookAt = vector_math.Vector3(0, 0, 0);
     final cameraUp = vector_math.Vector3(0, 1, 0);
+
+    // Apply moderate zoom to scale, not extreme
+    final adjustedScale = scale * (1.0 + (zoomLevel - 1.0) * 0.5);
 
     // Compute view matrix
     final viewMatrix = vector_math.makeViewMatrix(cameraPosition, cameraLookAt, cameraUp);
 
-    // Compute projection matrix (perspective)
-    final projectionMatrix = vector_math.makePerspectiveMatrix(
-      45 * math.pi / 180, // FOV
-      1.0, // Aspect ratio
-      0.1, // Near plane
-      100.0, // Far plane
-    );
+    // Use consistent FOV to prevent distortion
+    final fov = (50 * math.pi / 180).clamp(30 * math.pi / 180, 70 * math.pi / 180);
+    final projectionMatrix = vector_math.makePerspectiveMatrix(fov, 1.0, 0.1, 100.0);
 
     // Compute model matrix (rotate the scene)
     final modelMatrix = vector_math.Matrix4.rotationY(horizontalRotation);
@@ -489,20 +582,102 @@ class ConicSectionPainter extends CustomPainter {
 
     // Project 3D vertices to 2D screen space
     return vertices.map((v) {
-      // Apply MVP transformation
       final projected = mvpMatrix.transformed3(v);
 
-      // Perspective division
-      final x = projected.x / projected.z;
-      final y = projected.y / projected.z;
+      // Add safety check for perspective division
+      final z = math.max(projected.z, 0.01); // Prevent division by zero or negative
+      final x = projected.x / z;
+      final y = projected.y / z;
 
-      // Map to screen coordinates
-      return Offset(
-        centerX + x * scale,
-        centerY - y * scale, // Flip Y for screen coordinates
-      );
+      // Clamp values to prevent extreme coordinates
+      final clampedX = x.clamp(-10.0, 10.0);
+      final clampedY = y.clamp(-10.0, 10.0);
+
+      return Offset(centerX + clampedX * adjustedScale, centerY - clampedY * adjustedScale);
     }).toList();
   }
+
+  void _drawCartesianGrid(Canvas canvas, Size size) {
+    final centerX = size.width / 2;
+    final centerY = size.height / 2;
+
+    final gridPaint =
+        Paint()
+          ..color = Colors.grey.withOpacity(0.3)
+          ..strokeWidth = 1.0;
+
+    final axisPaint =
+        Paint()
+          ..color = Colors.black.withOpacity(0.7)
+          ..strokeWidth = 2.0;
+
+    // Stabilize font size scaling
+    final fontSize = (12 * zoomLevel.clamp(0.8, 1.3)).clamp(10.0, 16.0);
+    final labelStyle = TextStyle(color: Colors.black87, fontSize: fontSize, fontWeight: FontWeight.w500);
+
+    // Prevent grid from becoming too dense or sparse
+    final baseSpacing = 40.0;
+    final gridSpacing = (baseSpacing / zoomLevel.clamp(0.7, 1.5)).clamp(20.0, 80.0);
+    final maxGridLines = (8 * zoomLevel.clamp(0.8, 1.5)).round().clamp(6, 12);
+
+    // Draw grid lines with controlled density
+    for (int i = -maxGridLines; i <= maxGridLines; i++) {
+      if (i == 0) continue;
+
+      final offset = i * gridSpacing;
+
+      // Vertical grid lines
+      final x = centerX + offset;
+      if (x >= 0 && x <= size.width) {
+        canvas.drawLine(Offset(x, 0), Offset(x, size.height), gridPaint);
+
+        // Only show labels when zoom is reasonable
+        if (zoomLevel > 0.8 && zoomLevel < 2.0) {
+          final textPainter = TextPainter(textDirection: TextDirection.ltr, text: TextSpan(text: '${i.abs()}', style: labelStyle));
+          textPainter.layout();
+          textPainter.paint(canvas, Offset(x - textPainter.width / 2, centerY + 5));
+        }
+      }
+
+      // Horizontal grid lines
+      final y = centerY + offset;
+      if (y >= 0 && y <= size.height) {
+        canvas.drawLine(Offset(0, y), Offset(size.width, y), gridPaint);
+
+        if (zoomLevel > 0.8 && zoomLevel < 2.0) {
+          final textPainter = TextPainter(textDirection: TextDirection.ltr, text: TextSpan(text: '${i.abs()}', style: labelStyle));
+          textPainter.layout();
+          textPainter.paint(canvas, Offset(centerX + 5, y - textPainter.height / 2));
+        }
+      }
+    }
+
+    // Draw main axes
+    canvas.drawLine(Offset(0, centerY), Offset(size.width, centerY), axisPaint);
+    canvas.drawLine(Offset(centerX, 0), Offset(centerX, size.height), axisPaint);
+
+    // Add axis labels with controlled size
+    final axisLabelStyle = labelStyle.copyWith(fontSize: (fontSize * 1.2).clamp(12.0, 18.0), fontWeight: FontWeight.bold);
+
+    final textPainter = TextPainter(textDirection: TextDirection.ltr);
+
+    // X-axis label
+    textPainter.text = TextSpan(text: 'X', style: axisLabelStyle);
+    textPainter.layout();
+    textPainter.paint(canvas, Offset(size.width - 20, centerY + 5));
+
+    // Y-axis label
+    textPainter.text = TextSpan(text: 'Y', style: axisLabelStyle);
+    textPainter.layout();
+    textPainter.paint(canvas, Offset(centerX + 5, 15));
+
+    // Origin label
+    textPainter.text = TextSpan(text: '0', style: labelStyle);
+    textPainter.layout();
+    textPainter.paint(canvas, Offset(centerX + 5, centerY + 5));
+  }
+
+  // 2. Update the _projectVertices method to apply zoom
 
   void _drawUpperCone(Canvas canvas, List<Offset> projectedVertices) {
     // Create gradient for upper cone
@@ -559,7 +734,6 @@ class ConicSectionPainter extends CustomPainter {
     canvas.drawPath(path, shadowPaint);
     canvas.drawPath(path, upperBasePaint);
 
-    // Draw semi-transparent surface fill for better 3D look
     final fillPaint =
         Paint()
           ..shader = RadialGradient(colors: [Colors.purple.withOpacity(0.8), Colors.deepPurple.withOpacity(0.6)], stops: [0.0, 1.0]).createShader(Rect.fromCircle(center: apex, radius: 200))
@@ -575,6 +749,7 @@ class ConicSectionPainter extends CustomPainter {
             ..close();
       canvas.drawPath(trianglePath, fillPaint);
     }
+    ;
   }
 
   void _drawLowerCone(Canvas canvas, List<Offset> projectedVertices) {
@@ -623,7 +798,7 @@ class ConicSectionPainter extends CustomPainter {
 
     final path = Path();
     path.moveTo(projectedVertices[38].dx, projectedVertices[38].dy);
-    for (int i = 39; i <= 74; i++) {
+    for (int i = 39; i <= 73; i++) {
       path.lineTo(projectedVertices[i].dx, projectedVertices[i].dy);
     }
     path.close();
@@ -632,13 +807,13 @@ class ConicSectionPainter extends CustomPainter {
     canvas.drawPath(path, shadowPaint);
     canvas.drawPath(path, lowerBasePaint);
 
-    // Draw semi-transparent surface fill for better 3D look
     final fillPaint =
         Paint()
-          ..shader = RadialGradient(colors: [Colors.blue.withOpacity(0.8), Colors.teal.withOpacity(0.6)], stops: [0.0, 1.0]).createShader(Rect.fromCircle(center: apex, radius: 200))
+          ..shader = RadialGradient(colors: [Colors.blue.withOpacity(0.6), Colors.teal], stops: [0.0, 1.0]).createShader(Rect.fromCircle(center: apex, radius: 200))
           ..style = PaintingStyle.fill;
 
-    // Create triangular faces for the cone surface
+    // Triangular faces for thje cone surface
+
     for (int i = 38; i < 74; i++) {
       final trianglePath =
           Path()
@@ -646,22 +821,23 @@ class ConicSectionPainter extends CustomPainter {
             ..lineTo(projectedVertices[i].dx, projectedVertices[i].dy)
             ..lineTo(projectedVertices[i + 1].dx, projectedVertices[i + 1].dy)
             ..close();
+
       canvas.drawPath(trianglePath, fillPaint);
     }
   }
 
   void _drawCombinedPlaneAndConic(Canvas canvas, Size size, List<Offset> projectedVertices) {
-    // Draw the plane
+    final planeAlpha = (0.3 / zoomLevel).clamp(0.15, 0.5);
     final planePaint =
         Paint()
-          ..color = Colors.lightBlue.withOpacity(0.3)
+          ..color = Colors.lightBlue.withOpacity(planeAlpha)
           ..style = PaintingStyle.fill;
 
     final planeOutlinePaint =
         Paint()
           ..color = const Color.fromARGB(255, 213, 9, 37)
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 1.5;
+          ..strokeWidth = 1.5 * zoomLevel.clamp(0.8, 1.5);
 
     final planeVertices = projectedVertices.sublist(projectedVertices.length - 4);
     final planePath =
@@ -678,15 +854,16 @@ class ConicSectionPainter extends CustomPainter {
     // Determine the current conic type based on plane angle
     String currentType = _getCurrentConicType();
 
+    final conicStrokeWidth = 3.0 * zoomLevel.clamp(0.8, 1.5);
     // Draw the conic section with dynamic color
     final conicPaint =
         Paint()
           ..color = _getConicColor(currentType)
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 3.0;
+          ..strokeWidth = conicStrokeWidth;
 
     // For hyperbola case, we need to draw both branches
-    if (planeAngle > 0.9) {
+    if (planeAngle > 1.19) {
       // Upper branch (from upper cone)
       final upperPoints = _calculateIntersectionPoints(size: size, upperCone: true);
       if (upperPoints.isNotEmpty) {
@@ -718,7 +895,7 @@ class ConicSectionPainter extends CustomPainter {
         for (int i = 1; i < points.length; i++) {
           path.lineTo(points[i].dx, points[i].dy);
         }
-        if (planeAngle < 0.7) path.close(); // Close for circles/ellipses
+        if (planeAngle < 0.9) path.close(); // Close for circles/ellipses
         canvas.drawPath(path, conicPaint);
       }
     }
@@ -728,9 +905,11 @@ class ConicSectionPainter extends CustomPainter {
   String _getCurrentConicType() {
     if (planeAngle < 0.1) {
       return 'Circle';
-    } else if (planeAngle < 0.7) {
+    } else if (planeAngle < 1.0) {
+      // Changed from 0.8 to match _updateConicType
       return 'Ellipse';
-    } else if (planeAngle < 1.2) {
+    } else if (planeAngle < 1.19) {
+      // Changed from 0.17 to match _updateConicType
       return 'Parabola';
     } else {
       return 'Hyperbola';
@@ -758,7 +937,7 @@ class ConicSectionPainter extends CustomPainter {
     final segments = 100;
 
     // IMPORTANT: Use the same plane transformation as used for drawing the plane
-    final planeWidth = _coneRadius * 2.5;
+    final planeWidth = _coneRadius * 3.5;
     final planeVertices = [vector_math.Vector3(-planeWidth, 0, -planeWidth), vector_math.Vector3(planeWidth, 0, -planeWidth), vector_math.Vector3(planeWidth, 0, planeWidth), vector_math.Vector3(-planeWidth, 0, planeWidth)];
 
     // Apply the SAME transformation used for the plane
@@ -902,6 +1081,6 @@ class ConicSectionPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(ConicSectionPainter oldDelegate) {
-    return oldDelegate.planeAngle != planeAngle || oldDelegate.horizontalRotation != horizontalRotation || oldDelegate.verticalPosition != verticalPosition;
+    return oldDelegate.planeAngle != planeAngle || oldDelegate.horizontalRotation != horizontalRotation || oldDelegate.verticalPosition != verticalPosition || oldDelegate.zoomLevel != zoomLevel; // Add this line
   }
 }

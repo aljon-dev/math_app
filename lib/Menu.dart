@@ -84,22 +84,22 @@ class MenuButton extends StatelessWidget {
       height: 70,
       width: 250,
       child: ElevatedButton(
-        onPressed: () {
-          if (menuTitle == 'Circle') {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => DynamicShapes(planeAngle: 0.0, horizontalRotation: 0.0, verticalPosition: 0.0)));
-          }
-          if (menuTitle == 'Ellipse') {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => DynamicShapes(planeAngle: 0.5, horizontalRotation: 0.5, verticalPosition: 0.5)));
-          }
-
-          if (menuTitle == 'Parabola') {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => DynamicShapes(planeAngle: 0.7, horizontalRotation: 0.7, verticalPosition: 0.7)));
-          }
-
-          if (menuTitle == 'Hyperbola') {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => DynamicShapes(planeAngle: 1.2, horizontalRotation: 1.0, verticalPosition: 0.2)));
-          }
-        },
+       onPressed: () {
+  switch (menuTitle) {
+    case 'Circle':
+      Navigator.push(context, MaterialPageRoute(builder: (context) => DynamicShapes(planeAngle: 0.05, horizontalRotation: 0.0, verticalPosition: 0.5)));
+      break;
+    case 'Ellipse':
+      Navigator.push(context, MaterialPageRoute(builder: (context) => DynamicShapes(planeAngle: 0.5, horizontalRotation: 0.5, verticalPosition: 0.5)));
+      break;
+    case 'Parabola':
+      Navigator.push(context, MaterialPageRoute(builder: (context) => DynamicShapes(planeAngle: 1.1, horizontalRotation: 0.7, verticalPosition: 0.7)));
+      break;
+    case 'Hyperbola':
+      Navigator.push(context, MaterialPageRoute(builder: (context) => DynamicShapes(planeAngle: 1.3, horizontalRotation: 1.0, verticalPosition: 0.2)));
+      break;
+  }
+},
         style: ElevatedButton.styleFrom(backgroundColor: color, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: const BorderSide(color: Colors.black, width: 2)), padding: const EdgeInsets.symmetric(horizontal: 10)),
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(iconData, size: 32), const SizedBox(width: 15), Text(menuTitle, style: const TextStyle(fontSize: 20))]),
       ),
