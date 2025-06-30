@@ -10,6 +10,8 @@ class FormulasHyperbolaSection extends StatefulWidget {
 class _FormulasHyperbolaSectionState extends State<FormulasHyperbolaSection> {
   int currentStep = 0;
 
+    final GlobalKey<ScaffoldState> _drawerKey  = GlobalKey<ScaffoldState>();
+
   final List<Map<String, dynamic>> steps = [
     {'title': 'General Equation of a Hyperbola', 'content': 'This is the general form used to represent a hyperbola in conic sections.', 'formula': r'Ax² - By² + Cx + Dy + E = 0', 'image': 'assets/images/general_equation_hyperbola.png', 'type': 'formula'},
     {'title': 'Eccentricity', 'content': 'Eccentricity defines how "stretched" a hyperbola is. It is always greater than 1.', 'formula': r'e = c / a', 'image': 'assets/images/eccentricity_hyperbola.png', 'type': 'formula'},
@@ -36,12 +38,45 @@ class _FormulasHyperbolaSectionState extends State<FormulasHyperbolaSection> {
     }
   }
 
+   void _NavigateTo(int index){
+      setState(() {
+        currentStep = index;
+      });
+      Navigator.pop(context);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final currentStepData = steps[currentStep];
 
     return PopScope(child:  Scaffold(
-      appBar: AppBar(title: Text('Hyperbola Formula')),
+       key: _drawerKey,
+      appBar: AppBar(title: Text('Hyperbola Formula'),
+       actions: [
+              IconButton(onPressed: (){
+               
+               _drawerKey.currentState?.openEndDrawer();
+
+              }, icon: Icon(Icons.menu))
+        ],
+      
+      ),
+       endDrawer: Drawer(
+              child: ListView.builder(
+                itemCount: steps.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(steps[index]['title']),
+                    selected: index == currentStep,
+                    selectedTileColor: Colors.blue.withOpacity(0.1),
+
+
+                    onTap: () => _NavigateTo(index),
+                  );
+                },
+              ),
+        ),
       body: Column(
         children: [
           // Progress indicator

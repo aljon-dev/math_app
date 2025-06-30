@@ -9,7 +9,7 @@ class FormulasEllipseSection extends StatefulWidget {
 
 class _FormulasSectionState extends State<FormulasEllipseSection> {
   int currentStep = 0;
-
+     final GlobalKey<ScaffoldState> _drawerKey  = GlobalKey<ScaffoldState>();
   final List<Map<String, dynamic>> steps = [
     {'title': 'FORMULAS OF THE ELLIPSE', 'content': 'Let\'s explore the essential formulas used with ellipses. These help us understand properties like shape, axes, vertices, and focus.', 'image': 'assets/images/ellipse_intro.png', 'type': 'intro'},
     {'title': 'General Equation of an Ellipse', 'content': 'This is the general form used to represent an ellipse in conic sections.', 'formula': r'Ax² + By² + Cx + Dy + E = 0', 'image': 'assets/images/general_equation.png', 'type': 'formula'},
@@ -37,13 +37,45 @@ class _FormulasSectionState extends State<FormulasEllipseSection> {
     }
   }
 
+  void _NavigateTo(int index){
+      setState(() {
+        currentStep = index;
+      });
+      Navigator.pop(context);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final currentStepData = steps[currentStep];
 
     return PopScope(child: 
     Scaffold(
-      appBar: AppBar(title: Text('Ellipse Formula')),
+       key: _drawerKey,
+      appBar: AppBar(title: Text('Ellipse Formula'),
+        actions: [
+              IconButton(onPressed: (){
+               
+               _drawerKey.currentState?.openEndDrawer();
+
+              }, icon: Icon(Icons.menu))
+        ],
+      ),
+       endDrawer: Drawer(
+              child: ListView.builder(
+                itemCount: steps.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(steps[index]['title']),
+                    selected: index == currentStep,
+                    selectedTileColor: Colors.blue.withOpacity(0.1),
+
+
+                    onTap: () => _NavigateTo(index),
+                  );
+                },
+              ),
+        ),
       body: Column(
         children: [
           // Progress indicator

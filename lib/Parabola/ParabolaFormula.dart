@@ -10,6 +10,8 @@ class FormulasParabolaSection extends StatefulWidget {
 class _FormulasSectionState extends State<FormulasParabolaSection> {
   int currentStep = 0;
 
+    final GlobalKey<ScaffoldState> _drawerKey  = GlobalKey<ScaffoldState>();
+
   final List<Map<String, dynamic>> parabolaSteps = [
     {'title': 'Upward Opening Parabola (Vertex at Origin)', 'content': 'Standard form: x² = 4py\n• Vertex: (0,0)\n• Focus: (0, p)\n• Directrix: y = -p\n• Axis: x = 0\n• Latus Rectum: length = |4p|, endpoints at (±2p, p)', 'image': 'assets/images/upward_origin.jpg', 'type': 'formula'},
     {'title': 'Downward Opening Parabola (Vertex at Origin)', 'content': 'Standard form: x² = -4py\n• Vertex: (0,0)\n• Focus: (0, -p)\n• Directrix: y = p\n• Axis: x = 0\n• Latus Rectum: length = |4p|, endpoints at (±2p, -p)', 'image': 'assets/images/downward_origin.jpg', 'type': 'formula'},
@@ -37,13 +39,47 @@ class _FormulasSectionState extends State<FormulasParabolaSection> {
     }
   }
 
+    void _NavigateTo(int index){
+      setState(() {
+        currentStep = index;
+      });
+      Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentStepData = parabolaSteps[currentStep];
 
-    return Scaffold(
-      appBar: AppBar(title: Text('Parabola Formula')),
+    return PopScope(child: Scaffold(
+       key: _drawerKey,
+      appBar: AppBar(title: Text('Parabola Formula'),
+       
+          actions: [
+              IconButton(onPressed: (){
+               
+               _drawerKey.currentState?.openEndDrawer();
+
+              }, icon: Icon(Icons.menu))
+        ],
+      ),
+       endDrawer: Drawer(
+              child: ListView.builder(
+                itemCount: parabolaSteps.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(parabolaSteps[index]['title']),
+                    selected: index == currentStep,
+                    selectedTileColor: Colors.blue.withOpacity(0.1),
+
+
+                    onTap: () => _NavigateTo(index),
+                  );
+                },
+              ),
+        ),
+      
       body: Column(
+
         children: [
           // Progress indicator
           Container(padding: const EdgeInsets.all(16.0), child: Column(children: [Text('Step ${currentStep + 1} of ${parabolaSteps.length}', style: const TextStyle(fontSize: 14, color: Colors.grey)), const SizedBox(height: 8), LinearProgressIndicator(value: (currentStep + 1) / parabolaSteps.length, backgroundColor: Colors.grey[300], valueColor: const AlwaysStoppedAnimation<Color>(Colors.green))])),
@@ -98,7 +134,7 @@ class _FormulasSectionState extends State<FormulasParabolaSection> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Color _getFormulaBackgroundColor(String? type) {

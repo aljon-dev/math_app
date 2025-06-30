@@ -10,10 +10,140 @@ class ParabolaExamplesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: const Text('Parabola Examples')), body: ListView(children: [_buildSectionCard(context, 'Real-life Examples', Icons.public, Colors.indigo, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ParabolaIntroScreen()))), _buildSectionCard(context, 'Equation Conversions', Icons.swap_horiz, Colors.teal, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ParabolaConversionsScreen()))), _buildSectionCard(context, 'From Properties', Icons.tune, Colors.orange, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ParabolaFromPropertiesScreen()))), _buildSectionCard(context, 'From Graphs', Icons.graphic_eq, Colors.purple, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ParabolaFromGraphScreen()))), _buildSectionCard(context, 'Real-world Problems', Icons.architecture, Colors.green, () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ParabolaRealWorldScreen())))]));
+    return PopScope(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Parabola Examples'),
+        ),
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            // Adjust layout based on screen width
+            final bool isSmallScreen = constraints.maxWidth < 400;
+            
+            return ListView(
+              padding: const EdgeInsets.all(8.0),
+              children: [
+                _buildSectionCard(
+                  context,
+                  'Real-life Examples',
+                  Icons.public,
+                  Colors.indigo,
+                  isSmallScreen,
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ParabolaIntroScreen(),
+                    ),
+                  ),
+                ),
+                _buildSectionCard(
+                  context,
+                  'Equation Conversions',
+                  Icons.swap_horiz,
+                  Colors.teal,
+                  isSmallScreen,
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ParabolaConversionsScreen(),
+                    ),
+                  ),
+                ),
+                _buildSectionCard(
+                  context,
+                  'From Properties',
+                  Icons.tune,
+                  Colors.orange,
+                  isSmallScreen,
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ParabolaFromPropertiesScreen(),
+                    ),
+                  ),
+                ),
+                _buildSectionCard(
+                  context,
+                  'From Graphs',
+                  Icons.graphic_eq,
+                  Colors.purple,
+                  isSmallScreen,
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ParabolaFromGraphScreen(),
+                    ),
+                  ),
+                ),
+                _buildSectionCard(
+                  context,
+                  'Real-world Problems',
+                  Icons.architecture,
+                  Colors.green,
+                  isSmallScreen,
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ParabolaRealWorldScreen(),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
   }
 
-  Widget _buildSectionCard(BuildContext context, String title, IconData icon, Color color, VoidCallback onTap) {
-    return Card(margin: const EdgeInsets.all(8.0), elevation: 4, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), child: InkWell(borderRadius: BorderRadius.circular(12), onTap: onTap, child: Padding(padding: const EdgeInsets.all(16.0), child: Row(children: [Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: color.withOpacity(0.2), shape: BoxShape.circle), child: Icon(icon, color: color)), const SizedBox(width: 16), Text(title, style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.black87, fontWeight: FontWeight.w600)), const Spacer(), const Icon(Icons.chevron_right, color: Colors.grey)]))));
+  Widget _buildSectionCard(
+    BuildContext context,
+    String title,
+    IconData icon,
+    Color color,
+    bool isSmallScreen,
+    VoidCallback onTap,
+  ) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: onTap,
+        child: Padding(
+          padding: EdgeInsets.all(isSmallScreen ? 12.0 : 16.0),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.2),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, color: color),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w600,
+                        fontSize: isSmallScreen ? 14 : 16,
+                      ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 8),
+              const Icon(Icons.chevron_right, color: Colors.grey),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
