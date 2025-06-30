@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:math_app/Curve.dart';
 import 'package:math_app/Menu.dart';
 import 'package:vector_math/vector_math.dart' as vector_math;
 
@@ -79,8 +80,23 @@ class _ConicSectionVisualizationState extends State<ConicSectionVisualization> w
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('CONIC SECTION: $_currentType'), actions: [IconButton(icon: Icon(_isAnimating ? Icons.pause : Icons.play_arrow), onPressed: _toggleAnimation)]),
+    return PopScope(
+      canPop: false, // Prevent default back behavior
+  onPopInvokedWithResult: (didPop, result) {
+    if (!didPop) {
+      // Only navigate if the pop didn't already happen
+      Navigator.pushReplacement(
+        context, 
+        MaterialPageRoute(builder: (context) => CurvesIntroScreen())
+      );
+    }
+  },
+      child: Scaffold(
+      appBar: AppBar(
+        leading: IconButton(onPressed: (){
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> CurvesIntroScreen()));
+        }, icon: Icon(Icons.arrow_back)),
+        title: Text('CONIC SECTION: $_currentType'), actions: [IconButton(icon: Icon(_isAnimating ? Icons.pause : Icons.play_arrow), onPressed: _toggleAnimation)]),
       body: Column(
         children: [
           const SizedBox(height: 20),
@@ -181,7 +197,7 @@ class _ConicSectionVisualizationState extends State<ConicSectionVisualization> w
           ),
         ],
       ),
-    );
+    ));
   }
 
   Widget _buildSlider(String label, double value, double min, double max, Function(double) onChanged) {

@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:math_app/Cone.dart';
+import 'package:math_app/Intro.dart';
 
 class CurvesIntroScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return PopScope(
+        canPop: false, // Prevent default back behavior
+  onPopInvokedWithResult: (didPop, result) {
+    if (!didPop) {
+      // Only navigate if the pop didn't already happen
+      Navigator.pushReplacement(
+        context, 
+        MaterialPageRoute(builder: (context) => ConicSectionIntroPage())
+      );
+    }
+  },
+      child:Scaffold(
       body: Stack(
         children: [
           // Background image - fullscreen
@@ -25,6 +38,7 @@ class CurvesIntroScreen extends StatelessWidget {
           ),
         ],
       ),
+    )
     );
   }
 }
