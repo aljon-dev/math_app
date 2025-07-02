@@ -147,9 +147,9 @@ class _ConicSectionIntroPageState extends State<ConicSectionIntroPage> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: Image.asset(
-                            'assets/conicintro.jpg', // You'll need to add this image
+                            'assets/images/introfrontpage2.png', // You'll need to add this image
                             width: double.infinity,
-                            height: 200,
+                            height: 300,
                             fit: BoxFit.contain,
                             errorBuilder: (context, error, stackTrace) {
                               return Container(height: 200, color: Colors.grey[200], child: const Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.image, size: 48, color: Colors.grey), SizedBox(height: 8), Text('Conic Sections Explanation Diagram', style: TextStyle(color: Colors.grey))])));

@@ -20,7 +20,7 @@ class RealLifeApplicationsScreen extends StatelessWidget {
                     'The face of the clock is a circle, and the hands move along circular paths with a common center. '
                     'The length of each hand represents a radius, and the circumference of the circular path is divided '
                     'into units representing hours, minutes, and seconds.',
-                'assets/clock_example.jpg',
+                'assets/clock_example.png',
               ),
               const SizedBox(height: 20),
               _buildExampleCard(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:math_app/Intro.dart';
+import 'package:math_app/WhatisConic.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,7 +36,7 @@ class WelcomeScreen extends StatelessWidget {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ConicSectionIntroPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ConicCurvesPage()));
               },
               child: Text('GET STARTED', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
             ),

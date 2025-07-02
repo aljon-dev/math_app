@@ -143,8 +143,8 @@ class _QuizScreenState extends State<QuizScreenEllipse> {
 
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MenuButton()));
-        return false; // Prevent default back behavior
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MenuButton()));
+    return false; // 
       },
       child: Scaffold(
         appBar: AppBar(
@@ -221,12 +221,13 @@ class ResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      onPopInvokedWithResult: (did, result) {
-        if (did) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
-        }
-      },
+  return PopScope(
+  canPop: false, // Prevent default back behavior
+  onPopInvoked: (didPop) {
+    if (!didPop) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MenuButton()));
+    }
+  },
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(

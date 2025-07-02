@@ -31,9 +31,9 @@ class _DefinitionSectionState extends State<DefinitionHyperBolaSection> {
   }
 
   final List<Map<String, dynamic>> steps = [
-    {'title': 'What is a Hyperbola?', 'content': 'A hyperbola is a type of conic section formed when a plane intersects both halves of a double right circular cone at an angle. This results in two open, mirror-image curves.', 'image': 'assets/images/Hyperbola2.jpg'},
-    {'title': 'Focus, Directrix, and Eccentricity', 'content': 'Each branch of a hyperbola has a focus, and the distances to the foci define its shape. The eccentricity of a hyperbola is greater than 1, distinguishing it from ellipses and circles.', 'image': 'assets/images/Hyperbola3.jpg'},
-    {'title': 'Standard Equation', 'content': 'The standard form of a hyperbola is (x²/a²) - (y²/b²) = 1 or (y²/a²) - (x²/b²) = 1, depending on the orientation. This equation defines the curve’s symmetry and shape.', 'image': 'assets/images/Hyperbola4.jpg'},
+    {'title': 'What is a Hyperbola?', 'content': 'A hyperbola is a type of conic section formed when a plane intersects both halves of a double right circular cone at an angle. This results in two open, mirror-image curves.', 'image': 'assets/images/Hyperbola2.png'},
+    {'title': 'Focus, Directrix, and Eccentricity', 'content': 'Each branch of a hyperbola has a focus, and the distances to the foci define its shape. The eccentricity of a hyperbola is greater than 1, distinguishing it from ellipses and circles.', 'image': 'assets/images/Hyperbola3.png'},
+    {'title': 'Standard Equation', 'content': 'The standard form of a hyperbola is (x²/a²) - (y²/b²) = 1 or (y²/a²) - (x²/b²) = 1, depending on the orientation. This equation defines the curve’s symmetry and shape.', 'image': 'assets/images/Hyperbola3.png'},
   ];
 
   void nextStep() {

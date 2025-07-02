@@ -33,7 +33,7 @@ class ParabolaRealWorldScreen extends StatelessWidget {
                   'For downward parabola, vertex is the highest point',
                   'Maximum height = 12 meters'
                 ],
-                image: 'assets/parabola_bridge_problem.jpg',
+                image: 'assets/parabola_bridge_problem.png',
               ),
             ],
           ),

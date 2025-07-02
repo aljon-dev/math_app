@@ -17,7 +17,7 @@ class EllipseIntroScreen extends StatelessWidget {
               'Running Track Field',
               'A running track field is an oval-shaped path designed for running, usually with two straight sides and two curved ends.',
               '1. The track is designed as an ellipse to allow smooth turns and maximize the running area.\n2. The curved ends help runners maintain speed and safety.\n3. The ellipse shape ensures fairness in lane distances.',
-              'assets/running_track.jpg',
+              'assets/running_track.png',
             ),
             const SizedBox(height: 20),
             _buildExampleCard(

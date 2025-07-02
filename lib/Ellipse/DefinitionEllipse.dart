@@ -17,7 +17,7 @@ class _DefinitionSectionState extends State<DefinitionSectionEllipse> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<Map<String, dynamic>> steps = [
-    {'title': 'What is a Ellipse?', 'content': 'An ellipse is a two-dimensional shape defined by its axes. It forms when a cone is intersected by a plane at an angle with respect to its base.\n\nIt is a set of all points in a plane where the total distance to two fixed points (foci) is constant.\n\nLet’s say, if f₁ and f₂ are two fixed points and k is a positive constant, then the ellipse is the set of points P(x, y) such that:\n\nPf₁ + Pf₂ = k', 'image': 'assets/images/ellipseintro.jpg'},
+    {'title': 'What is a Ellipse?', 'content': 'An ellipse is a two-dimensional shape defined by its axes. It forms when a cone is intersected by a plane at an angle with respect to its base.\n\nIt is a set of all points in a plane where the total distance to two fixed points (foci) is constant.\n\nLet’s say, if f₁ and f₂ are two fixed points and k is a positive constant, then the ellipse is the set of points P(x, y) such that:\n\nPf₁ + Pf₂ = k', 'image': 'assets/images/ellipseintro.png'},
   ];
 
   Future<void> play() async {
