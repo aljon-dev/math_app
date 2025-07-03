@@ -5,38 +5,55 @@ class ParabolaRealWorldScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      child: Scaffold(
-        appBar: AppBar(title: const Text('Real-world Parabola Problems')),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildProblem(
-                context: context,
-                problem: '1. Given vertex at (1, 1), opens downward, and has a latus rectum length of 2 units. Find the equation.',
-                solution: [
-                  'Standard form for downward parabola: (x - h)² = -4p(y - k)',
-                  'Vertex (h, k) = (1, 1)',
-                  '4p = 2 → p = 0.5',
-                  'Equation: (x - 1)² = -2(y - 1)'
-                ],
-              ),
-              const SizedBox(height: 24),
-              _buildProblem(
-                context: context,
-                problem: '2. A bridge has a parabolic arch modeled by (x - 3)² = -8(y - 12). What is the maximum height?',
-                solution: [
-                  'Equation is in standard form: (x - h)² = -4p(y - k)',
-                  'Vertex (h, k) = (3, 12)',
-                  'For downward parabola, vertex is the highest point',
-                  'Maximum height = 12 meters'
-                ],
-                image: 'assets/parabola_bridge_problem.png',
-              ),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(title: const Text('Real Life Word Examples')),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Problem 1
+            _buildProblem(
+              context: context,
+              problem: '1. A city is designing a new bridge with a parabolic arch. The shape of the arch is modeled by the equation: y = -x² + 12 where x and y are measured in meters. Assuming the bottom of the arch touches the ground, what is the maximum height of the arch from the ground?',
+              solution: [
+                'Since we know that y = ax² + bx + c is the standard form of a downward parabola,',
+                'In the given equation we are given the vertex of (0,12).',
+                'Since the vertex is the highest point of the parabola, the answer is 12 meters.'
+              ],
+              image: 'assets/parabola_bridge_problem.png',
+            ),
+            const SizedBox(height: 24),
+
+            // Problem 2
+            _buildProblem(
+              context: context,
+              problem: '2. A decorative fountain in a park sprays water in the shape of a parabolic arc. The water reaches a maximum height of 4 meters and lands 6 meters away from where it started on the ground. Assuming the vertex of the parabola is at the highest point of the water arc and the fountain starts at the origin (0,0), find the equation of the parabola that models the path of the water.',
+              solution: [
+                'Standard form for downward parabola: (x - h)² = -4p(y - k)',
+                'The length of the latus rectum is 6 meters (horizontal distance).',
+                'Vertex is at midpoint: [(0+6)/2, 4] → (3,4)',
+                'Substituting gives the equation: (x-3)² = -6(y-4)'
+              ],
+              image: 'assets/fountain_problem.jfif',
+              finalAnswer: 'Final answer: (x-3)² = -6(y-4)',
+            ),
+            const SizedBox(height: 24),
+
+            // Problem 3
+            _buildProblem(
+              context: context,
+              problem: '3. During a baseball game, the ball is hit and follows a parabolic path that represents this equation: (x-20)² = -40(y-20). What is the length of the latus rectum of the parabola?',
+              solution: [
+                'Equation is in standard form: (x-h)² = -4p(y-k)',
+                'Comparing with given equation: (x-20)² = -40(y-20)',
+                '4p = 40 → p = 10',
+                'Length of latus rectum = |4p| = 40 meters'
+              ],
+              image: 'assets/baseball.jfif',
+              finalAnswer: 'Final answer: 40 meters',
+            ),
+          ],
         ),
       ),
     );
@@ -47,11 +64,13 @@ class ParabolaRealWorldScreen extends StatelessWidget {
     required String problem,
     required List<String> solution,
     String? image,
+    String? finalAnswer,
   }) {
     return Card(
+      elevation: 3,
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -60,22 +79,29 @@ class ParabolaRealWorldScreen extends StatelessWidget {
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             if (image != null) ...[
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               _buildZoomableImage(context, image),
             ],
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             const Text(
               'Solution:',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            ...solution
-                .map(
-                  (step) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: Text('• $step'),
-                  ),
-                )
-                .toList(),
+            const SizedBox(height: 8),
+            ...solution.map((step) => Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Text(step),
+            )).toList(),
+            if (finalAnswer != null) ...[
+              const SizedBox(height: 12),
+              Text(
+                finalAnswer,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ],
           ],
         ),
       ),
@@ -84,7 +110,7 @@ class ParabolaRealWorldScreen extends StatelessWidget {
 
   Widget _buildZoomableImage(BuildContext context, String imagePath) {
     return SizedBox(
-      height: 150,
+      height: 200,
       child: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -98,13 +124,20 @@ class ParabolaRealWorldScreen extends StatelessWidget {
           tag: 'image-$imagePath',
           child: Image.asset(
             imagePath,
-            width: 300,
-            height: 150,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) => Center(
-              child: Text(
-                'Image not found',
-                style: TextStyle(color: Colors.grey),
+            width: double.infinity,
+            height: 200,
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) => Container(
+              height: 200,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Center(
+                child: Text(
+                  'Image not found: $imagePath',
+                  style: TextStyle(color: Colors.grey),
+                ),
               ),
             ),
           ),
@@ -183,14 +216,15 @@ class _ZoomableImageScreenState extends State<_ZoomableImageScreen> {
                   _currentScale = _controller.value.getMaxScaleOnAxis();
                 });
               },
-              child: Image.asset(
-                height: double.infinity,
-                width: double.infinity,
-                widget.imagePath,
-                errorBuilder: (context, error, stackTrace) => Center(
-                  child: Text(
-                    'Image not found',
-                    style: TextStyle(color: Colors.grey),
+              child: Hero(
+                tag: 'image-${widget.imagePath}',
+                child: Image.asset(
+                  widget.imagePath,
+                  errorBuilder: (context, error, stackTrace) => Center(
+                    child: Text(
+                      'Image not found',
+                      style: TextStyle(color: Colors.grey),
+                    ),
                   ),
                 ),
               ),
@@ -225,6 +259,7 @@ class _ZoomableImageScreenState extends State<_ZoomableImageScreen> {
                     color: Colors.black54,
                     borderRadius: BorderRadius.circular(12),
                   ),
+                  
                   child: Text(
                     '${(_currentScale * 100).round()}%',
                     style: TextStyle(
