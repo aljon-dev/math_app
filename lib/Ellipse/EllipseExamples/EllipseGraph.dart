@@ -16,7 +16,7 @@ class EllipseFromGraphScreen extends StatelessWidget {
               context,
               'Example 1',
               'Graph with center at (3,-1), a=3, b=2 (vertical)',
-              '1. Identify center: (3,-1)\n'
+              '1. Identify the center: (3,-1)\n'
                   '2. Identify a=3, b=2\n'
                   '3. Standard form: (x-3)²/4 + (y+1)²/9 = 1',
               'assets/ellipse_graph1.jpg',

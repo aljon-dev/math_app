@@ -15,7 +15,15 @@ class _ParabolaPartsScreenState extends State<ParabolaPartsScreen> {
   final AudioPlayer player = AudioPlayer();
   bool isPlaying = false;
 
-  final Map<String, String> descriptions = {'Vertex': 'The point on the parabola that is halfway from the focus to the directrix. The highest or lowest point where the parabola changes direction.', 'Focus': 'A fixed point inside the parabola used to define its shape. All points on the parabola are equidistant from the focus and directrix.', 'Directrix': 'A fixed line outside the parabola that helps define its shape. Works with the focus to determine the parabola\'s curve.', 'Axis of Symmetry': 'The line passing through the focus and perpendicular to the directrix. This axis divides the parabola into 2 equal parts.', 'Focal Chord': 'A line segment connecting two points on the parabola that passes through the focus.', 'Latus Rectum': 'A special focal chord perpendicular to the axis of symmetry, with length |4p|.'};
+  final Map<String, String> descriptions = {
+    'Vertex': 'The point on the parabola that is halfway from the focus to the directrix. The highest or lowest point where the parabola changes direction.', 
+    'Focus': 'A fixed point inside the parabola used to define its shape', 
+    'Directrix': 'A fixed line outside the parabola that helps define its shape. Works with the focus to determine the parabola\'s curve.', 
+    'Axis of Symmetry': 'The line passing through the focus and perpendicular to the directrix. This axis divides the parabola into 2 equal parts.', 
+    'Focal Chord': 'A line segment connecting two points on the parabola that passes through the focus.', 
+    'Latus Rectum': 'A Focal Chord perpendicular to the axis of symmetry, with its endpoints on the parabola.'
+
+    };
 
   Future<void> selectPart(String part) async {
     setState(() {

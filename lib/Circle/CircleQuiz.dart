@@ -44,14 +44,14 @@ class _QuizScreenState extends State<QuizScreen> {
       'image': null,
     },
     {
-      'question': ' What is the Center for the general equation x² + y² + 4x + 2y - 4 = 0?',
+      'question': ' What is the center for the general equation x² + y² + 4x + 2y - 4 = 0?',
       'options': ['a. (0,0)', 'b. (1,2)', 'c. (2,1)', 'd. (1,3)'],
       'correctIndex': 2,
       'solution': 'Complete the square: (x²+4x+4) + (y²+2y+1) = 4+4+1 → (x+2)² + (y+1)² = 9. Center is (-h,-k) = (2,1).',
       'image': null,
     },
     {
-      'question': ' What is the Radius for the general equation x² + y² + 4x + 2y - 4 = 0?',
+      'question': ' What is the radius for the general equation x² + y² + 4x + 2y - 4 = 0?',
       'options': ['a. 1', 'b. 2', 'c. 3', 'd. 4'],
       'correctIndex': 2,
       'solution': 'After completing the square: (x+2)² + (y+1)² = 9. Radius is √9=3.',
@@ -65,7 +65,7 @@ class _QuizScreenState extends State<QuizScreen> {
       'image': null,
     },
     {
-      'question': '7. What is the Center for diameter endpoints at (-8,7) and (4,-3)?',
+      'question': '7. What is the center for diameter endpoints at (-8,7) and (4,-3)?',
       'options': ['a. (-2,2)', 'b. (6,-5)', 'c. (5,8)', 'd. (-5,8)'],
       'correctIndex': 0,
       'solution': 'Midpoint formula: ((-8+4)/2, (7+(-3))/2) = (-2,2)',

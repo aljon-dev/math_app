@@ -13,17 +13,17 @@ class CircleEquationsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildExampleCard(
-                context,
-                'Finding Center and Radius',
-                '(x + 2)² + (y - 1)² = 36',
-                '1. Compare with standard form: (x - h)² + (y - k)² = r²\n'
-                    '2. Identify values:\n'
-                    '   h = -2 (change sign of x term)\n'
-                    '   k = 1 (keep sign of y term)\n'
-                    '   r² = 36 ⇒ r = √36 = 6\n'
-                    '3. Center: (-2, 1), Radius: 6',
-              ),
+             _buildExampleCard(
+                  context,
+                  'Finding Center and Radius',
+                  '(x + 2)² + (y - 1)² = 36',
+                  '1. Use the standard form of the circle equation: (x - h)² + (y - k)² = r²\n'
+                      '2. Determine the values of center (h, k) and radius r:\n'
+                      '   (x - (-2))² + (y - 1)² = 6²\n'
+                      '   Note: Always change the sign of the value inside parentheses\n'
+                      '3. Take the square root of 36: √36 = 6\n'
+                      '4. Center: (-2, 1), Radius: 6',
+                ),
               const SizedBox(height: 20),
               _buildExampleCard(
                 context,

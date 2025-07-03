@@ -21,14 +21,14 @@ class _FormulasSectionState extends State<FormulasSection> {
     {'title': 'Standard Form (Center at h,k)', 'content': 'This is the standard equation of a circle with center at point (h,k) and radius r.', 'formula': r'(x - h)² + (y - k)² = r²', 'type': 'formula'},
     {'title': 'Standard Form (Center at Origin)', 'content': 'When the center of the circle is at the origin (0,0), the equation simplifies.', 'formula': r'x² + y² = r²', 'type': 'formula'},
     {'title': 'General Form', 'content': 'The general form represents a circle equation in expanded form.', 'formula': r'x² + y² + Ax + By + C = 0', 'type': 'formula'},
-    {'title': 'DERIVING THE STANDARD FORM', 'content': 'Now let\'s understand how we derive the standard form of a circle equation using the distance formula.', 'type': 'derivation_intro'},
-    {'title': 'Distance Formula', 'content': 'We start with the distance formula between two points.', 'formula': r'd = √[(x₂ - x₁)² + (y₂ - y₁)²]', 'type': 'derivation'},
-    {'title': 'Substitute Values', 'content': 'We substitute the center (h,k), point (x,y), and distance r into the formula.', 'formula': r'r = √[(x - h)² + (y - k)²]', 'type': 'derivation'},
-    {'title': 'Square Both Sides', 'content': 'To eliminate the square root, we square both sides of the equation.', 'formula': r'r² = (x - h)² + (y - k)²', 'type': 'derivation'},
+    {'title': 'DERIVING THE STANDARD FORM', 'content': 'Now let’s derive the standard form of a circle equation using the distance formula.', 'type': 'derivation_intro'},
+    {'title': 'Distance Formula', 'content': 'First,let`s start with the distance formula between two points.', 'formula': r'd = √[(x₂ - x₁)² + (y₂ - y₁)²]', 'type': 'derivation'},
+    {'title': 'Substitute Values', 'content': 'We substitute the center (h,k),point (x,y), and distance (r)   into the formula.', 'formula': r'r = √[(x - h)² + (y - k)²]', 'type': 'derivation'},
+    {'title': 'Square Both Sides', 'content': 'To eliminate the square root, We square both sides of the equation to remove the square root.', 'formula': r'r² = (x - h)² + (y - k)²', 'type': 'derivation'},
     {'title': 'Standard Form Result', 'content': 'Rearranging gives us the standard form of a circle equation.', 'formula': r'(x - h)² + (y - k)² = r²', 'type': 'derivation'},
     {'title': 'Circle at Origin - Setup', 'content': 'For a circle centered at the origin (0,0), we follow the same process.', 'formula': r'r = √[(x - 0)² + (y - 0)²]', 'type': 'derivation'},
-    {'title': 'Simplify', 'content': 'Simplifying the equation when the center is at (0,0).', 'formula': r'r = √[x² + y²]', 'type': 'derivation'},
-    {'title': 'Final Form at Origin', 'content': 'Squaring both sides gives us the equation for a circle centered at the origin.', 'formula': r'x² + y² = r²', 'type': 'derivation'},
+    {'title': 'Simplify', 'content': 'Simplify  the  equation if the center is at (0,0).', 'formula': r'r = √[x² + y²]', 'type': 'derivation'},
+    {'title': 'Final Form at Origin', 'content': 'Squaring both sides results in the standard equation of a circle centered at the origin.', 'formula': r'x² + y² = r²', 'type': 'derivation'},
   ];
 
   void nextStep() {
