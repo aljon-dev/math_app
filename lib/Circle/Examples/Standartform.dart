@@ -46,14 +46,84 @@ class StandardFormScreen extends StatelessWidget {
   }
 
   Widget _buildDerivationCard(BuildContext context) {
-    return Card(elevation: 3, margin: const EdgeInsets.only(bottom: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), child: Padding(padding: const EdgeInsets.all(16.0), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Deriving the Standard Form', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: Colors.orange[800])), const SizedBox(height: 12), const Text('Using the distance formula with points (h,k), (x,y) and distance r:', style: TextStyle(fontSize: 16)), const SizedBox(height: 8), _buildMathFormula(r'd = √ {(x_2 - x_1)^2 + (y_2 - y_1)^2}'), const SizedBox(height: 8), const Text('Substitute values:'), _buildMathFormula(r'r = √ {(x - h)^2 + (y - k)^2}'), const SizedBox(height: 8), const Text('Square both sides:'), _buildMathFormula(r'r^2 = (x - h)^2 + (y - k)^2'), _buildMathFormula(r'(x - h)^2 + (y - k)^2 = r^2'), const SizedBox(height: 8), const Text('For center at (0,0):'), _buildMathFormula(r'r^2 = x^2 + y^2')])));
+    return Card(
+      elevation: 3,
+      margin: const EdgeInsets.only(bottom: 16),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0), 
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start, 
+          children: [
+            Text('Deriving the Standard Form', 
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold, 
+                color: Colors.orange[800])), 
+            const SizedBox(height: 12), 
+            const Text('Using the distance formula with points (h,k), (x,y) and distance r:', 
+              style: TextStyle(fontSize: 16)), 
+            const SizedBox(height: 8),
+            _buildMathFormula(r'd = √(x₂ - x₁)² + (y₂ - y₁)²'), 
+            const SizedBox(height: 8), 
+            const Text('Substitute values:'),
+            _buildMathFormula(r'r = √(x - h)² + (y - k)²'),
+            const SizedBox(height: 8), 
+            const Text('Square both sides:'),
+            _buildMathFormula(r'r² = (x - h)² + (y - k)²'),
+            _buildMathFormula(r'(x - h)² + (y - k)² = r²'), 
+            const SizedBox(height: 8), 
+            const Text('For center at (0,0):'), 
+            _buildMathFormula(r'r² = x² + y²')
+          ]
+        )
+      )
+    );
   }
 
   Widget _buildConversionCard(BuildContext context, String title, String example, String steps) {
-    return Card(elevation: 3, margin: const EdgeInsets.only(bottom: 16), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), child: Padding(padding: const EdgeInsets.all(16.0), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(title, style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: Colors.orange[700])), const SizedBox(height: 12), Text('Example: $example', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)), const SizedBox(height: 12), Text('Steps:', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)), const SizedBox(height: 8), Text(steps, style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16, height: 1.5))])));
+    return Card(
+      elevation: 3, 
+      margin: const EdgeInsets.only(bottom: 16), 
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), 
+      child: Padding(
+        padding: const EdgeInsets.all(16.0), 
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start, 
+          children: [
+            Text(title, 
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold, 
+                color: Colors.orange[700])), 
+            const SizedBox(height: 12), 
+            Text('Example: $example', 
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)), 
+            const SizedBox(height: 12), 
+            Text('Steps:', 
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold)), 
+            const SizedBox(height: 8), 
+            Text(steps, 
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontSize: 16, 
+                height: 1.5))
+          ]
+        )
+      )
+    );
   }
 
   Widget _buildMathFormula(String tex) {
-    return Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(4)), child: Text(tex, style: const TextStyle(fontSize: 18, fontFamily: 'RobotoMono')));
+    return Container(
+      padding: const EdgeInsets.all(8), 
+      decoration: BoxDecoration(
+        color: Colors.grey[100], 
+        borderRadius: BorderRadius.circular(4)), 
+      child: Text(tex, 
+        style: const TextStyle(
+          fontSize: 18, 
+          fontFamily: 'RobotoMono'
+        )
+      )
+    );
   }
 }

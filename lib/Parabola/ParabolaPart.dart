@@ -21,7 +21,8 @@ class _ParabolaPartsScreenState extends State<ParabolaPartsScreen> {
     'Directrix': 'A fixed line outside the parabola that helps define its shape. Works with the focus to determine the parabola\'s curve.', 
     'Axis of Symmetry': 'The line passing through the focus and perpendicular to the directrix. This axis divides the parabola into 2 equal parts.', 
     'Focal Chord': 'A line segment connecting two points on the parabola that passes through the focus.', 
-    'Latus Rectum': 'A Focal Chord perpendicular to the axis of symmetry, with its endpoints on the parabola.'
+    'Latus Rectum': 'A Focal Chord perpendicular to the axis of symmetry, with its endpoints on the parabola.',
+    'Distance p': 'p – the distance from the vertex to the focus or from the vertex to the directrix.' 
 
     };
 
