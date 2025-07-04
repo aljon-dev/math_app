@@ -72,7 +72,7 @@ class _QuizScreenState extends State<QuizScreenEllipse> {
       'options': ['a. Graph A', 'b. Graph B', 'c. Graph C', 'd. Graph D'],
       'correctIndex': 0,
       'solution': 'Center: (4, -3). a² = 64, b² = 49, so a = 8, b = 7. Since a² > b², major axis is vertical with length 16, minor axis horizontal with length 14.',
-      'image': 'assets/images/question14_graphs.png',
+      'image': 'assets/images/question14_graphs.jpg',
     },
     {
       'question': ' What are the vertices of the ellipse shown in the graph?',
