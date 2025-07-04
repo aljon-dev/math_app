@@ -169,7 +169,7 @@ class _ConicSectionIntroPageState extends State<ConicSectionIntroPage> {
                   const SizedBox(height: 20),
 
                   // Explanation
-                  const Text(' A cone has two identical conical shapes known as nappes. We can get various shapes depending upon the angle of the cut between the plane, the cone, and its nappe. By cutting a cone by a plane at different angles, we get the following shapes', style: TextStyle(fontSize: 16, color: Colors.black87, height: 1.6)),
+                  const Text(' A cone has two identical conical shapes known as nappes. We can get various shapes depending upon the angle of the cut between the plane, the cone, and its nappe. By cutting a cone by a plane at different angles, we get the following shapes : CIRCLE, ELLIPSE, PARABOLA, and HYPERBOLA.', style: TextStyle(fontSize: 16, color: Colors.black87, height: 1.6)),
 
                   const SizedBox(height: 20),
 

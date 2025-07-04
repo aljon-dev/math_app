@@ -16,7 +16,6 @@ class ConicCurvesPage extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-     
         elevation: 0,
         centerTitle: true,
       ),
@@ -41,8 +40,9 @@ class ConicCurvesPage extends StatelessWidget {
                     color: Colors.black.withOpacity(0.2),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
-                  ),
+                  )
                 ],
+              
               ),
               child: Column(
                 children: [
@@ -79,34 +79,24 @@ class ConicCurvesPage extends StatelessWidget {
             // About Section
             _buildSectionCard(
               title: 'About the App',
-              content: 'Cone-Nic Curves is designed to improve conic sections\' instruction and learning. This app fills the learning gap between abstract mathematical theory and interactive learner-centered experiences, addressing the challenges students face when visualizing and comprehending the geometric properties of conic curves.',
+              content: 'Cone-Nic Curves is designed to enhance the instruction and learning of conic sections. It addresses the common challenges students face in visualizing and understanding the geometric properties of conic curves. By bridging the gap between abstract mathematical theory and interactive, learner-centered experiences, the app provides a more engaging and effective way to explore and master conic sections.',
               icon: Icons.info_outline,
               color: const Color(0xFFE53E3E), // Red
             ),
             
             const SizedBox(height: 16),
             
-            // Features Section
+            // Perfect for Students Section
             _buildSectionCard(
-              title: 'Interactive Features',
-              content: 'Experience dynamic and interactive representations of circle, ellipse, parabola, and hyperbola formations through guided lessons, formula derivations, interactive graph manipulation, 3D visualizations, and integrated self-assessment quizzes.',
-              icon: Icons.touch_app,
+              title: 'Perfect for Students',
+              content: 'Ideal for learners studying conic sections in Pre-Calculus, Analytic Geometry, or related subjects. This app supports various learning styles by making mathematical concepts more accessible, engaging, and easier to understand.',
+              icon: Icons.school,
               color: const Color(0xFF38A169), // Green
             ),
             
             const SizedBox(height: 16),
             
-            // Offline Access Section
-            _buildSectionCard(
-              title: 'Offline Learning',
-              content: 'Designed exclusively as an offline app for enhanced accessibility on Android mobile devices, including older versions. Perfect for both classroom instruction and independent study.',
-              icon: Icons.offline_bolt,
-              color: const Color(0xFFEF4444),
-            ),
-            
-            const SizedBox(height: 24),
-            
-            // Target Audience
+            // Learner Objectives Section
             Container(
               padding: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
@@ -126,30 +116,34 @@ class ConicCurvesPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Icon(
-                          Icons.school,
+                          Icons.emoji_objects,
                           color: Color(0xFF4338CA),
                           size: 24,
                         ),
                       ),
                       const SizedBox(width: 12),
                       const Text(
-                        'Perfect For Students',
+                        'Learner Objectives',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey,
+                          color: Colors.black,
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 12),
-                  Text(
-                    'Especially beneficial for students studying conic sections in Precalculus, Analytical Geometry, or related subjects. Supports diverse learning styles and makes mathematical concepts more accessible, engaging, and easier to understand.',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                      height: 1.5,
-                    ),
+                  _buildObjectiveItem(
+                    '1',
+                    'Identify and describe the different types of conic sections: circle, ellipse, parabola, and hyperbola.',
+                  ),
+                  _buildObjectiveItem(
+                    '2',
+                    'Visualize how conic sections are formed through the intersection of a plane and a cone.',
+                  ),
+                  _buildObjectiveItem(
+                    '3',
+                    'Apply concepts and formulas related to conic sections in solving mathematical problems.',
                   ),
                 ],
               ),
@@ -157,57 +151,12 @@ class ConicCurvesPage extends StatelessWidget {
             
             const SizedBox(height: 24),
             
-            // Objectives Section
-            Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                color: Colors.grey[50],
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Main Objectives',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildObjectiveItem(
-                    '1',
-                    'Help students understand characteristics and properties of conic sections through interactive and visual learning.',
-                  ),
-                  _buildObjectiveItem(
-                    '2',
-                    'Simplify understanding of complex precalculus and analytical geometry ideas through simulations and guided lessons.',
-                  ),
-                  _buildObjectiveItem(
-                    '3',
-                    'Provide an offline learning platform for mobile devices enabling both self-study and classroom instruction.',
-                  ),
-                  _buildObjectiveItem(
-                    '4',
-                    'Increase student retention and engagement through interactive exercises and self-assessment resources.',
-                  ),
-                  _buildObjectiveItem(
-                    '5',
-                    'Increase accessibility of learning platforms for Android mobile users, especially older versions.',
-                  ),
-                ],
-              ),
-            ),
-            
-            const SizedBox(height: 32),
-            
             // Get Started Button
             Container(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>  ConicSectionIntroPage()));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> ConicSectionIntroPage()));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF6366F1),
@@ -318,11 +267,11 @@ class ConicCurvesPage extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           Expanded(
-            child:             Text(
+            child: Text(
               text,
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.grey[600],
+                color: Colors.grey[800],
                 height: 1.4,
               ),
             ),
