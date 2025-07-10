@@ -220,8 +220,8 @@ class EllipsePainter extends CustomPainter {
           Paint()
             ..strokeWidth = 4
             ..color = Colors.deepPurple;
-      canvas.drawLine(Offset(center.dx - c, center.dy - 45), Offset(center.dx - c, center.dy + 47), paint);
-      canvas.drawLine(Offset(center.dx + c, center.dy - 45), Offset(center.dx + c, center.dy + 47), paint);
+      canvas.drawLine(Offset(center.dx - c, center.dy - 40), Offset(center.dx - c, center.dy + 40), paint);
+      canvas.drawLine(Offset(center.dx + c, center.dy - 40), Offset(center.dx + c, center.dy + 40), paint);
     }
 
     // Eccentricity (visual representation via text only)

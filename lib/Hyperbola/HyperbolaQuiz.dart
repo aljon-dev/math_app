@@ -11,70 +11,70 @@ class QuizScreenHyperBola extends StatefulWidget {
 class _QuizScreenState extends State<QuizScreenHyperBola> {
   final List<Map<String, dynamic>> questions = [
     {
-      'question': ' What are the asymptotes of the hyperbola x²/25 - y²/81 = 1?',
+      'question': 'What are the asymptotes of the hyperbola x²/25 - y²/81 = 1?',
       'options': ['a. y = ± (5/9)x', 'b. y = ± (9/5)x', 'c. y = ± (4/9)x', 'd. y = ± (9/4)x'],
       'correctIndex': 1,
       'solution': 'Solution:\n\na² = 25 → a = 5\nb² = 81 → b = 9\n\nAsymptotes formula: y = ±(b/a)x\n= ±(9/5)x',
       'image': null,
     },
     {
-      'question': ' Give the coordinates of foci in hyperbola (y-9)²/10 - (x-6)²/6 = 1',
+      'question': 'Give the coordinates of foci in hyperbola (y-9)²/10 - (x-6)²/6 = 1',
       'options': ['a. F(6, 13), (6, 5)', 'b. F(-6, 10), (6, -10)', 'c. F(9, 10), (9, 13)', 'd. F(6, -13), (9, -5)'],
       'correctIndex': 0,
       'solution': 'Solution:\n\nVertical hyperbola\na² = 10 → a = √10\nb² = 6 → b = √6\nc² = a² + b² = 16 → c = 4\n\nCenter at (6,9)\nFoci at (h,k±c) = (6,9±4)\n= (6,13) and (6,5)',
       'image': null,
     },
     {
-      'question': ' What is the length of the transverse axis of x²/4 - y²/16 = 1?',
+      'question': 'What is the length of the transverse axis of x²/4 - y²/16 = 1?',
       'options': ['a. 2', 'b. 4', 'c. 8', 'd. 6'],
       'correctIndex': 1,
       'solution': 'Solution:\n\na² = 4 → a = 2\nTransverse axis length = 2a = 4',
       'image': null,
     },
     {
-      'question': ' Convert 4x² - 9y² - 16x + 54y = 137 to standard form',
+      'question': 'Convert 4x² - 9y² - 16x + 54y = 137 to standard form',
       'options': ['a. (x-2)²/15 - (y-7)²/9 = 1', 'b. (x-2)²/18 - (y-3)²/8 = 1', 'c. (x-4)²/6 - (y-9)²/18 = 1', 'd. (x-4)²/18 - (y-8)²/15 = 1'],
       'correctIndex': 1,
       'solution': 'Solution:\n\nComplete squares:\n4(x²-4x+4) - 9(y²-6y+9) = 137 + 16 - 81\n4(x-2)² - 9(y-3)² = 72\nDivide by 72:\n(x-2)²/18 - (y-3)²/8 = 1',
       'image': null,
     },
     {
-      'question': ' Find c of y² - 25x² = 25',
+      'question': 'Find c of y² - 25x² = 25',
       'options': ['a. c = 5', 'b. c = √32', 'c. c = √26', 'd. c = 15'],
       'correctIndex': 2,
       'solution': 'Solution:\n\nDivide by 25:\ny²/25 - x²/1 = 1\na² = 25 → a = 5\nb² = 1 → b = 1\nc² = a² + b² = 26 → c = √26',
       'image': null,
     },
     {
-      'question': ' Length of conjugate axis for y²/225 - x²/100 = 1?',
+      'question': 'Length of conjugate axis for y²/225 - x²/100 = 1?',
       'options': ['a. 25', 'b. 20', 'c. 50', 'd. 10'],
       'correctIndex': 1,
       'solution': 'Solution:\n\nb² = 100 → b = 10\nConjugate axis length = 2b = 20',
       'image': null,
     },
     {
-      'question': ' Standard form with vertices at (0,±9) passing through (8,15)',
+      'question': 'Standard form with vertices at (0,±9) passing through (8,15)',
       'options': ['a. y²/78 - x²/40 = 1', 'b. y²/81 - x²/36 = 1', 'c. y²/67 - x²/36 = 1', 'd. y²/90 - x²/40 = 1'],
       'correctIndex': 1,
       'solution': 'Solution:\n\na = 9 → a² = 81\nPlug (8,15):\n15²/81 - 8²/b² = 1\nSolve for b² = 36\nEquation: y²/81 - x²/36 = 1',
       'image': null,
     },
     {
-      'question': ' The tower stands 198 meters tall, Find the width of the tower at the narrowest part in the middle using the equation x^2/36-y^2/484= 1.?',
+      'question': 'The tower stands 198 meters tall, Find the width of the tower at the narrowest part in the middle using the equation x^2/36-y^2/484= 1.?',
       'options': ['a. 15 meters', 'b. 12 meters', 'c. 4 meters', 'd. 17 meters'],
       'correctIndex': 1,
       'solution': 'Solution:\n\na² = 36 → a = 6\nWidth at narrowest = 2a = 12 meters',
       'image': null,
     },
     {
-      'question': ' An explosion is heard by the two station 1000m apart, located at F² (, -400,0) and F¹ (400,0). If the explosion was heard in F¹ two seconds before it was heard in F², identify the possible location of the explosion. Use 220 m/s as their speed of sound.',
+      'question': 'An explosion is heard by the two station 1000m apart, located at F² (, -400,0) and F¹ (400,0). If the explosion was heard in F¹ two seconds before it was heard in F², identify the possible location of the explosion. Use 220 m/s as their speed of sound.',
       'options': ['a. x²/746562 - y²/123678 = 1', 'b. x²/34322 - y²/178682 = 1', 'c. x²/48400 - y²/111600 = 1', 'd. x²/45758 - y²/374276 = 1'],
       'correctIndex': 2,
       'solution': 'Solution:\n\n2a = 220×2 = 440 → a = 220\na² = 48400\nc = 400 (half distance between stations)\nb² = c² - a² = 160000 - 48400 = 111600\nEquation: x²/48400 - y²/111600 = 1',
       'image': 'assets/hyperbola_stations.png',
     },
     {
-      'question': ' The hyperbolic design of power plant can be modeled by x^2/36 - y^2/256 = 1, and its height is 180 m tall. Determine the width at the top of a power plant?',
+      'question': 'The hyperbolic design of power plant can be modeled by x^2/36 - y^2/256 = 1, and its height is 180 m tall. Determine the width at the top of a power plant?',
       'options': ['a. x ≈ 39.8 meters', 'b. x ≈ 34.28 meters', 'c. x ≈ 35.82 meters', 'd. x ≈ 38.8 meters'],
       'correctIndex': 1,
       'solution': 'Solution:\n\nAt height y=90 (half of 180):\nx²/36 - 90²/256 = 1\nx²/36 = 1 + 31.64\nx² = 32.64 × 36 ≈ 1175\nx ≈ √1175 ≈ 34.28 meters',
@@ -198,7 +198,6 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
     );
   }
 }
-
 class ResultsScreen extends StatelessWidget {
   final int score;
   final int totalQuestions;
@@ -207,7 +206,15 @@ class ResultsScreen extends StatelessWidget {
   final List<Map<String, dynamic>> questions;
   final VoidCallback onRestart;
 
-  const ResultsScreen({Key? key, required this.score, required this.totalQuestions, required this.userAnswers, required this.questionOrder, required this.questions, required this.onRestart}) : super(key: key);
+  const ResultsScreen({
+    Key? key,
+    required this.score,
+    required this.totalQuestions,
+    required this.userAnswers,
+    required this.questionOrder,
+    required this.questions,
+    required this.onRestart,
+  }) : super(key: key);
 
   String _getGrade() {
     double percentage = (score / totalQuestions) * 100;
@@ -229,108 +236,293 @@ class ResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
-          },
-          icon: Icon(Icons.arrow_back),
-        ),
-        title: Text('Quiz Results'),
-        backgroundColor: Colors.purple,
-        foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.refresh),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (!didPop) {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => MenuButton()));
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
-              onRestart();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MenuButton()));
             },
+            icon: Icon(Icons.arrow_back),
           ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Card(
-              elevation: 8,
-              color: Colors.purple.shade50,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    Icon(Icons.emoji_events, size: 60, color: Colors.purple),
-                    SizedBox(height: 10),
-                    Text('Your Score', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
-                    Text('$score out of $totalQuestions', style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
-                    Container(width: double.infinity, height: 20, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.grey.shade300), child: FractionallySizedBox(alignment: Alignment.centerLeft, widthFactor: score / totalQuestions, child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: _getGradeColor())))),
-                    SizedBox(height: 15),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(children: [Text('${((score / totalQuestions) * 100).toStringAsFixed(1)}%', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)), Text('Percentage', style: TextStyle(color: Colors.grey))]),
-                        Column(children: [Text(_getGrade(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: _getGradeColor())), Text('Grade', style: TextStyle(color: Colors.grey))]),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                itemCount: totalQuestions,
-                itemBuilder: (context, displayIndex) {
-                  final originalIndex = questionOrder[displayIndex];
-                  final answer = userAnswers[originalIndex];
-                  final question = questions[originalIndex];
-
-                  return Card(
-                    margin: EdgeInsets.only(bottom: 10),
-                    elevation: 3,
-                    color: answer['isCorrect'] ? Colors.green.shade50 : Colors.red.shade50,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(children: [Icon(answer['isCorrect'] ? Icons.check_circle : Icons.cancel, color: answer['isCorrect'] ? Colors.green : Colors.red, size: 20), SizedBox(width: 8), Expanded(child: Text('Question ${displayIndex + 1}', style: TextStyle(fontWeight: FontWeight.bold, color: answer['isCorrect'] ? Colors.green.shade900 : Colors.red.shade900, fontSize: 16)))]),
-                          SizedBox(height: 8),
-                          Text(answer['question'], style: TextStyle(fontSize: 14)),
-                          SizedBox(height: 8),
-                          if (answer['image'] != null) Container(height: 100, child: Image.asset(answer['image'], fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey))))),
-                          SizedBox(height: 8.0),
-                          Text('Your answer: ${answer['selected'] != null ? question['options'][answer['selected']] : 'Not answered'}', style: TextStyle(color: answer['isCorrect'] ? Colors.green.shade900 : Colors.red.shade900, fontWeight: FontWeight.w500)),
-                          Text('Correct answer: ${question['options'][answer['correct']]}', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green.shade900)),
-                          SizedBox(height: 8),
-                          Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.circular(4)), child: Text('Solution: ${answer['solution']}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 13, color: Colors.blue.shade800))),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(
+          title: Text('Quiz Results'),
+          backgroundColor: Colors.purple,
+          foregroundColor: Colors.white,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.refresh),
               onPressed: () {
                 Navigator.pop(context);
                 onRestart();
               },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.purple, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)),
-              child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.refresh), SizedBox(width: 8), Text('Restart Quiz', style: TextStyle(fontSize: 18))]),
             ),
           ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              // Wider score box
+              Container(
+                width: double.infinity,  // Changed from 180 to double.infinity
+                padding: EdgeInsets.all(20),  // Increased padding
+                decoration: BoxDecoration(
+                  color: Colors.purple.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      blurRadius: 6,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.emoji_events,
+                        size: 50, color: Colors.purple),  // Increased icon size
+                    SizedBox(height: 12),  // Increased spacing
+                    Text(
+                      'Your Quiz Score',
+                      style: TextStyle(
+                        fontSize: 16,  // Increased font size
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 6),
+                    Text(
+                      '$score/$totalQuestions',
+                      style: TextStyle(
+                        fontSize: 20,  // Increased font size
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Container(
+                      width: double.infinity,
+                      height: 10,  // Increased height
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.grey.shade300,
+                      ),
+                      child: FractionallySizedBox(
+                        alignment: Alignment.centerLeft,
+                        widthFactor: score / totalQuestions,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: _getGradeColor(),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                   
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: totalQuestions,
+                  itemBuilder: (context, displayIndex) {
+                    final originalIndex = questionOrder[displayIndex];
+                    final answer = userAnswers[originalIndex];
+                    final question = questions[originalIndex];
+                    final isCorrect = answer['isCorrect'];
+
+                    return Card(
+                      margin: EdgeInsets.only(bottom: 10),
+                      elevation: 3,
+                      color: isCorrect
+                          ? Colors.green.shade50
+                          : Colors.red.shade50,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: isCorrect
+                              ? Colors.green.shade200
+                              : Colors.red.shade200,
+                          width: 1.5,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    color: isCorrect
+                                        ? Colors.green
+                                        : Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    isCorrect
+                                        ? Icons.check
+                                        : Icons.close,
+                                    color: Colors.white,
+                                    size: 16,
+                                  ),
+                                ),
+                                SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    'Question ${displayIndex + 1}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: isCorrect
+                                          ? Colors.green.shade900
+                                          : Colors.red.shade900,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              answer['question'],
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            SizedBox(height: 8),
+                            if (answer['image'] != null)
+                              Container(
+                                height: 100,
+                                child: Image.asset(
+                                  answer['image'],
+                                  fit: BoxFit.contain,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Center(
+                                    child: Text(
+                                      'Image not found',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            SizedBox(height: 8.0),
+                            RichText(
+                              text: TextSpan(
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: 'Your answer: ',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: answer['selected'] != null
+                                        ? question['options'][answer['selected']]
+                                        : 'Not answered',
+                                    style: TextStyle(
+                                      color: isCorrect
+                                          ? Colors.green.shade900
+                                          : Colors.red.shade900,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            RichText(
+                              text: TextSpan(
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: 'Correct answer: ',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: question['options'][answer['correct']],
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.green.shade900,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade50,
+                                borderRadius: BorderRadius.circular(4),
+                                border: Border.all(
+                                  color: Colors.blue.shade100,
+                                  width: 1,
+                                ),
+                              ),
+                              child: Text(
+                                'Solution: ${answer['solution']}',
+                                style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 13,
+                                  color: Colors.blue.shade800,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  onRestart();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple,
+                  foregroundColor: Colors.white,
+                  minimumSize: Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.refresh),
+                    SizedBox(width: 8),
+                    Text('Restart Quiz', style: TextStyle(fontSize: 18)),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
 class _ZoomableImageScreen extends StatefulWidget {
   final String imagePath;
 

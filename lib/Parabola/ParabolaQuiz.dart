@@ -16,35 +16,35 @@ class _QuizScreenParabolaState extends State<QuizScreenParabola> {
       'image': null,
     },
     {
-      'question': ' The vertex of a parabola is the point that...',
+      'question': 'The vertex of a parabola is the point that...',
       'options': ['a. Is the midpoint of the focus and directrix', 'b. Lies at the center of the parabola', 'c. Is always at (0,0)', 'd. Lies on the directrix'],
       'correctIndex': 0,
       'solution': 'Answer: a. Is the midpoint of the focus and directrix\n\nThe vertex is equidistant between the focus and directrix',
       'image': null,
     },
     {
-      'question': ' What is the directrix of a parabola?',
+      'question': 'What is the directrix of a parabola?',
       'options': ['a. A point inside the parabola', 'b. A fixed straight line used to define the parabola', 'c. The longest chord of the parabola', 'd. A line perpendicular to the axis of symmetry'],
       'correctIndex': 1,
       'solution': 'Answer: b. A fixed straight line used to define the parabola\n\nThe directrix is a fixed line that, with the focus, defines the parabola',
       'image': null,
     },
     {
-      'question': ' The equation (y - 2)² = 8(x - 3) represents a parabola that opens...',
+      'question': 'The equation (y - 2)² = 8(x - 3) represents a parabola that opens...',
       'options': ['a. Upward', 'b. Downward', 'c. To the left', 'd. To the right'],
       'correctIndex': 3,
       'solution': 'Solution:\n4p = 8 → p = 2\nSince p > 0 and it\'s a y² equation, it opens to the right',
       'image': null,
     },
     {
-      'question': ' Find the vertex of (y - 1)² = -4(x + 3)',
+      'question': 'Find the vertex of (y - 1)² = -4(x + 3)',
       'options': ['a. (3, -1)', 'b. (3, 1)', 'c. (-3, 1)', 'd. (-3, -1)'],
       'correctIndex': 2,
       'solution': 'Solution: (h, k) = (-3, 1)\nStandard form is (y - k)² = 4p(x - h)',
       'image': null,
     },
     {
-      'question': ' Find the focus of (y - 1)² = -4(x + 3)',
+      'question': 'Find the focus of (y - 1)² = -4(x + 3)',
       'options': ['a. (-4, 1)', 'b. (1, -4)', 'c. (-1, 4)', 'd. (-1, -4)'],
       'correctIndex': 0,
       'solution': 'Solution:\n4p = -4 → p = -1\nFocus = (h + p, k) = (-3 + (-1), 1) = (-4, 1)',
@@ -58,21 +58,21 @@ class _QuizScreenParabolaState extends State<QuizScreenParabola> {
       'image': null,
     },
     {
-      'question': ' Find the latus rectum of (y - 1)² = -4(x + 3)',
+      'question': 'Find the latus rectum of (y - 1)² = -4(x + 3)',
       'options': ['a. 1 unit', 'b. 2 units', 'c. 3 units', 'd. 4 units'],
       'correctIndex': 3,
       'solution': 'Solution:\nLatus rectum = |4p| = |-4| = 4 units',
       'image': null,
     },
     {
-      'question': ' Find the endpoints of latus rectum for (y - 1)² = -4(x + 3)',
+      'question': 'Find the endpoints of latus rectum for (y - 1)² = -4(x + 3)',
       'options': ['a. E₁(4,3) and E₂(4,1)', 'b. E₁(-4,3) and E₂(-4,-1)', 'c. E₁(3,4) and E₂(1,4)', 'd. E₁(-3,4) and E₂(-1,-4)'],
       'correctIndex': 1,
       'solution': 'Solution:\np = -1\nEndpoints = (h - p, k ± 2p)\n= (-3 - (-1), 1 ± 2(-1))\n= (-4, 1 ± (-2))\n= (-4,3) and (-4,-1)',
       'image': null,
     },
     {
-      'question': '. Write the equation of a parabola with vertex at (1,-3), opens right, and latus rectum of 8 units',
+      'question': 'Write the equation of a parabola with vertex at (1,-3), opens right, and latus rectum of 8 units',
       'options': ['a. (x + 3)² = 8(y - 1)', 'b. (y + 3)² = 8(x - 1)', 'c. (x - 3)² = -8(y - 1)', 'd. (y + 3)² = -8(x - 1)'],
       'correctIndex': 1,
       'solution': 'Solution:\nStandard form: (y - k)² = 4p(x - h)\n4p = 8 → p = 2\nVertex (1,-3)\nEquation: (y + 3)² = 8(x - 1)',
@@ -80,8 +80,7 @@ class _QuizScreenParabolaState extends State<QuizScreenParabola> {
     },
   ];
 
-  // Rest of your existing state management and UI code
-  int currentQuestionIndex = 0;
+ int currentQuestionIndex = 0;
   int? selectedOptionIndex;
   bool isAnswered = false;
   int score = 0;
@@ -105,20 +104,17 @@ class _QuizScreenParabolaState extends State<QuizScreenParabola> {
     });
   }
 
-  void answerQuestion(int optionIndex) {
-    if (!isAnswered) {
-      setState(() {
-        selectedOptionIndex = optionIndex;
-        isAnswered = true;
+ void answerQuestion(int optionIndex) {
+    setState(() {
+      selectedOptionIndex = optionIndex;
 
-        final originalIndex = questionOrder[currentQuestionIndex];
-        userAnswers[originalIndex] = {...userAnswers[originalIndex], 'selected': optionIndex, 'isCorrect': optionIndex == questions[originalIndex]['correctIndex']};
+      final originalIndex = questionOrder[currentQuestionIndex];
+      userAnswers[originalIndex] = {...userAnswers[originalIndex], 'selected': optionIndex, 'isCorrect': optionIndex == questions[originalIndex]['correctIndex']};
 
-        if (optionIndex == questions[originalIndex]['correctIndex']) {
-          score++;
-        }
-      });
-    }
+      if (optionIndex == questions[originalIndex]['correctIndex']) {
+        score++;
+      }
+    });
   }
 
   void nextQuestion() {
@@ -147,7 +143,12 @@ class _QuizScreenParabolaState extends State<QuizScreenParabola> {
   Widget _buildQuestionImage(String? imagePath) {
     if (imagePath == null) return SizedBox.shrink();
 
-    return Container(margin: EdgeInsets.symmetric(vertical: 10), decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(8)), child: Image.asset(imagePath, width: 200, height: 120, fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey)))));
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Scaffold(appBar: AppBar(title: Text('Image Preview')), body: Center(child: InteractiveViewer(panEnabled: true, minScale: 0.5, maxScale: 4.0, child: Image.asset(imagePath, fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey)))))))));
+      },
+      child: Hero(tag: 'image-$imagePath', child: Container(margin: EdgeInsets.symmetric(vertical: 10), decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(8)), child: Image.asset(imagePath, width: 200, height: 120, fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey)))))),
+    );
   }
 
   @override
@@ -159,55 +160,29 @@ class _QuizScreenParabolaState extends State<QuizScreenParabola> {
     final originalIndex = questionOrder[currentQuestionIndex];
     final currentQuestion = questions[originalIndex];
 
-    return Scaffold(
-      appBar: AppBar(title: Text('Parabola Quiz (${currentQuestionIndex + 1}/${questions.length})'), backgroundColor: Colors.purple, foregroundColor: Colors.white, actions: [Padding(padding: EdgeInsets.all(8.0), child: Center(child: Text('Score: $score/${questions.length}', style: TextStyle(color: Colors.white))))]),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Card(elevation: 4, child: Padding(padding: const EdgeInsets.all(16.0), child: Text(currentQuestion['question'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))),
-                    _BuildZoomableImage(context, currentQuestion['image']),
-                    SizedBox(height: 20),
-                    ...List.generate(currentQuestion['options'].length, (index) {
-                      return Card(
-                        elevation: 2,
-                        color: getOptionColor(index),
-                        child: ListTile(
-                          title: Text(currentQuestion['options'][index]),
-                          onTap: () => answerQuestion(index),
-                          leading: Icon(
-                            isAnswered && index == selectedOptionIndex
-                                ? (selectedOptionIndex == currentQuestion['correctIndex'] ? Icons.check_circle : Icons.cancel)
-                                : isAnswered && index == currentQuestion['correctIndex']
-                                ? Icons.check_circle
-                                : Icons.radio_button_unchecked,
-                            color:
-                                isAnswered && index == currentQuestion['correctIndex']
-                                    ? Colors.green
-                                    : isAnswered && index == selectedOptionIndex
-                                    ? Colors.red
-                                    : Colors.grey,
-                          ),
-                        ),
-                      );
-                    }),
-                    SizedBox(height: 20),
-                    if (isAnswered) Card(color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green.shade50 : Colors.red.shade50, child: Padding(padding: const EdgeInsets.all(16.0), child: Column(children: [Text(selectedOptionIndex == currentQuestion['correctIndex'] ? '✓ Correct!' : '✗ Incorrect!', style: TextStyle(fontWeight: FontWeight.bold, color: selectedOptionIndex == currentQuestion['correctIndex'] ? Colors.green : Colors.red, fontSize: 20)), SizedBox(height: 10), Text(currentQuestion['solution'], style: TextStyle(fontSize: 14))]))),
-                    SizedBox(height: 20), // Add some spacing before the button
-                  ],
-                ),
-              ),
+    return WillPopScope(
+      onWillPop: () async => true,
+      child: Scaffold(
+      appBar: AppBar(title: Text('Parabola Quiz (${currentQuestionIndex + 1}/${questions.length})'), backgroundColor: Colors.purple, foregroundColor: Colors.white, ),
+      body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Card(elevation: 4, child: Padding(padding: const EdgeInsets.all(16.0), child: Text(currentQuestion['question'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))),
+                _BuildZoomableImage(context, currentQuestion['image']),
+                SizedBox(height: 20),
+                ...List.generate(currentQuestion['options'].length, (index) {
+                  return Card(elevation: 2, child: ListTile(title: Text(currentQuestion['options'][index], style: TextStyle(fontSize: 16)), onTap: () => answerQuestion(index), leading: Icon(selectedOptionIndex == index ? Icons.radio_button_checked : Icons.radio_button_unchecked, color: selectedOptionIndex == index ? Colors.blue : Colors.grey)));
+                }),
+                SizedBox(height: 20),
+                ElevatedButton(onPressed: selectedOptionIndex != null ? nextQuestion : null, style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)), child: Text(currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz', style: TextStyle(fontSize: 18))),
+              ],
             ),
           ),
-          // Fixed button at the bottom
-          Padding(padding: const EdgeInsets.all(16.0), child: ElevatedButton(onPressed: isAnswered ? nextQuestion : null, style: ElevatedButton.styleFrom(backgroundColor: Colors.purple, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)), child: Text(currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz', style: TextStyle(fontSize: 18)))),
-        ],
-      ),
+        ),
+    )
     );
   }
 
@@ -222,6 +197,18 @@ class _QuizScreenParabolaState extends State<QuizScreenParabola> {
   }
 }
 
+
+  Widget _BuildZoomableImage(BuildContext context, String? imagePath) {
+    if (imagePath == null) return SizedBox.shrink();
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => _ZoomableImageScreen(imagePath: imagePath)));
+      },
+      child: Hero(tag: 'image-$imagePath', child: Image.asset(imagePath, height: 100, fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image Not FOund ', style: TextStyle(color: Colors.grey))))),
+    );
+  }
+
+
 class ResultsScreen extends StatelessWidget {
   final int score;
   final int totalQuestions;
@@ -230,7 +217,15 @@ class ResultsScreen extends StatelessWidget {
   final List<Map<String, dynamic>> questions;
   final VoidCallback onRestart;
 
-  const ResultsScreen({Key? key, required this.score, required this.totalQuestions, required this.userAnswers, required this.questionOrder, required this.questions, required this.onRestart}) : super(key: key);
+  const ResultsScreen({
+    Key? key,
+    required this.score,
+    required this.totalQuestions,
+    required this.userAnswers,
+    required this.questionOrder,
+    required this.questions,
+    required this.onRestart,
+  }) : super(key: key);
 
   String _getGrade() {
     double percentage = (score / totalQuestions) * 100;
@@ -252,108 +247,293 @@ class ResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
-          },
-        ),
-        title: Text('Quiz Results'),
-        backgroundColor: Colors.purple,
-        foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.refresh),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (!didPop) {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => MenuButton()));
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
-              onRestart();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MenuButton()));
             },
+            icon: Icon(Icons.arrow_back),
           ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Card(
-              elevation: 8,
-              color: Colors.purple.shade50,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    Icon(Icons.emoji_events, size: 60, color: Colors.purple),
-                    SizedBox(height: 10),
-                    Text('Your Score', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
-                    Text('$score out of $totalQuestions', style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
-                    Container(width: double.infinity, height: 20, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.grey.shade300), child: FractionallySizedBox(alignment: Alignment.centerLeft, widthFactor: score / totalQuestions, child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: _getGradeColor())))),
-                    SizedBox(height: 15),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(children: [Text('${((score / totalQuestions) * 100).toStringAsFixed(1)}%', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)), Text('Percentage', style: TextStyle(color: Colors.grey))]),
-                        Column(children: [Text(_getGrade(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: _getGradeColor())), Text('Grade', style: TextStyle(color: Colors.grey))]),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                itemCount: totalQuestions,
-                itemBuilder: (context, displayIndex) {
-                  final originalIndex = questionOrder[displayIndex];
-                  final answer = userAnswers[originalIndex];
-                  final question = questions[originalIndex];
-
-                  return Card(
-                    margin: EdgeInsets.only(bottom: 10),
-                    elevation: 3,
-                    color: answer['isCorrect'] ? Colors.green.shade50 : Colors.red.shade50,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(children: [Icon(answer['isCorrect'] ? Icons.check_circle : Icons.cancel, color: answer['isCorrect'] ? Colors.green : Colors.red, size: 20), SizedBox(width: 8), Expanded(child: Text('Question ${displayIndex + 1}', style: TextStyle(fontWeight: FontWeight.bold, color: answer['isCorrect'] ? Colors.green.shade900 : Colors.red.shade900, fontSize: 16)))]),
-                          SizedBox(height: 8),
-                          Text(answer['question']),
-                          SizedBox(height: 8),
-                          if (answer['image'] != null) Container(height: 100, child: Image.asset(answer['image'], fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey))))),
-                          SizedBox(height: 8),
-                          Text('Your answer: ${answer['selected'] != null ? question['options'][answer['selected']] : 'Not answered'}', style: TextStyle(color: answer['isCorrect'] ? Colors.green.shade900 : Colors.red.shade900, fontWeight: FontWeight.w500)),
-                          Text('Correct answer: ${question['options'][answer['correct']]}', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green.shade900)),
-                          SizedBox(height: 8),
-                          Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.purple.shade50, borderRadius: BorderRadius.circular(4)), child: Text('Solution: ${answer['solution']}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 13, color: Colors.purple.shade800))),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(
+          title: Text('Quiz Results'),
+          backgroundColor: Colors.purple,
+          foregroundColor: Colors.white,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.refresh),
               onPressed: () {
                 Navigator.pop(context);
                 onRestart();
               },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.purple, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)),
-              child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.refresh), SizedBox(width: 8), Text('Restart Quiz', style: TextStyle(fontSize: 18))]),
             ),
           ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              // Wider score box
+              Container(
+                width: double.infinity,  // Changed from 180 to double.infinity
+                padding: EdgeInsets.all(20),  // Increased padding
+                decoration: BoxDecoration(
+                  color: Colors.purple.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      blurRadius: 6,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.emoji_events,
+                        size: 50, color: Colors.purple),  // Increased icon size
+                    SizedBox(height: 12),  // Increased spacing
+                    Text(
+                      'Your Quiz Score',
+                      style: TextStyle(
+                        fontSize: 16,  // Increased font size
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 6),
+                    Text(
+                      '$score/$totalQuestions',
+                      style: TextStyle(
+                        fontSize: 20,  // Increased font size
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Container(
+                      width: double.infinity,
+                      height: 10,  // Increased height
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.grey.shade300,
+                      ),
+                      child: FractionallySizedBox(
+                        alignment: Alignment.centerLeft,
+                        widthFactor: score / totalQuestions,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: _getGradeColor(),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                   
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: totalQuestions,
+                  itemBuilder: (context, displayIndex) {
+                    final originalIndex = questionOrder[displayIndex];
+                    final answer = userAnswers[originalIndex];
+                    final question = questions[originalIndex];
+                    final isCorrect = answer['isCorrect'];
+
+                    return Card(
+                      margin: EdgeInsets.only(bottom: 10),
+                      elevation: 3,
+                      color: isCorrect
+                          ? Colors.green.shade50
+                          : Colors.red.shade50,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: isCorrect
+                              ? Colors.green.shade200
+                              : Colors.red.shade200,
+                          width: 1.5,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    color: isCorrect
+                                        ? Colors.green
+                                        : Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    isCorrect
+                                        ? Icons.check
+                                        : Icons.close,
+                                    color: Colors.white,
+                                    size: 16,
+                                  ),
+                                ),
+                                SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    'Question ${displayIndex + 1}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: isCorrect
+                                          ? Colors.green.shade900
+                                          : Colors.red.shade900,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              answer['question'],
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            SizedBox(height: 8),
+                            if (answer['image'] != null)
+                              Container(
+                                height: 100,
+                                child: Image.asset(
+                                  answer['image'],
+                                  fit: BoxFit.contain,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Center(
+                                    child: Text(
+                                      'Image not found',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            SizedBox(height: 8.0),
+                            RichText(
+                              text: TextSpan(
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: 'Your answer: ',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: answer['selected'] != null
+                                        ? question['options'][answer['selected']]
+                                        : 'Not answered',
+                                    style: TextStyle(
+                                      color: isCorrect
+                                          ? Colors.green.shade900
+                                          : Colors.red.shade900,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            RichText(
+                              text: TextSpan(
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: 'Correct answer: ',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: question['options'][answer['correct']],
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.green.shade900,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade50,
+                                borderRadius: BorderRadius.circular(4),
+                                border: Border.all(
+                                  color: Colors.blue.shade100,
+                                  width: 1,
+                                ),
+                              ),
+                              child: Text(
+                                'Solution: ${answer['solution']}',
+                                style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 13,
+                                  color: Colors.blue.shade800,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  onRestart();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple,
+                  foregroundColor: Colors.white,
+                  minimumSize: Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.refresh),
+                    SizedBox(width: 8),
+                    Text('Restart Quiz', style: TextStyle(fontSize: 18)),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
 class _ZoomableImageScreen extends StatefulWidget {
   final String imagePath;
 

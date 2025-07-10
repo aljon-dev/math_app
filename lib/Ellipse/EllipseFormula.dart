@@ -11,10 +11,10 @@ class _FormulasSectionState extends State<FormulasEllipseSection> {
   int currentStep = 0;
      final GlobalKey<ScaffoldState> _drawerKey  = GlobalKey<ScaffoldState>();
   final List<Map<String, dynamic>> steps = [
-    {'title': 'FORMULAS OF THE ELLIPSE', 'content': 'Let’s  explore  the essential formulae used with ellipses. These help us with properties like shape, axes ,vertices and focus.', 'image': 'assets/images/ellipse_intro.png', 'type': 'intro'},
-    {'title': 'General Equation of an Ellipse', 'content': 'This is the general form used to represent an ellipse in conic sections.', 'formula': r'Ax² + By² + Cx + Dy + E = 0', 'image': 'assets/images/general_equation.png', 'type': 'formula'},
-    {'title': 'Eccentricity', 'content': 'The eccentricity of an ellipse refers to how flat or round the shape of the ellipse is. The more flattened the ellipse is, the greater the value of its eccentricity. The more circular, the smaller the value or closer to zero is the eccentricity. The eccentricity ranges between one and zero.', 'formula': r'e = c / a', 'image': 'assets/images/eccentricity.png', 'type': 'formula'},
-    {'title': 'Latus Rectum', 'content': 'Latus Rectum is a chord through a focus perpendicular to the major axis.', 'formula': r'LR = (2b²) / a', 'image': 'assets/images/latus_rectum.png', 'type': 'formula'},
+    {'title': 'FORMULAS OF THE ELLIPSE', 'content': 'Let’s  explore  the essential formulae used with ellipses. These help us with properties like shape, axes ,vertices and focus.', 'image': 'assets/images/ellipse_intro.jpg', 'type': 'intro'},
+    {'title': 'General Equation of an Ellipse', 'content': 'This is the general form used to represent an ellipse in conic sections.', 'formula': r'Ax² + By² + Cx + Dy + E = 0', 'image': '', 'type': 'formula'},
+    {'title': 'Eccentricity', 'content': 'The eccentricity of an ellipse refers to how flat or round the shape of the ellipse is. The more flattened the ellipse is, the greater the value of its eccentricity. The more circular, the smaller the value or closer to zero is the eccentricity. The eccentricity ranges between one and zero.', 'formula': r'e = c / a', 'image': '', 'type': 'formula'},
+    {'title': 'Latus Rectum', 'content': 'Latus Rectum is a chord through a focus perpendicular to the major axis.', 'formula': r'LR = (2b²) / a', 'image': '', 'type': 'formula'},
     {'title': 'Standard Form (Center at Origin, Horizontal)', 'content': 'The standard form of the equation of an ellipse with center (0,0) and major axis on the x-axis.', 'formula': r'x² / a² + y² / b² = 1', 'image': 'assets/images/standard_horizontal_origin.png', 'type': 'formula', 'details': '• a > b\n• Major Axis Length = 2a\n• Vertices = (±a, 0)\n• Minor Axis Length = 2b\n• Co-Vertices = (0, ±b)\n• Foci = (±c, 0), where c² = a² - b²'},
     {'title': 'Standard Form (Center at Origin, Vertical)', 'content': 'The standard form of the equation of an ellipse with center (0,0) and major axis on the y-axis.', 'formula': r'x² / b² + y² / a² = 1', 'image': 'assets/images/standard_vertical_origin.png', 'type': 'formula', 'details': '• b > a\n• Major Axis Length = 2a\n• Vertices = (0, ±a)\n• Minor Axis Length = 2b\n• Co-Vertices = (±b, 0)\n• Foci = (0, ±c), where c² = a² - b²'},
     {'title': 'Standard Form (Center at (h, k), Horizontal', 'content': 'The standard form of the equation of an ellipse with center (h,k) and major axis parallel to the x-axis.', 'formula': r'(x - h)² / a² + (y - k)² / b² = 1', 'image': 'assets/images/standard_horizontal_hk.png', 'type': 'formula', 'details': '• a > b\n• Major Axis Length = 2a\n• Vertices = (h ± a, k)\n• Minor Axis Length = 2b\n• Co-Vertices = (h, k ± b)\n• Foci = (h ± c, k), where c² = a² - b²'},
@@ -96,7 +96,16 @@ class _FormulasSectionState extends State<FormulasEllipseSection> {
                     const SizedBox(height: 20),
 
                     // Image (if available)
-                    if (currentStepData['image'] != null) Center(child: Image.asset(currentStepData['image'], fit: BoxFit.contain, height: 200)),
+                    if (currentStepData['image'] != '') ...[
+                      Center(
+                      child: Image.asset(currentStepData['image'], fit: BoxFit.contain, height: 200)
+                      ),
+
+                    ]else...[
+                        Text('')
+                    ],
+
+
                     const SizedBox(height: 20),
 
                     // Content

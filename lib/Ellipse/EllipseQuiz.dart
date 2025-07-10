@@ -199,7 +199,15 @@ class ResultsScreen extends StatelessWidget {
   final List<Map<String, dynamic>> questions;
   final VoidCallback onRestart;
 
-  const ResultsScreen({Key? key, required this.score, required this.totalQuestions, required this.userAnswers, required this.questionOrder, required this.questions, required this.onRestart}) : super(key: key);
+  const ResultsScreen({
+    Key? key,
+    required this.score,
+    required this.totalQuestions,
+    required this.userAnswers,
+    required this.questionOrder,
+    required this.questions,
+    required this.onRestart,
+  }) : super(key: key);
 
   String _getGrade() {
     double percentage = (score / totalQuestions) * 100;
@@ -221,18 +229,20 @@ class ResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  return PopScope(
-  canPop: false, // Prevent default back behavior
-  onPopInvoked: (didPop) {
-    if (!didPop) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MenuButton()));
-    }
-  },
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (!didPop) {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => MenuButton()));
+        }
+      },
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MenuButton()));
             },
             icon: Icon(Icons.arrow_back),
           ),
@@ -253,30 +263,64 @@ class ResultsScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Card(
-                elevation: 8,
-                color: Colors.purple.shade50,
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      Icon(Icons.emoji_events, size: 60, color: Colors.purple),
-                      SizedBox(height: 10),
-                      Text('Your Score', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 10),
-                      Text('$score out of $totalQuestions', style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 10),
-                      Container(width: double.infinity, height: 20, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.grey.shade300), child: FractionallySizedBox(alignment: Alignment.centerLeft, widthFactor: score / totalQuestions, child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: _getGradeColor())))),
-                      SizedBox(height: 15),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(children: [Text('${((score / totalQuestions) * 100).toStringAsFixed(1)}%', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)), Text('Percentage', style: TextStyle(color: Colors.grey))]),
-                          Column(children: [Text(_getGrade(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: _getGradeColor())), Text('Grade', style: TextStyle(color: Colors.grey))]),
-                        ],
+              // Wider score box
+              Container(
+                width: double.infinity,  // Changed from 180 to double.infinity
+                padding: EdgeInsets.all(20),  // Increased padding
+                decoration: BoxDecoration(
+                  color: Colors.purple.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      blurRadius: 6,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.emoji_events,
+                        size: 50, color: Colors.purple),  // Increased icon size
+                    SizedBox(height: 12),  // Increased spacing
+                    Text(
+                      'Your Quiz Score',
+                      style: TextStyle(
+                        fontSize: 16,  // Increased font size
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 6),
+                    Text(
+                      '$score/$totalQuestions',
+                      style: TextStyle(
+                        fontSize: 20,  // Increased font size
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Container(
+                      width: double.infinity,
+                      height: 10,  // Increased height
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.grey.shade300,
+                      ),
+                      child: FractionallySizedBox(
+                        alignment: Alignment.centerLeft,
+                        widthFactor: score / totalQuestions,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: _getGradeColor(),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                   
+                  ],
                 ),
               ),
               SizedBox(height: 20),
@@ -287,26 +331,154 @@ class ResultsScreen extends StatelessWidget {
                     final originalIndex = questionOrder[displayIndex];
                     final answer = userAnswers[originalIndex];
                     final question = questions[originalIndex];
+                    final isCorrect = answer['isCorrect'];
 
                     return Card(
                       margin: EdgeInsets.only(bottom: 10),
                       elevation: 3,
-                      color: answer['isCorrect'] ? Colors.green.shade50 : Colors.red.shade50,
+                      color: isCorrect
+                          ? Colors.green.shade50
+                          : Colors.red.shade50,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: isCorrect
+                              ? Colors.green.shade200
+                              : Colors.red.shade200,
+                          width: 1.5,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(children: [Icon(answer['isCorrect'] ? Icons.check_circle : Icons.cancel, color: answer['isCorrect'] ? Colors.green : Colors.red, size: 20), SizedBox(width: 8), Expanded(child: Text('Question ${displayIndex + 1}', style: TextStyle(fontWeight: FontWeight.bold, color: answer['isCorrect'] ? Colors.green.shade900 : Colors.red.shade900, fontSize: 16)))]),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    color: isCorrect
+                                        ? Colors.green
+                                        : Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    isCorrect
+                                        ? Icons.check
+                                        : Icons.close,
+                                    color: Colors.white,
+                                    size: 16,
+                                  ),
+                                ),
+                                SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    'Question ${displayIndex + 1}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: isCorrect
+                                          ? Colors.green.shade900
+                                          : Colors.red.shade900,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                             SizedBox(height: 8),
-                            Text(answer['question'], style: TextStyle(fontSize: 14)),
+                            Text(
+                              answer['question'],
+                              style: TextStyle(fontSize: 14),
+                            ),
                             SizedBox(height: 8),
-                            if (answer['image'] != null) Container(height: 100, child: Image.asset(answer['image'], fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey))))),
+                            if (answer['image'] != null)
+                              Container(
+                                height: 100,
+                                child: Image.asset(
+                                  answer['image'],
+                                  fit: BoxFit.contain,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Center(
+                                    child: Text(
+                                      'Image not found',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             SizedBox(height: 8.0),
-                            Text('Your answer: ${answer['selected'] != null ? question['options'][answer['selected']] : 'Not answered'}', style: TextStyle(color: answer['isCorrect'] ? Colors.green.shade900 : Colors.red.shade900, fontWeight: FontWeight.w500)),
-                            Text('Correct answer: ${question['options'][answer['correct']]}', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green.shade900)),
+                            RichText(
+                              text: TextSpan(
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: 'Your answer: ',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: answer['selected'] != null
+                                        ? question['options'][answer['selected']]
+                                        : 'Not answered',
+                                    style: TextStyle(
+                                      color: isCorrect
+                                          ? Colors.green.shade900
+                                          : Colors.red.shade900,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            RichText(
+                              text: TextSpan(
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: 'Correct answer: ',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: question['options'][answer['correct']],
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.green.shade900,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                             SizedBox(height: 8),
-                            Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.circular(4)), child: Text('Solution: ${answer['solution']}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 13, color: Colors.blue.shade800))),
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade50,
+                                borderRadius: BorderRadius.circular(4),
+                                border: Border.all(
+                                  color: Colors.blue.shade100,
+                                  width: 1,
+                                ),
+                              ),
+                              child: Text(
+                                'Solution: ${answer['solution']}',
+                                style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 13,
+                                  color: Colors.blue.shade800,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -320,8 +492,22 @@ class ResultsScreen extends StatelessWidget {
                   Navigator.pop(context);
                   onRestart();
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.purple, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)),
-                child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.refresh), SizedBox(width: 8), Text('Restart Quiz', style: TextStyle(fontSize: 18))]),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple,
+                  foregroundColor: Colors.white,
+                  minimumSize: Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.refresh),
+                    SizedBox(width: 8),
+                    Text('Restart Quiz', style: TextStyle(fontSize: 18)),
+                  ],
+                ),
               ),
             ],
           ),
@@ -330,7 +516,6 @@ class ResultsScreen extends StatelessWidget {
     );
   }
 }
-
 class _ZoomableImageScreen extends StatefulWidget {
   final String imagePath;
 
