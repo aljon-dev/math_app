@@ -73,7 +73,7 @@ Widget _buildExampleCard(BuildContext context, String title, String problem,
             ),
             const SizedBox(height: 12),
             Text(
-              'Steps:',
+              'Reasons:',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),

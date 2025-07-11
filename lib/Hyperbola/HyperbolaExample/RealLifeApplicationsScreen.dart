@@ -18,10 +18,40 @@ class HyperbolaIntroScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
-              _buildZoomableImage('assets/images/realifeHyperbola.png',context),
-              _buildExampleItem('a. A guitar is a real-world example of hyperbola because of its sides and how its curved going outwards just like a hyperbola.'),
-              _buildExampleItem('b. Kobe Port Tower is a hyperboloid tower in the port city of Kobe, Japan.'),
-              _buildExampleItem('c. The shape of most cooling tower is hyperboloid. They are built this way because the broad base allows for greater area to encourage evaporation, then narrows to increase air flow velocity.'),
+              _buildZoomableImage('assets/images/guitar.jpg',context),
+              const SizedBox(height: 10,),
+              Text('GUITAR',style:TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500
+              )),
+              _buildExampleItem('The curved waist of a guitar mimics the two opposing branches of a hyperbola: each side slopes inward toward a narrow middle before flaring outward, creating a symmetrical, flowing form. This shape isn’t merely aesthetic, it allows the instrument to rest comfortably against the player’s body, ensures balanced ergonomics, and enables a guitarist to reach frets and strings more easily. As a result, the guitar’s design beautifully blends mathematical elegance with functional comfort and acoustical balance.'),
+                   const Divider(),
+                const SizedBox(height: 15,),
+              _buildZoomableImage('assets/images/KoberportTower.jpg',context),
+              const SizedBox(height: 10,),
+              Text('KOBE PORT TOWER',style:TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500
+              )),
+
+               _buildExampleItem('Kobe Port Tower is a striking real-world embodiment of a hyperbola through its hyperboloid form: its steel lattice curves inward at the waist and flares outward at top and bottom, tracing the two mirrored branches of a hyperbola spun around a vertical axis. This shape isn’t just visually pleasing, it offers remarkable structural strength and stability by distributing loads efficiently and allowing construction from straight steel beams. Engineers chose this hyperbolic geometry because it uses less material than other forms for a given height and width. Completed in 1963, the tower seamlessly blends mathematical elegance, earthquake‑resistant engineering, economical efficiency, and cultural flair, its hourglass silhouette reminiscent of the traditional Japanese tsuzumi drum.'),
+                const Divider(),
+                const SizedBox(height: 15,),
+
+              _buildZoomableImage('assets/images/Coolingtowers.jpg',context),
+
+               const SizedBox(height: 10,),
+              Text('COOLING TOWERS',style:TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500
+              )),
+
+
+
+          
+              _buildExampleItem('Cooling towers at power plants are a vivid, real-world example of hyperbolas in three dimensions. Their iconic shape, a graceful narrowing in the middle and widening at the base and top, forms a hyperboloid of one sheet, created by rotating a hyperbola around its vertical axis. This isn’t mere aesthetics: the inward curve strengthens the structure with less material, and it boosts airflow via the natural “chimney” or Venturi effect drawing cool air in at the bottom and expelling warm, moist air at the top, all without fans . The hyperbolic design also makes the tower highly resistant to wind loads while facilitating efficient vapor diffusion at the top. In essence, cooling towers masterfully transform the elegant mathematics of hyperbolas into practical engineering, merging structural economy, aerodynamic efficiency, and visual grandeur.'),
+             
+             
             ],
           ),
         ),
@@ -35,7 +65,11 @@ class HyperbolaIntroScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start, 
         children: [
-          Text(text), 
+          Text(text,style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 14
+            
+          ),), 
           const SizedBox(height: 8)
         ]
       )

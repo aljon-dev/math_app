@@ -13,10 +13,10 @@ class _CirclePartsScreenState extends State<CirclePartsScreen> {
   bool isPlaying = false;
 
   final Map<String, String> descriptions = {
-    'Center': 'The fixed point in plane the center of the circle.', 
-    'Radius': 'The fixed distance from the center to the boundary of the circle is called the radius of the circle. Generally, the radius of a circle is denoted by " r.".', 
-    'Diameter': 'The diameter of a circle is a line that travels through the center and intersects the circumference at opposing ends. In other terms, the diameter of a circle is the line that goes through its center and splits it into two equal sections,and is the longest chord of a circle.',
-    'Circumference' : 'The total distance measured once around the circumference of a circle.'
+    'Center': 'The fixed point from which all points on the circle are equally distant.', 
+    'Radius': 'The fixed distance from the center to the boundary of a circle is called the radius. It is usually denoted by (r).', 
+    'Diameter': 'The straight line that passes through the center and connects two points on the circle.',
+    'Circumference' : 'The distance around a circle or the length of its boundary.'
     };
 
   Future<void> selectPart(String part) async {

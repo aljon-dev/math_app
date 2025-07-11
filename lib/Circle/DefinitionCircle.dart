@@ -33,10 +33,10 @@ class _DefinitionSectionState extends State<DefinitionSection> {
 
   final List<Map<String, dynamic>> steps = [
   
-    {'title': 'What is a circle?', 'content': 'A circle is all points equidistant (the distance is called the radius) from one point (which is called the center of the circle). A circle can be formed by slicing a right circular cone with a plane traveling parallel to the base of the cone', 'image': 'assets/images/Circle1.png'},
-    {'title': 'Center and Radius', 'content': 'The given point is called the center, (h, k), and the fixed distance is called the radius, r, of the circle.', 'image': 'assets/images/Circle2.png'},
-    {'title': 'Geometric Definition', 'content': 'A circle is a basic geometric shape defined as the set of all points in a plane that are equidistant from a fixed point, known as the center. Circles are fundamental in calculus and geometry, playing a crucial role in various mathematical applications, such as area, perimeter (circumference), and motion.', 'image': 'assets/images/Circle2.png'},
-    {'title': 'Conic Section', 'content': 'A circle is the set of all points in a plane that are the same distance from a fixed point called the center. It can be thought of as a special kind of ellipse where the two foci are at the same spot ( the center). Because of this, the eccentricity of a circle is 0, meaning it has a perfect round shape. Among all conic sections, the circle has the least deviation from circularity. While the focus and directrix are used differently in a circle compared to other conics, its eccentricity of 0 still shows that it is perfectly round.', 'image': 'assets/images/Circle3.png'},
+    {'title': 'What is a circle?', 'content': 'A circle is all points equidistant (the distance is called the radius) from one point (which is called the center of the circle). A circle can be formed by slicing a right circular cone with a plane traveling parallel to the base of the cone.', 'image': 'assets/images/Circle1.png'},
+    {'title': 'Center and Radius', 'content': 'The given point, (h, k), is called the center, and the fixed distance (r), is called the radius of the circle.', 'image': 'assets/images/Circle2.png'},
+    {'title': 'Geometric Definition', 'content': 'A circle is a basic geometric shape defined as the set of all points in a plane that are equidistant from a fixed point, known as the center. Circles are fundamental in Calculus and Geometry, playing a crucial role in various mathematical applications, such as area, perimeter (circumference), and motion.', 'image': 'assets/images/Circle2.png'},
+  
   ];
 
   void nextStep() {
