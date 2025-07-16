@@ -39,7 +39,7 @@ class _HyperbolaPartsScreenState extends State<HyperbolaPartsScreen> {
     } else if (selectedPart == 'Foci') {
       await player.setAsset('assets/Audio/Hyperbola_(foci).wav');
     } else if (selectedPart == 'Vertices') {
-      await player.setAsset('assets/Audio/Hyperbola_(vertices).wav');
+      await player.setAsset('assets/Audio/Hyperbola_(vertices).mp3');
     } else if (selectedPart == 'Co-vertices') {
       await player.setAsset('assets/Audio/Hyperbola_(co-vertex).wav');
     } else if (selectedPart == 'Major Axis') {
