@@ -24,6 +24,7 @@ class _DefinitionSectionState extends State<ParabolaDefinitionSection> {
 
   Future<void> play() async {
     try {
+        if(currentStep == 0){
       await player.setAsset('assets/Audio/PARABOLA_definition.mp3');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -32,6 +33,50 @@ class _DefinitionSectionState extends State<ParabolaDefinitionSection> {
         ),
       );
       await player.play();
+
+
+        }else if(currentStep == 0){
+              await player.setAsset('assets/Audio/ParabolaStep1.mp3');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Playing', style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.green,
+        ),
+      );
+      await player.play();
+
+        }else if (currentStep == 1){
+              await player.setAsset('assets/Audio/ParabolaStep2.mp3');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Playing', style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.green,
+        ),
+      );
+      await player.play();
+
+        }else if (currentStep == 2){
+              await player.setAsset('assets/Audio/ParabolaStep3.mp3');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Playing', style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.green,
+        ),
+      );
+      await player.play();
+
+        }else if (currentStep == 3){
+                   await player.setAsset('assets/Audio/ParabolaStep4.mp3');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Playing', style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.green,
+        ),
+      );
+      await player.play();
+        }
+
+     
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -50,7 +95,9 @@ class _DefinitionSectionState extends State<ParabolaDefinitionSection> {
     if (currentStep < steps.length - 1) {
       setState(() {
         currentStep++;
+           isPlaying = false;
       });
+      player.pause();
     }
   }
 
@@ -58,7 +105,9 @@ class _DefinitionSectionState extends State<ParabolaDefinitionSection> {
     if (currentStep > 0) {
       setState(() {
         currentStep--;
+           isPlaying = false;
       });
+        player.pause();
     }
   }
   

@@ -23,24 +23,24 @@ class _DefinitionSectionState extends State<DefinitionSection> {
       await player.setAsset('assets/Audio/Circle_DefinitionStep1.mp3');
       ScaffoldMessenger.of(context).showSnackBar(
       SnackBar( content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
-
+        await player.play();
       }else if (currentStep == 1){
          await player.setAsset('assets/Audio/Circle_DefinitionStep2.mp3');
       ScaffoldMessenger.of(context).showSnackBar(
       SnackBar( content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
-
+        await player.play();
 
       }else if (currentStep == 2){
          await player.setAsset('assets/Audio/Circle_DefinitionStep3.mp3');
       ScaffoldMessenger.of(context).showSnackBar(
       SnackBar( content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
-
+        await player.play();
 
       }
 
      
 
-      await player.play();
+    
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to load ${e}', style: TextStyle(color: Colors.white)), backgroundColor: Colors.red));
@@ -63,7 +63,10 @@ class _DefinitionSectionState extends State<DefinitionSection> {
     if (currentStep < steps.length - 1) {
       setState(() {
         currentStep++;
+           isPlaying = false;
+     
       });
+         player.pause();
     }
   }
 
@@ -71,7 +74,10 @@ class _DefinitionSectionState extends State<DefinitionSection> {
     if (currentStep > 0) {
       setState(() {
         currentStep--;
+           isPlaying = false;
+      
       });
+        player.pause();
     }
   }
 

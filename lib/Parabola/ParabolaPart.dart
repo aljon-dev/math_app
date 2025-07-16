@@ -54,7 +54,7 @@ class _ParabolaPartsScreenState extends State<ParabolaPartsScreen> {
       } else if (selectedPart == 'Latus Rectum') {
         await player.setAsset('assets/Audio/Parabola_LatusRectum.mp3');
       }else if (selectedPart == 'Distance p'){
-        await player.setAsset('assets/Audio/Parabola_Distance.mp3');
+        await player.setAsset('assets/Audio/Parabola_DistanceP.mp3');
       }
 
       await player.play();

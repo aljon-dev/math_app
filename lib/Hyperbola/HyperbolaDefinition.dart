@@ -17,10 +17,28 @@ class _DefinitionSectionState extends State<DefinitionHyperBolaSection> {
 
   Future<void> play() async {
     try {
-      await player.setAsset('assets/Audio/HYPERBOLA_definition.wav');
+        if(currentStep == 0){
+          
+        }else if (currentStep == 1 ){
+        await player.setAsset('assets/Audio/HyperbolaStep1.mp3');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
 
       await player.play();
+
+        }else if (currentStep == 2){
+            await player.setAsset('assets/Audio/HyperbolaStep2.mp3');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
+
+      await player.play();
+
+        }else if (currentStep == 3){
+            await player.setAsset('assets/AudioHyperbolaStep3.mp3');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
+
+      await player.play();
+
+        } 
+
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to load ${e}', style: TextStyle(color: Colors.white)), backgroundColor: Colors.red));
     }
@@ -40,7 +58,9 @@ class _DefinitionSectionState extends State<DefinitionHyperBolaSection> {
     if (currentStep < steps.length - 1) {
       setState(() {
         currentStep++;
+        isPlaying = false;
       });
+      player.pause();
     }
   }
 
@@ -48,7 +68,9 @@ class _DefinitionSectionState extends State<DefinitionHyperBolaSection> {
     if (currentStep > 0) {
       setState(() {
         currentStep--;
+        isPlaying = false;
       });
+      player.pause();
     }
   }
     void navigateToStep(int index) {
