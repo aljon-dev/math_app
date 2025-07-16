@@ -53,6 +53,8 @@ class _ParabolaPartsScreenState extends State<ParabolaPartsScreen> {
         await player.setAsset('assets/Audio/Parabola_FocalChord.mp3');
       } else if (selectedPart == 'Latus Rectum') {
         await player.setAsset('assets/Audio/Parabola_LatusRectum.mp3');
+      }else if (selectedPart == 'Distance p'){
+        await player.setAsset('assets/Audio/Parabola_Distance.mp3');
       }
 
       await player.play();
