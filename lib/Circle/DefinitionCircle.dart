@@ -18,12 +18,32 @@ class _DefinitionSectionState extends State<DefinitionSection> {
 
   Future<void> play() async {
     try {
-      await player.setAsset('assets/Audio/Circle_definition.wav');
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
+
+      if(currentStep == 0){
+      await player.setAsset('assets/Audio/Circle_DefinitionStep1.mp3');
+      ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar( content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
+
+      }else if (currentStep == 1){
+         await player.setAsset('assets/Audio/Circle_DefinitionStep2.mp3');
+      ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar( content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
+
+
+      }else if (currentStep == 2){
+         await player.setAsset('assets/Audio/Circle_DefinitionStep3.mp3');
+      ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar( content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
+
+
+      }
+
+     
 
       await player.play();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to load ${e}', style: TextStyle(color: Colors.white)), backgroundColor: Colors.red));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load ${e}', style: TextStyle(color: Colors.white)), backgroundColor: Colors.red));
     }
   }
 

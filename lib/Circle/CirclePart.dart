@@ -36,15 +36,15 @@ class _CirclePartsScreenState extends State<CirclePartsScreen> {
       }
 
       if (selectedPart == 'Radius') {
-        await player.setAsset('assets/Audio/Circle_radius.wav');
+        await player.setAsset('assets/Audio/Circle_radius.mp3');
       }
 
       if (selectedPart == 'Diameter') {
-        await player.setAsset('assets/Audio/Circle_definition2.wav');
+        await player.setAsset('assets/Audio/Circle_diameter.mp3');
       }
 
       if (selectedPart == 'Circumference') {
-        await player.setAsset('assets/Audio/Circle_circumference.wav');
+        await player.setAsset('assets/Audio/Circle_circumference.mp3');
       }
 
       await player.play();
