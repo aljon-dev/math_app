@@ -515,7 +515,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
           'options': ['8m', '6m', '10m', '12m'],
           'correctIndex': 1,
           'solution': 'SOLUTION: a=3 → width=6 meters',
-          'image': 'assets/hyperbola_powerplant.jpg',
+          'image': 'assets/coolingtower.jpg',
         },
         {
           'shape': 'Hyperbola',
