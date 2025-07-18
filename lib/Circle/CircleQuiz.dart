@@ -65,7 +65,7 @@ class _QuizScreenState extends State<QuizScreen> {
       'image': null,
     },
     {
-      'question': '7. What is the center for diameter endpoints at (-8,7) and (4,-3)?',
+      'question': 'What is the center for diameter endpoints at (-8,7) and (4,-3)?',
       'options': ['a. (-2,2)', 'b. (6,-5)', 'c. (5,8)', 'd. (-5,8)'],
       'correctIndex': 0,
       'solution': 'Midpoint formula: ((-8+4)/2, (7+(-3))/2) = (-2,2)',

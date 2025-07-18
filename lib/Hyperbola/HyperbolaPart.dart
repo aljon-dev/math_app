@@ -47,7 +47,7 @@ class _HyperbolaPartsScreenState extends State<HyperbolaPartsScreen> {
     } else if (selectedPart == 'Minor Axis') {
       await player.setAsset('assets/Audio/Hyperbola_(minor axis).wav');
     } else if (selectedPart == 'Transverse Axis') {
-      await player.setAsset('assets/Audio/Hyperbola_(transverse axis).wav');
+      await player.setAsset('assets/Audio/Hyperbola_(transverse axis).mp3');
     } else if (selectedPart == 'Conjugate Axis') {
       await player.setAsset('assets/Audio/Hyperbola_(conjugate axis).wav');
     } else if (selectedPart == 'Asymptotes') {

@@ -23,7 +23,7 @@ class _FormulasSectionState extends State<FormulasSection> {
     {'title': 'General Form', 'content': 'The general form represents a circle equation in expanded form.', 'formula': r'x² + y² + Ax + By + C = 0', 'type': 'formula'},
     {'title': 'DERIVING THE STANDARD FORM', 'content': 'Now let’s derive the standard form of a circle equation using the distance formula.', 'type': 'derivation_intro'},
     {'title': 'Distance Formula', 'content': 'First, let`s start with the distance formula between two points.', 'formula': r'd = √[(x₂ - x₁)² + (y₂ - y₁)²]', 'type': 'derivation'},
-    {'title': 'Substitute Values', 'content': 'substitute the center (h,k),point (x,y), and distance (r)   into the formula.', 'formula': r'r = √[(x - h)² + (y - k)²]', 'type': 'derivation'},
+    {'title': 'Substitute Values', 'content': 'Substitute the center (h,k),point (x,y), and distance (r)   into the formula.', 'formula': r'r = √[(x - h)² + (y - k)²]', 'type': 'derivation'},
     {'title': 'Square Both Sides', 'content': 'To eliminate the square root, We square both sides of the equation to remove the square root.', 'formula': r'r² = (x - h)² + (y - k)²', 'type': 'derivation'},
     {'title': 'Standard Form Result', 'content': 'Rearranging gives us the standard form of a circle equation.', 'formula': r'(x - h)² + (y - k)² = r²', 'type': 'derivation'},
     {'title': 'Circle at Origin - Setup', 'content': 'For a circle centered at the origin (0,0), we follow the same process.', 'formula': r'r = √[(x - 0)² + (y - 0)²]', 'type': 'derivation'},

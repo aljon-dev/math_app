@@ -78,7 +78,7 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
       'options': ['a. x ≈ 39.8 meters', 'b. x ≈ 34.28 meters', 'c. x ≈ 35.82 meters', 'd. x ≈ 38.8 meters'],
       'correctIndex': 1,
       'solution': 'Solution:\n\nAt height y=90 (half of 180):\nx²/36 - 90²/256 = 1\nx²/36 = 1 + 31.64\nx² = 32.64 × 36 ≈ 1175\nx ≈ √1175 ≈ 34.28 meters',
-      'image': 'assets/hyperbola_powerplant.png',
+      'image': 'assets/hyperbola_powerplant.jpg',
     },
   ];
 

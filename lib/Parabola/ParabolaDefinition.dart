@@ -17,9 +17,9 @@ class _DefinitionSectionState extends State<ParabolaDefinitionSection> {
   
   final List<Map<String, dynamic>> steps = [
     {'title': 'What is a parabola?', 'content': 'A parabola is a conic section that is formed when a cone is cut by a plane parallel to one lateral side of the cone.', 'image': 'assets/images/ParabolaDef.png'},
-    {'title': 'Geometric Shape', 'content': 'A parabola is a U-shaped plane curve where any point is at an equal distance from a fixed point (called the focus) and from a fixed straight line (called the directrix).', 'image': 'assets/images/Parabola2.jpg'},
-    {'title': 'Mathematical Definition', 'content': 'A parabola is a set of all points whose distance from a fixed point, called the focus, is equal to the distance from a fixed line,called the directrix.', 'image': 'assets/images/Parabola3.jpg'},
-    {'title': 'Vertex of a Parabola', 'content': 'The point halfway between the focus and the directrix is called the vertex of the parabola. It is the point where the curve changes direction.', 'image': 'assets/images/Parabola3.jpg'},
+    {'title': 'Geometric Shape', 'content': 'A parabola is a U-shaped plane curve where any point is at an equal distance from a fixed point (called the focus) and from a fixed straight line (called the directrix).', 'image': 'assets/images/Parabola2.png'},
+    {'title': 'Mathematical Definition', 'content': 'A parabola is a set of all points whose distance from a fixed point, called the focus, is equal to the distance from a fixed line,called the directrix.', 'image': 'assets/images/Parabola2.png'},
+    {'title': 'Vertex of a Parabola', 'content': 'The point halfway between the focus and the directrix is called the vertex of the parabola. It is the point where the curve changes direction.', 'image': 'assets/images/Parabola2.png'},
   ];
 
   Future<void> play() async {
@@ -35,7 +35,7 @@ class _DefinitionSectionState extends State<ParabolaDefinitionSection> {
       await player.play();
 
 
-        }else if(currentStep == 0){
+        }else if(currentStep == 1){
               await player.setAsset('assets/Audio/ParabolaStep1.mp3');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -45,7 +45,7 @@ class _DefinitionSectionState extends State<ParabolaDefinitionSection> {
       );
       await player.play();
 
-        }else if (currentStep == 1){
+        }else if (currentStep == 2){
               await player.setAsset('assets/Audio/ParabolaStep2.mp3');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -55,7 +55,7 @@ class _DefinitionSectionState extends State<ParabolaDefinitionSection> {
       );
       await player.play();
 
-        }else if (currentStep == 2){
+        }else if (currentStep == 3){
               await player.setAsset('assets/Audio/ParabolaStep3.mp3');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
