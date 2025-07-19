@@ -15,7 +15,7 @@ class ParabolaRealWorldScreen extends StatelessWidget {
             // Problem 1
             _buildProblem(
               context: context,
-              problem: '1. A city is designing a new bridge with a parabolic arch. The shape of the arch is modeled by the equation: y = -x² + 12 where x and y are measured in meters. Assuming the bottom of the arch touches the ground, what is the maximum height of the arch from the ground?',
+              problem: '1. A city is designing a new bridge with a parabolic arch. The shape of the arch is modeled by the equation: (x-3)² = -8(y-12) where x and y are measured in meters. Assuming the bottom of the arch touches the ground, what is the maximum height of the arch from the ground?',
               solution: [
                 'Since we know that y = ax² + bx + c is the standard form of a downward parabola,',
                 'In the given equation we are given the vertex of (0,12).',
