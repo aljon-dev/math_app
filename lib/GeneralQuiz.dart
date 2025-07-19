@@ -560,6 +560,8 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
             'x²/9 - y²/16 = 1',
             'x² + y²/4 = 1'
           ],
+
+          
           'correctIndex': 2,
           'solution': 'x²/9 - y²/16 = 1',
           'image': 'assets/comet_path.jpg',
@@ -570,7 +572,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
           'options': ['15m', '10m', '4m', '17m'],
           'correctIndex': 1,
           'solution': 'SOLUTION: a=5 → width=10 meters',
-          'image': 'assets/hyperbolic_tower.png',
+          'image': 'assets/hyperbolic_tower.jpg',
         },
       ],
     };
