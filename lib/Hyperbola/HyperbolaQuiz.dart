@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'dart:math';
 
 import 'package:math_app/Menu.dart';
@@ -89,6 +90,50 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
   List<int> questionOrder = [];
   List<Map<String, dynamic>> userAnswers = [];
 
+
+  bool isPlaying = false;
+
+  final AudioPlayer audioPlayer = AudioPlayer();
+
+
+
+  void playSound(){
+
+
+    try{
+      
+      audioPlayer.setAsset('assets/Audio/musicquizbg.mp3');
+
+    audioPlayer.play();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Sound is playing'),
+        duration: Duration(seconds: 2),
+        backgroundColor: Colors.green,
+      ),
+    );
+
+    setState(() {
+      isPlaying = true;
+    });
+
+    }catch(e){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error playing sound: $e'),
+          duration: Duration(seconds: 2),
+          backgroundColor: Colors.red,
+        ),
+      );
+      setState(() {
+        isPlaying = false;
+      });
+    }
+    
+  }
+
+
   @override
   void initState() {
     super.initState();
@@ -127,6 +172,10 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
         isAnswered = false;
       });
     } else {
+       audioPlayer.stop();
+      setState(() {
+        isPlaying = false;
+      });
       Navigator.push(context, MaterialPageRoute(builder: (context) => ResultsScreen(score: score, totalQuestions: questions.length, userAnswers: userAnswers, questionOrder: questionOrder, questions: questions, onRestart: resetQuiz)));
     }
   }
@@ -165,7 +214,33 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
     return WillPopScope(
       onWillPop: () async => true,
       child: Scaffold(
-      appBar: AppBar(title: Text('Hyperbola Quiz (${currentQuestionIndex + 1}/${questions.length})'), backgroundColor: Colors.purple, foregroundColor: Colors.white, ),
+      appBar: AppBar(
+        title: Text('Hyperbola Quiz (${currentQuestionIndex + 1}/${questions.length})'), 
+        leading: IconButton(
+            onPressed: () {
+              isPlaying = false;
+              audioPlayer.stop();
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
+            },
+            icon: Icon(Icons.arrow_back),
+          ),
+      backgroundColor: Colors.purple, foregroundColor: Colors.white,  actions: [
+            IconButton(
+              icon: Icon(isPlaying ? Icons.stop : Icons.play_arrow),
+              onPressed: () {
+                if (isPlaying) {
+                  audioPlayer.stop();
+                  setState(() {
+                    isPlaying = false;
+                  });
+                } else {
+                  playSound();
+                }
+              },
+              tooltip: isPlaying ? 'Stop Sound' : 'Play Sound',
+            ),
+
+          ], ),
       body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(

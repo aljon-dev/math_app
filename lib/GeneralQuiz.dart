@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'dart:math';
 import 'package:math_app/Menu.dart';
 
@@ -15,6 +16,49 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
   int _score = 0;
   List<Map<String, dynamic>> _userAnswers = [];
   List<int> _questionOrder = [];
+
+
+    bool isPlaying = false;
+
+  final AudioPlayer audioPlayer = AudioPlayer();
+
+
+   void playSound(){
+
+
+    try{
+      
+      audioPlayer.setAsset('assets/Audio/musicquizbg.mp3');
+
+    audioPlayer.play();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Sound is playing'),
+        duration: Duration(seconds: 2),
+        backgroundColor: Colors.green,
+      ),
+    );
+
+    setState(() {
+      isPlaying = true;
+    });
+
+    }catch(e){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error playing sound: $e'),
+          duration: Duration(seconds: 2),
+          backgroundColor: Colors.red,
+        ),
+      );
+      setState(() {
+        isPlaying = false;
+      });
+    }
+    
+  }
+
 
   @override
   void initState() {
@@ -81,6 +125,9 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         _isAnswered = false;
       });
     } else {
+
+       isPlaying = false;
+              audioPlayer.stop();
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -435,10 +482,10 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
           'shape': 'Hyperbola',
           'question': 'comet`s path around the sun is roughly modeled by a hyperbola. Which of the following equations could represent this path (assuming the sun is at a focus)?',
           'options': [
-            'a.	x² + y² = 1 ',
-            'b.	y = x² ',
-            '	x^2/9  - y^2/16 = 1',
-            '	x² + y^2/4 = 1 '
+            'x² + y² = 1',
+            'y = x²',
+            'x²/9 - y²/16 = 1',
+            'x² + y^2/4 = 1 '
           ],
           'correctIndex': 2,
           'solution': 'Parabola',
@@ -591,6 +638,8 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
 
     return WillPopScope(
       onWillPop: () async {
+         isPlaying = false;
+              audioPlayer.stop();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => MenuButton()),
@@ -602,6 +651,23 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
           title: Text('Conic Sections Quiz (${_currentQuestionIndex + 1}/${_quizQuestions.length})'),
           backgroundColor: Colors.purple,
           foregroundColor: Colors.white,
+          actions: [
+            IconButton(
+              icon: Icon(isPlaying ? Icons.stop : Icons.play_arrow),
+              onPressed: () {
+                if (isPlaying) {
+                  audioPlayer.stop();
+                  setState(() {
+                    isPlaying = false;
+                  });
+                } else {
+                  playSound();
+                }
+              },
+              tooltip: isPlaying ? 'Stop Sound' : 'Play Sound',
+            ),
+
+          ]
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -797,14 +863,7 @@ class ResultsScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16),
-                    Text(
-                      'Grade: ${_getGrade()}',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: _getGradeColor(),
-                      ),
-                    ),
+                    
                   ],
                 ),
               ),

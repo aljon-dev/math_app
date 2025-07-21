@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'dart:math';
 
 import 'package:math_app/Menu.dart';
@@ -90,6 +91,51 @@ class _QuizScreenState extends State<QuizScreenEllipse> {
   List<int> questionOrder = [];
   List<Map<String, dynamic>> userAnswers = [];
 
+
+
+  bool isPlaying = false;
+
+  final AudioPlayer audioPlayer = AudioPlayer();
+
+
+
+  void playSound(){
+
+
+    try{
+      
+      audioPlayer.setAsset('assets/Audio/musicquizbg.mp3');
+
+    audioPlayer.play();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Sound is playing'),
+        duration: Duration(seconds: 2),
+        backgroundColor: Colors.green,
+      ),
+    );
+
+    setState(() {
+      isPlaying = true;
+    });
+
+    }catch(e){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error playing sound: $e'),
+          duration: Duration(seconds: 2),
+          backgroundColor: Colors.red,
+        ),
+      );
+      setState(() {
+        isPlaying = false;
+      });
+    }
+    
+  }
+
+
   @override
   void initState() {
     super.initState();
@@ -128,6 +174,10 @@ class _QuizScreenState extends State<QuizScreenEllipse> {
         isAnswered = false;
       });
     } else {
+       audioPlayer.stop();
+      setState(() {
+        isPlaying = false;
+      });
       Navigator.push(context, MaterialPageRoute(builder: (context) => ResultsScreen(score: score, totalQuestions: questions.length, userAnswers: userAnswers, questionOrder: questionOrder, questions: questions, onRestart: resetQuiz)));
     }
   }
@@ -150,10 +200,29 @@ class _QuizScreenState extends State<QuizScreenEllipse> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
+              isPlaying = false;
+              audioPlayer.stop();
               Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
             },
             icon: Icon(Icons.arrow_back),
           ),
+            actions: [
+            IconButton(
+              icon: Icon(isPlaying ? Icons.stop : Icons.play_arrow),
+              onPressed: () {
+                if (isPlaying) {
+                  audioPlayer.stop();
+                  setState(() {
+                    isPlaying = false;
+                  });
+                } else {
+                  playSound();
+                }
+              },
+              tooltip: isPlaying ? 'Stop Sound' : 'Play Sound',
+            ),
+
+          ],
           title: Text('Ellipse Quiz(${currentQuestionIndex + 1}/${questions.length})'),
           backgroundColor: Colors.blue,
           foregroundColor: Colors.white,
