@@ -349,7 +349,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
           'options': ['x² + y² = 1', 'y = x²', 'x²/9 - y²/16 = 1', 'x² + y^2/4 = 1 '],
           'correctIndex': 2,
           'solution': 'Parabola',
-          'image': 'assets/comet_path.png',
+          'image': 'assets/comet_path.jpg',
         },
         {
           'shape': 'Parabola',

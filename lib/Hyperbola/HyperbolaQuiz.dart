@@ -72,7 +72,7 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
       'options': ['a. x²/746562 - y²/123678 = 1', 'b. x²/34322 - y²/178682 = 1', 'c. x²/48400 - y²/111600 = 1', 'd. x²/45758 - y²/374276 = 1'],
       'correctIndex': 2,
       'solution': 'Solution:\n\n2a = 220×2 = 440 → a = 220\na² = 48400\nc = 400 (half distance between stations)\nb² = c² - a² = 160000 - 48400 = 111600\nEquation: x²/48400 - y²/111600 = 1',
-      'image': 'assets/hyperbola_stations.png',
+      'image': 'assets/hyperbola_stations.jpg',
     },
     {
       'question': 'The hyperbolic design of power plant can be modeled by x²/36 - y²/256 = 1, and its height is 180 m tall. Determine the width at the top of a power plant?',
