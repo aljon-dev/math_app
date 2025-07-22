@@ -61,7 +61,7 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
       'image': null,
     },
     {
-      'question': 'The tower stands 198 meters tall, Find the width of the tower at the narrowest part in the middle using the equation x^2/36-y^2/484= 1.?',
+      'question': 'The tower stands 198 meters tall, Find the width of the tower at the narrowest part in the middle using the equation x²/36-y²/484= 1.?',
       'options': ['a. 15 meters', 'b. 12 meters', 'c. 4 meters', 'd. 17 meters'],
       'correctIndex': 1,
       'solution': 'Solution:\n\na² = 36 → a = 6\nWidth at narrowest = 2a = 12 meters',
@@ -75,7 +75,7 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
       'image': 'assets/hyperbola_stations.png',
     },
     {
-      'question': 'The hyperbolic design of power plant can be modeled by x^2/36 - y^2/256 = 1, and its height is 180 m tall. Determine the width at the top of a power plant?',
+      'question': 'The hyperbolic design of power plant can be modeled by x²/36 - y²/256 = 1, and its height is 180 m tall. Determine the width at the top of a power plant?',
       'options': ['a. x ≈ 39.8 meters', 'b. x ≈ 34.28 meters', 'c. x ≈ 35.82 meters', 'd. x ≈ 38.8 meters'],
       'correctIndex': 1,
       'solution': 'Solution:\n\nAt height y=90 (half of 180):\nx²/36 - 90²/256 = 1\nx²/36 = 1 + 31.64\nx² = 32.64 × 36 ≈ 1175\nx ≈ √1175 ≈ 34.28 meters',
@@ -90,49 +90,28 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
   List<int> questionOrder = [];
   List<Map<String, dynamic>> userAnswers = [];
 
-
   bool isPlaying = false;
 
   final AudioPlayer audioPlayer = AudioPlayer();
 
-
-
-  void playSound(){
-
-
-    try{
-      
+  void playSound() {
+    try {
       audioPlayer.setAsset('assets/Audio/musicquizbg.mp3');
 
-    audioPlayer.play();
+      audioPlayer.play();
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Sound is playing'),
-        duration: Duration(seconds: 2),
-        backgroundColor: Colors.green,
-      ),
-    );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Sound is playing'), duration: Duration(seconds: 2), backgroundColor: Colors.green));
 
-    setState(() {
-      isPlaying = true;
-    });
-
-    }catch(e){
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error playing sound: $e'),
-          duration: Duration(seconds: 2),
-          backgroundColor: Colors.red,
-        ),
-      );
+      setState(() {
+        isPlaying = true;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error playing sound: $e'), duration: Duration(seconds: 2), backgroundColor: Colors.red));
       setState(() {
         isPlaying = false;
       });
     }
-    
   }
-
 
   @override
   void initState() {
@@ -151,7 +130,7 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
     });
   }
 
- void answerQuestion(int optionIndex) {
+  void answerQuestion(int optionIndex) {
     setState(() {
       selectedOptionIndex = optionIndex;
 
@@ -172,7 +151,7 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
         isAnswered = false;
       });
     } else {
-       audioPlayer.stop();
+      audioPlayer.stop();
       setState(() {
         isPlaying = false;
       });
@@ -214,9 +193,9 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
     return WillPopScope(
       onWillPop: () async => true,
       child: Scaffold(
-      appBar: AppBar(
-        title: Text('Hyperbola Quiz (${currentQuestionIndex + 1}/${questions.length})'), 
-        leading: IconButton(
+        appBar: AppBar(
+          title: Text('Hyperbola Quiz (${currentQuestionIndex + 1}/${questions.length})'),
+          leading: IconButton(
             onPressed: () {
               isPlaying = false;
               audioPlayer.stop();
@@ -224,7 +203,9 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
             },
             icon: Icon(Icons.arrow_back),
           ),
-      backgroundColor: Colors.purple, foregroundColor: Colors.white,  actions: [
+          backgroundColor: Colors.purple,
+          foregroundColor: Colors.white,
+          actions: [
             IconButton(
               icon: Icon(isPlaying ? Icons.stop : Icons.play_arrow),
               onPressed: () {
@@ -239,9 +220,9 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
               },
               tooltip: isPlaying ? 'Stop Sound' : 'Play Sound',
             ),
-
-          ], ),
-      body: Padding(
+          ],
+        ),
+        body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(
             child: Column(
@@ -259,7 +240,7 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
             ),
           ),
         ),
-    )
+      ),
     );
   }
 
@@ -273,6 +254,7 @@ class _QuizScreenState extends State<QuizScreenHyperBola> {
     );
   }
 }
+
 class ResultsScreen extends StatelessWidget {
   final int score;
   final int totalQuestions;
@@ -281,15 +263,7 @@ class ResultsScreen extends StatelessWidget {
   final List<Map<String, dynamic>> questions;
   final VoidCallback onRestart;
 
-  const ResultsScreen({
-    Key? key,
-    required this.score,
-    required this.totalQuestions,
-    required this.userAnswers,
-    required this.questionOrder,
-    required this.questions,
-    required this.onRestart,
-  }) : super(key: key);
+  const ResultsScreen({Key? key, required this.score, required this.totalQuestions, required this.userAnswers, required this.questionOrder, required this.questions, required this.onRestart}) : super(key: key);
 
   String _getGrade() {
     double percentage = (score / totalQuestions) * 100;
@@ -315,16 +289,14 @@ class ResultsScreen extends StatelessWidget {
       canPop: false,
       onPopInvoked: (didPop) {
         if (!didPop) {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => MenuButton()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MenuButton()));
         }
       },
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MenuButton()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
             },
             icon: Icon(Icons.arrow_back),
           ),
@@ -347,29 +319,18 @@ class ResultsScreen extends StatelessWidget {
             children: [
               // Wider score box
               Container(
-                width: double.infinity,  // Changed from 180 to double.infinity
-                padding: EdgeInsets.all(20),  // Increased padding
-                decoration: BoxDecoration(
-                  color: Colors.purple.shade50,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      blurRadius: 6,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
+                width: double.infinity, // Changed from 180 to double.infinity
+                padding: EdgeInsets.all(20), // Increased padding
+                decoration: BoxDecoration(color: Colors.purple.shade50, borderRadius: BorderRadius.circular(12), boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.3), blurRadius: 6, offset: Offset(0, 3))]),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.emoji_events,
-                        size: 50, color: Colors.purple),  // Increased icon size
-                    SizedBox(height: 12),  // Increased spacing
+                    Icon(Icons.emoji_events, size: 50, color: Colors.purple), // Increased icon size
+                    SizedBox(height: 12), // Increased spacing
                     Text(
                       'Your Quiz Score',
                       style: TextStyle(
-                        fontSize: 16,  // Increased font size
+                        fontSize: 16, // Increased font size
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -377,31 +338,18 @@ class ResultsScreen extends StatelessWidget {
                     Text(
                       '$score/$totalQuestions',
                       style: TextStyle(
-                        fontSize: 20,  // Increased font size
+                        fontSize: 20, // Increased font size
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(height: 12),
                     Container(
                       width: double.infinity,
-                      height: 10,  // Increased height
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.grey.shade300,
-                      ),
-                      child: FractionallySizedBox(
-                        alignment: Alignment.centerLeft,
-                        widthFactor: score / totalQuestions,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: _getGradeColor(),
-                          ),
-                        ),
-                      ),
+                      height: 10, // Increased height
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: Colors.grey.shade300),
+                      child: FractionallySizedBox(alignment: Alignment.centerLeft, widthFactor: score / totalQuestions, child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: _getGradeColor()))),
                     ),
                     SizedBox(height: 16),
-                   
                   ],
                 ),
               ),
@@ -418,149 +366,24 @@ class ResultsScreen extends StatelessWidget {
                     return Card(
                       margin: EdgeInsets.only(bottom: 10),
                       elevation: 3,
-                      color: isCorrect
-                          ? Colors.green.shade50
-                          : Colors.red.shade50,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: isCorrect
-                              ? Colors.green.shade200
-                              : Colors.red.shade200,
-                          width: 1.5,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                      color: isCorrect ? Colors.green.shade50 : Colors.red.shade50,
+                      shape: RoundedRectangleBorder(side: BorderSide(color: isCorrect ? Colors.green.shade200 : Colors.red.shade200, width: 1.5), borderRadius: BorderRadius.circular(8)),
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    color: isCorrect
-                                        ? Colors.green
-                                        : Colors.red,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    isCorrect
-                                        ? Icons.check
-                                        : Icons.close,
-                                    color: Colors.white,
-                                    size: 16,
-                                  ),
-                                ),
-                                SizedBox(width: 8),
-                                Expanded(
-                                  child: Text(
-                                    'Question ${displayIndex + 1}',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: isCorrect
-                                          ? Colors.green.shade900
-                                          : Colors.red.shade900,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            Row(children: [Container(padding: EdgeInsets.all(4), decoration: BoxDecoration(color: isCorrect ? Colors.green : Colors.red, shape: BoxShape.circle), child: Icon(isCorrect ? Icons.check : Icons.close, color: Colors.white, size: 16)), SizedBox(width: 8), Expanded(child: Text('Question ${displayIndex + 1}', style: TextStyle(fontWeight: FontWeight.bold, color: isCorrect ? Colors.green.shade900 : Colors.red.shade900, fontSize: 16)))]),
                             SizedBox(height: 8),
-                            Text(
-                              answer['question'],
-                              style: TextStyle(fontSize: 14),
-                            ),
+                            Text(answer['question'], style: TextStyle(fontSize: 14)),
                             SizedBox(height: 8),
-                            if (answer['image'] != null)
-                              Container(
-                                height: 100,
-                                child: Image.asset(
-                                  answer['image'],
-                                  fit: BoxFit.contain,
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      Center(
-                                    child: Text(
-                                      'Image not found',
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                            if (answer['image'] != null) Container(height: 100, child: Image.asset(answer['image'], fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey))))),
                             SizedBox(height: 8.0),
-                            RichText(
-                              text: TextSpan(
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: 'Your answer: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: answer['selected'] != null
-                                        ? question['options'][answer['selected']]
-                                        : 'Not answered',
-                                    style: TextStyle(
-                                      color: isCorrect
-                                          ? Colors.green.shade900
-                                          : Colors.red.shade900,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            RichText(text: TextSpan(style: TextStyle(fontSize: 14, color: Colors.black), children: [TextSpan(text: 'Your answer: ', style: TextStyle(fontWeight: FontWeight.w500)), TextSpan(text: answer['selected'] != null ? question['options'][answer['selected']] : 'Not answered', style: TextStyle(color: isCorrect ? Colors.green.shade900 : Colors.red.shade900, fontWeight: FontWeight.bold))])),
                             SizedBox(height: 4),
-                            RichText(
-                              text: TextSpan(
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: 'Correct answer: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: question['options'][answer['correct']],
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green.shade900,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            RichText(text: TextSpan(style: TextStyle(fontSize: 14, color: Colors.black), children: [TextSpan(text: 'Correct answer: ', style: TextStyle(fontWeight: FontWeight.w500)), TextSpan(text: question['options'][answer['correct']], style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green.shade900))])),
                             SizedBox(height: 8),
-                            Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Colors.blue.shade50,
-                                borderRadius: BorderRadius.circular(4),
-                                border: Border.all(
-                                  color: Colors.blue.shade100,
-                                  width: 1,
-                                ),
-                              ),
-                              child: Text(
-                                'Solution: ${answer['solution']}',
-                                style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 13,
-                                  color: Colors.blue.shade800,
-                                ),
-                              ),
-                            ),
+                            Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.circular(4), border: Border.all(color: Colors.blue.shade100, width: 1)), child: Text('Solution: ${answer['solution']}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 13, color: Colors.blue.shade800))),
                           ],
                         ),
                       ),
@@ -574,22 +397,8 @@ class ResultsScreen extends StatelessWidget {
                   Navigator.pop(context);
                   onRestart();
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
-                  foregroundColor: Colors.white,
-                  minimumSize: Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.refresh),
-                    SizedBox(width: 8),
-                    Text('Restart Quiz', style: TextStyle(fontSize: 18)),
-                  ],
-                ),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.purple, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.refresh), SizedBox(width: 8), Text('Restart Quiz', style: TextStyle(fontSize: 18))]),
               ),
             ],
           ),
@@ -598,6 +407,7 @@ class ResultsScreen extends StatelessWidget {
     );
   }
 }
+
 class _ZoomableImageScreen extends StatefulWidget {
   final String imagePath;
 

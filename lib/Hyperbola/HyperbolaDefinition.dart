@@ -13,32 +13,26 @@ class _DefinitionSectionState extends State<DefinitionHyperBolaSection> {
   bool isPlaying = false;
   final player = AudioPlayer();
 
-    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<void> play() async {
     try {
-        if(currentStep == 0){
-          
-        }else if (currentStep == 1 ){
+      if (currentStep == 0) {
         await player.setAsset('assets/Audio/HyperbolaStep1.mp3');
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
 
-      await player.play();
+        await player.play();
+      } else if (currentStep == 1) {
+        await player.setAsset('assets/Audio/HyperbolaStep2.mp3');
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
 
-        }else if (currentStep == 2){
-            await player.setAsset('assets/Audio/HyperbolaStep2.mp3');
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
+        await player.play();
+      } else if (currentStep == 2) {
+        await player.setAsset('assets/Audio/HyperbolaStep3.mp3');
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
 
-      await player.play();
-
-        }else if (currentStep == 3){
-            await player.setAsset('assets/AudioHyperbolaStep3.mp3');
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Playing', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green));
-
-      await player.play();
-
-        } 
-
+        await player.play();
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to load ${e}', style: TextStyle(color: Colors.white)), backgroundColor: Colors.red));
     }
@@ -73,13 +67,13 @@ class _DefinitionSectionState extends State<DefinitionHyperBolaSection> {
       player.pause();
     }
   }
-    void navigateToStep(int index) {
+
+  void navigateToStep(int index) {
     setState(() {
       currentStep = index;
     });
     Navigator.of(context).pop();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +84,7 @@ class _DefinitionSectionState extends State<DefinitionHyperBolaSection> {
         await player.pause();
       },
       child: Scaffold(
-         key: _scaffoldKey,
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text('Hyperbola', textAlign: TextAlign.center),
           actions: [
@@ -118,7 +112,7 @@ class _DefinitionSectionState extends State<DefinitionHyperBolaSection> {
                 label: Text('Pause'),
               ),
 
-               IconButton(
+            IconButton(
               onPressed: () {
                 _scaffoldKey.currentState?.openEndDrawer();
               },
@@ -126,7 +120,7 @@ class _DefinitionSectionState extends State<DefinitionHyperBolaSection> {
             ),
           ],
         ),
-         endDrawer: Drawer(
+        endDrawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
             children: [

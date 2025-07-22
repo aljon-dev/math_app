@@ -17,48 +17,28 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
   List<Map<String, dynamic>> _userAnswers = [];
   List<int> _questionOrder = [];
 
-
-    bool isPlaying = false;
+  bool isPlaying = false;
 
   final AudioPlayer audioPlayer = AudioPlayer();
 
-
-   void playSound(){
-
-
-    try{
-      
+  void playSound() {
+    try {
       audioPlayer.setAsset('assets/Audio/musicquizbg.mp3');
 
-    audioPlayer.play();
+      audioPlayer.play();
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Sound is playing'),
-        duration: Duration(seconds: 2),
-        backgroundColor: Colors.green,
-      ),
-    );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Sound is playing'), duration: Duration(seconds: 2), backgroundColor: Colors.green));
 
-    setState(() {
-      isPlaying = true;
-    });
-
-    }catch(e){
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error playing sound: $e'),
-          duration: Duration(seconds: 2),
-          backgroundColor: Colors.red,
-        ),
-      );
+      setState(() {
+        isPlaying = true;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error playing sound: $e'), duration: Duration(seconds: 2), backgroundColor: Colors.red));
       setState(() {
         isPlaying = false;
       });
     }
-    
   }
-
 
   @override
   void initState() {
@@ -76,15 +56,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
     _quizQuestions = [...circleQs, ...ellipseQs, ...parabolaQs, ...hyperbolaQs];
     _questionOrder = List.generate(_quizQuestions.length, (index) => index)..shuffle();
 
-    _userAnswers = _quizQuestions.map((q) => {
-      'question': q['question'],
-      'selected': null,
-      'correctIndex': q['correctIndex'],
-      'solution': q['solution'],
-      'isCorrect': false,
-      'shape': q['shape'],
-      'image': q['image']
-    }).toList();
+    _userAnswers = _quizQuestions.map((q) => {'question': q['question'], 'selected': null, 'correctIndex': q['correctIndex'], 'solution': q['solution'], 'isCorrect': false, 'shape': q['shape'], 'image': q['image']}).toList();
 
     setState(() {
       _currentQuestionIndex = 0;
@@ -105,11 +77,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
       _isAnswered = true;
 
       final originalIndex = _questionOrder[_currentQuestionIndex];
-      _userAnswers[originalIndex] = {
-        ..._userAnswers[originalIndex],
-        'selected': optionIndex,
-        'isCorrect': optionIndex == _quizQuestions[originalIndex]['correctIndex']
-      };
+      _userAnswers[originalIndex] = {..._userAnswers[originalIndex], 'selected': optionIndex, 'isCorrect': optionIndex == _quizQuestions[originalIndex]['correctIndex']};
 
       if (optionIndex == _quizQuestions[originalIndex]['correctIndex']) {
         _score++;
@@ -125,22 +93,9 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         _isAnswered = false;
       });
     } else {
-
-       isPlaying = false;
-              audioPlayer.stop();
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ResultsScreen(
-            score: _score,
-            totalQuestions: _quizQuestions.length,
-            userAnswers: _userAnswers,
-            questionOrder: _questionOrder,
-            questions: _quizQuestions,
-            onRestart: _resetQuiz,
-          ),
-        ),
-      );
+      isPlaying = false;
+      audioPlayer.stop();
+      Navigator.push(context, MaterialPageRoute(builder: (context) => ResultsScreen(score: _score, totalQuestions: _quizQuestions.length, userAnswers: _userAnswers, questionOrder: _questionOrder, questions: _quizQuestions, onRestart: _resetQuiz)));
     }
   }
 
@@ -159,54 +114,9 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
     if (imagePath == null || imagePath.isEmpty) return SizedBox.shrink();
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Scaffold(
-              appBar: AppBar(title: Text('Image Preview')),
-              body: Center(
-                child: InteractiveViewer(
-                  panEnabled: true,
-                  minScale: 0.5,
-                  maxScale: 4.0,
-                  child: Image.asset(
-                    imagePath,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) => Center(
-                      child: Text(
-                        'Image not available',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Scaffold(appBar: AppBar(title: Text('Image Preview')), body: Center(child: InteractiveViewer(panEnabled: true, minScale: 0.5, maxScale: 4.0, child: Image.asset(imagePath, fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not available', style: TextStyle(color: Colors.grey)))))))));
       },
-      child: Hero(
-        tag: 'image-$imagePath',
-        child: Container(
-          margin: EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Image.asset(
-            imagePath,
-            width: 200,
-            height: 120,
-            fit: BoxFit.contain,
-            errorBuilder: (context, error, stackTrace) => Center(
-              child: Text(
-                'Image not available',
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-          ),
-        ),
-      ),
+      child: Hero(tag: 'image-$imagePath', child: Container(margin: EdgeInsets.symmetric(vertical: 10), decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(8)), child: Image.asset(imagePath, width: 200, height: 120, fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not available', style: TextStyle(color: Colors.grey)))))),
     );
   }
 
@@ -216,12 +126,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         {
           'shape': 'Circle',
           'question': 'Which of the following defines a circle?',
-          'options': [
-            'A shape with three sides',
-            'A set of points equidistant from a center',
-            'A four-sided figure',
-            'A polygon with equal sides'
-          ],
+          'options': ['A shape with three sides', 'A set of points equidistant from a center', 'A four-sided figure', 'A polygon with equal sides'],
           'correctIndex': 1,
           'solution': 'A set of points equidistant from a center',
           'image': '',
@@ -269,12 +174,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         {
           'shape': 'Circle',
           'question': 'What is the general form of (x+5)² + (y-2)² = 2²?',
-          'options': [
-            'x² + y² - 10x + 4y + 25 = 0',
-            'x² + y² - 10x - 4y - 25 = 0',
-            'x² - y² - 10x + 4y + 25 = 0',
-            'x² + y² + 10x - 4y + 25 = 0'
-          ],
+          'options': ['x² + y² - 10x + 4y + 25 = 0', 'x² + y² - 10x - 4y - 25 = 0', 'x² - y² - 10x + 4y + 25 = 0', 'x² + y² + 10x - 4y + 25 = 0'],
           'correctIndex': 3,
           'solution': 'SOLUTION: Expand and simplify to get x² + y² + 10x - 4y + 25 = 0',
           'image': '',
@@ -348,12 +248,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         {
           'shape': 'Ellipse',
           'question': 'Which equation represents the ellipse shown?',
-          'options': [
-            '(x+4)²/9 + (y+6)²/81 = 1',
-            '(x-7)²/25 + (y+5)²/16 = 1',
-            '(x-3)²/49 + (y+2)²/9 = 1',
-            '(x+3)²/9 + (y-5)²/36 = 1'
-          ],
+          'options': ['(x+4)²/9 + (y+6)²/81 = 1', '(x-7)²/25 + (y+5)²/16 = 1', '(x-3)²/49 + (y+2)²/9 = 1', '(x+3)²/9 + (y-5)²/36 = 1'],
           'correctIndex': 3,
           'solution': 'SOLUTION: Center at (-3,5), a=6, b=3 → (x+3)²/9 + (y-5)²/36 = 1',
           'image': 'assets/ellipse_graph.jpg',
@@ -377,12 +272,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         {
           'shape': 'Ellipse',
           'question': 'In a whispering gallery with foci at (-6,0) and (6,0) and major axis 20 meters, what is the equation?',
-          'options': [
-            'x²/100 + y²/144 = 1',
-            'x²/36 + y²/16 = 1',
-            'x²/100 + y²/64 = 1',
-            'x²/81 + y²/49 = 1'
-          ],
+          'options': ['x²/100 + y²/144 = 1', 'x²/36 + y²/16 = 1', 'x²/100 + y²/64 = 1', 'x²/81 + y²/49 = 1'],
           'correctIndex': 2,
           'solution': 'SOLUTION: a=10, c=6 → b=8 → x²/100 + y²/64 = 1',
           'image': 'assets/whispering_gallery.png',
@@ -390,12 +280,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         {
           'shape': 'Ellipse',
           'question': 'A bridge arc is shaped like half an ellipse. Highest point is 8ft, width is 28ft. What is the equation?',
-          'options': [
-            'x²/144 + y²/64 = 1',
-            'x²/100 + y²/169 = 1',
-            'x²/64 + y²/121 = 1',
-            'x²/196 + y²/64 = 1'
-          ],
+          'options': ['x²/144 + y²/64 = 1', 'x²/100 + y²/169 = 1', 'x²/64 + y²/121 = 1', 'x²/196 + y²/64 = 1'],
           'correctIndex': 3,
           'solution': 'SOLUTION: a=14, b=8 → x²/196 + y²/64 = 1',
           'image': 'assets/bridge_arc.png',
@@ -405,12 +290,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         {
           'shape': 'Parabola',
           'question': 'What is the standard form equation of a vertically opening parabola with vertex at origin?',
-          'options': [
-            '(x-h)² = 4p(y-k)',
-            'y² = 4px',
-            'x² = 4py',
-            '(y-k)² = 4p(x-h)'
-          ],
+          'options': ['(x-h)² = 4p(y-k)', 'y² = 4px', 'x² = 4py', '(y-k)² = 4p(x-h)'],
           'correctIndex': 2,
           'solution': 'x² = 4py',
           'image': '',
@@ -418,12 +298,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         {
           'shape': 'Parabola',
           'question': 'The vertex of a parabola is the point that...',
-          'options': [
-            'Is the midpoint of the focus and directrix',
-            'Lies at the center of the parabola',
-            'Is always at (0,0)',
-            'Lies on the directrix'
-          ],
+          'options': ['Is the midpoint of the focus and directrix', 'Lies at the center of the parabola', 'Is always at (0,0)', 'Lies on the directrix'],
           'correctIndex': 0,
           'solution': 'Is the midpoint of the focus and directrix',
           'image': '',
@@ -431,12 +306,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         {
           'shape': 'Parabola',
           'question': 'What is the directrix of a parabola?',
-          'options': [
-            'A point inside the parabola',
-            'A fixed straight line used to define the parabola',
-            'The longest chord of the parabola',
-            'A line perpendicular to the axis of symmetry'
-          ],
+          'options': ['A point inside the parabola', 'A fixed straight line used to define the parabola', 'The longest chord of the parabola', 'A line perpendicular to the axis of symmetry'],
           'correctIndex': 1,
           'solution': 'A fixed straight line used to define the parabola',
           'image': '',
@@ -460,12 +330,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         {
           'shape': 'Parabola',
           'question': 'Write the equation of a parabola with vertex at (1,-3), opens right, and latus rectum length of 8 units.',
-          'options': [
-            '(x+3)² = 8(y-1)',
-            '(y+3)² = 8(x-1)',
-            '(x-3)² = -8(y-1)',
-            '(y+3)² = -8(x-1)'
-          ],
+          'options': ['(x+3)² = 8(y-1)', '(y+3)² = 8(x-1)', '(x-3)² = -8(y-1)', '(y+3)² = -8(x-1)'],
           'correctIndex': 1,
           'solution': 'SOLUTION: (y+3)² = 8(x-1)',
           'image': null,
@@ -481,12 +346,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         {
           'shape': 'Hyperbola',
           'question': 'comet`s path around the sun is roughly modeled by a hyperbola. Which of the following equations could represent this path (assuming the sun is at a focus)?',
-          'options': [
-            'x² + y² = 1',
-            'y = x²',
-            'x²/9 - y²/16 = 1',
-            'x² + y^2/4 = 1 '
-          ],
+          'options': ['x² + y² = 1', 'y = x²', 'x²/9 - y²/16 = 1', 'x² + y^2/4 = 1 '],
           'correctIndex': 2,
           'solution': 'Parabola',
           'image': 'assets/comet_path.png',
@@ -512,12 +372,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         {
           'shape': 'Hyperbola',
           'question': 'What is the equation of hyperbola with center at (h,k) and transverse axis parallel to y-axis?',
-          'options': [
-            'Ax² + By² + Cx + Dy + E = 0',
-            '(y-k)²/a² - (x-h)²/b² = 1',
-            '(x-h)²/a² - (y-k)²/b² = 1',
-            'Ax² - By² - Cx - Dy - E = 0'
-          ],
+          'options': ['Ax² + By² + Cx + Dy + E = 0', '(y-k)²/a² - (x-h)²/b² = 1', '(x-h)²/a² - (y-k)²/b² = 1', 'Ax² - By² - Cx - Dy - E = 0'],
           'correctIndex': 1,
           'solution': '(y-k)²/a² - (x-h)²/b² = 1',
           'image': '',
@@ -525,12 +380,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         {
           'shape': 'Hyperbola',
           'question': 'Find the vertices of (y-8)²/9 - (x-4)²/16 = 1',
-          'options': [
-            'V(4,13), (-4,3)',
-            'V(-3,10), (3,3)',
-            'V(4,11), (4,5)',
-            'V(-4,-10), (-4,3)'
-          ],
+          'options': ['V(4,13), (-4,3)', 'V(-3,10), (3,3)', 'V(4,11), (4,5)', 'V(-4,-10), (-4,3)'],
           'correctIndex': 2,
           'solution': 'SOLUTION: a=3 → vertices at (4,8±3) = (4,11) and (4,5)',
           'image': '',
@@ -546,12 +396,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         {
           'shape': 'Hyperbola',
           'question': 'Transform (x-4)²/4 - (y-5)²/25 = 1 to general form',
-          'options': [
-            '20x² + 4y² + 200x + 50y + 50 = 0',
-            '-25x² + 4y² + 100x + 40y + 50 = 0',
-            '20x² - 4y² + 100x + 20y + 200 = 0',
-            '25x² - 4y² - 200x + 40y + 200 = 0'
-          ],
+          'options': ['20x² + 4y² + 200x + 50y + 50 = 0', '-25x² + 4y² + 100x + 40y + 50 = 0', '20x² - 4y² + 100x + 20y + 200 = 0', '25x² - 4y² - 200x + 40y + 200 = 0'],
           'correctIndex': 3,
           'solution': 'SOLUTION: 25x² - 4y² - 200x + 40y + 200 = 0',
           'image': '',
@@ -567,12 +412,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         {
           'shape': 'Hyperbola',
           'question': 'A hyperbola has vertices at (0,±6) and asymptotes y = ±(3/2)x. What is its equation?',
-          'options': [
-            'y²/36 - x²/16 = 1',
-            'x²/16 - y²/36 = 1',
-            'y²/16 - x²/36 = 1',
-            'x²/16 - y²/16 = 1'
-          ],
+          'options': ['y²/36 - x²/16 = 1', 'x²/16 - y²/36 = 1', 'y²/16 - x²/36 = 1', 'x²/16 - y²/16 = 1'],
           'correctIndex': 0,
           'solution': 'SOLUTION: a=6, b=4 → y²/36 - x²/16 = 1',
           'image': '',
@@ -580,12 +420,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         {
           'shape': 'Hyperbola',
           'question': 'Find the foci of (y+4)²/9 - (x-1)²/16 = 1',
-          'options': [
-            '(1,4±5)',
-            '(1±5,4)',
-            '(1,4±7)',
-            '(1±7,4)'
-          ],
+          'options': ['(1,4±5)', '(1±5,4)', '(1,4±7)', '(1±7,4)'],
           'correctIndex': 0,
           'solution': 'SOLUTION: c=5 → foci at (1,-4±5)',
           'image': '',
@@ -601,21 +436,15 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
         {
           'shape': 'Hyperbola',
           'question': 'A comet\'s path around the sun is modeled by:',
-          'options': [
-            'x² + y² = 1',
-            'y = x²',
-            'x²/9 - y²/16 = 1',
-            'x² + y²/4 = 1'
-          ],
+          'options': ['x² + y² = 1', 'y = x²', 'x²/9 - y²/16 = 1', 'x² + y²/4 = 1'],
 
-          
           'correctIndex': 2,
           'solution': 'x²/9 - y²/16 = 1',
           'image': 'assets/comet_path.jpg',
         },
         {
           'shape': 'Hyperbola',
-          'question': '10. A hyperbolic tower stands 150m tall. The width at narrowest point is:',
+          'question': 'A hyperbolic tower stands 150m tall. The width at narrowest point is:',
           'options': ['15m', '10m', '4m', '17m'],
           'correctIndex': 1,
           'solution': 'SOLUTION: a=5 → width=10 meters',
@@ -628,9 +457,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
   @override
   Widget build(BuildContext context) {
     if (_questionOrder.isEmpty) {
-      return Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     final originalIndex = _questionOrder[_currentQuestionIndex];
@@ -638,12 +465,9 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
 
     return WillPopScope(
       onWillPop: () async {
-         isPlaying = false;
-              audioPlayer.stop();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => MenuButton()),
-        );
+        isPlaying = false;
+        audioPlayer.stop();
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MenuButton()));
         return false;
       },
       child: Scaffold(
@@ -666,8 +490,7 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
               },
               tooltip: isPlaying ? 'Stop Sound' : 'Play Sound',
             ),
-
-          ]
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -675,57 +498,14 @@ class _ConicSectionsQuizState extends State<ConicSectionsQuiz> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Card(
-                  elevation: 4,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      currentQuestion['question'],
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
+                Card(elevation: 4, child: Padding(padding: const EdgeInsets.all(16.0), child: Text(currentQuestion['question'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))),
                 _buildQuestionImage(currentQuestion['image']),
                 SizedBox(height: 20),
                 ...List.generate(currentQuestion['options'].length, (index) {
-                  return Card(
-                    elevation: 2,
-               
-                    child: ListTile(
-                      title: Text(
-                        currentQuestion['options'][index],
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      onTap: _isAnswered ? null : () => _answerQuestion(index),
-                      leading: Icon(
-                        _selectedOptionIndex == index
-                            ? Icons.radio_button_checked
-                            : Icons.radio_button_unchecked,
-                        color: _selectedOptionIndex == index
-                            ? Colors.blue
-                            : Colors.grey,
-                      ),
-                    ),
-                  );
+                  return Card(elevation: 2, child: ListTile(title: Text(currentQuestion['options'][index], style: TextStyle(fontSize: 16)), onTap: _isAnswered ? null : () => _answerQuestion(index), leading: Icon(_selectedOptionIndex == index ? Icons.radio_button_checked : Icons.radio_button_unchecked, color: _selectedOptionIndex == index ? Colors.blue : Colors.grey)));
                 }),
                 SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _isAnswered ? _nextQuestion : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
-                    minimumSize: Size(double.infinity, 50),
-                  ),
-                  child: Text(
-                    _currentQuestionIndex < _quizQuestions.length - 1
-                        ? 'Next Question'
-                        : 'Finish Quiz',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
+                ElevatedButton(onPressed: _isAnswered ? _nextQuestion : null, style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50)), child: Text(_currentQuestionIndex < _quizQuestions.length - 1 ? 'Next Question' : 'Finish Quiz', style: TextStyle(fontSize: 18))),
               ],
             ),
           ),
@@ -743,15 +523,7 @@ class ResultsScreen extends StatelessWidget {
   final List<Map<String, dynamic>> questions;
   final VoidCallback onRestart;
 
-  const ResultsScreen({
-    Key? key,
-    required this.score,
-    required this.totalQuestions,
-    required this.userAnswers,
-    required this.questionOrder,
-    required this.questions,
-    required this.onRestart,
-  }) : super(key: key);
+  const ResultsScreen({Key? key, required this.score, required this.totalQuestions, required this.userAnswers, required this.questionOrder, required this.questions, required this.onRestart}) : super(key: key);
 
   String _getGrade() {
     double percentage = (score / totalQuestions) * 100;
@@ -777,16 +549,14 @@ class ResultsScreen extends StatelessWidget {
       canPop: false,
       onPopInvoked: (didPop) {
         if (!didPop) {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => MenuButton()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MenuButton()));
         }
       },
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MenuButton()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MenuButton()));
             },
             icon: Icon(Icons.arrow_back),
           ),
@@ -809,29 +579,18 @@ class ResultsScreen extends StatelessWidget {
             children: [
               // Wider score box
               Container(
-                width: double.infinity,  // Changed from 180 to double.infinity
-                padding: EdgeInsets.all(20),  // Increased padding
-                decoration: BoxDecoration(
-                  color: Colors.purple.shade50,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      blurRadius: 6,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
+                width: double.infinity, // Changed from 180 to double.infinity
+                padding: EdgeInsets.all(20), // Increased padding
+                decoration: BoxDecoration(color: Colors.purple.shade50, borderRadius: BorderRadius.circular(12), boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.3), blurRadius: 6, offset: Offset(0, 3))]),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.emoji_events,
-                        size: 50, color: Colors.purple),  // Increased icon size
-                    SizedBox(height: 12),  // Increased spacing
+                    Icon(Icons.emoji_events, size: 50, color: Colors.purple), // Increased icon size
+                    SizedBox(height: 12), // Increased spacing
                     Text(
                       'Your Quiz Score',
                       style: TextStyle(
-                        fontSize: 16,  // Increased font size
+                        fontSize: 16, // Increased font size
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -839,31 +598,18 @@ class ResultsScreen extends StatelessWidget {
                     Text(
                       '$score/$totalQuestions',
                       style: TextStyle(
-                        fontSize: 20,  // Increased font size
+                        fontSize: 20, // Increased font size
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(height: 12),
                     Container(
                       width: double.infinity,
-                      height: 10,  // Increased height
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.grey.shade300,
-                      ),
-                      child: FractionallySizedBox(
-                        alignment: Alignment.centerLeft,
-                        widthFactor: score / totalQuestions,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: _getGradeColor(),
-                          ),
-                        ),
-                      ),
+                      height: 10, // Increased height
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: Colors.grey.shade300),
+                      child: FractionallySizedBox(alignment: Alignment.centerLeft, widthFactor: score / totalQuestions, child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: _getGradeColor()))),
                     ),
                     SizedBox(height: 16),
-                    
                   ],
                 ),
               ),
@@ -880,149 +626,24 @@ class ResultsScreen extends StatelessWidget {
                     return Card(
                       margin: EdgeInsets.only(bottom: 10),
                       elevation: 3,
-                      color: isCorrect
-                          ? Colors.green.shade50
-                          : Colors.red.shade50,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: isCorrect
-                              ? Colors.green.shade200
-                              : Colors.red.shade200,
-                          width: 1.5,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                      color: isCorrect ? Colors.green.shade50 : Colors.red.shade50,
+                      shape: RoundedRectangleBorder(side: BorderSide(color: isCorrect ? Colors.green.shade200 : Colors.red.shade200, width: 1.5), borderRadius: BorderRadius.circular(8)),
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    color: isCorrect
-                                        ? Colors.green
-                                        : Colors.red,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    isCorrect
-                                        ? Icons.check
-                                        : Icons.close,
-                                    color: Colors.white,
-                                    size: 16,
-                                  ),
-                                ),
-                                SizedBox(width: 8),
-                                Expanded(
-                                  child: Text(
-                                    'Question ${displayIndex + 1}',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: isCorrect
-                                          ? Colors.green.shade900
-                                          : Colors.red.shade900,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            Row(children: [Container(padding: EdgeInsets.all(4), decoration: BoxDecoration(color: isCorrect ? Colors.green : Colors.red, shape: BoxShape.circle), child: Icon(isCorrect ? Icons.check : Icons.close, color: Colors.white, size: 16)), SizedBox(width: 8), Expanded(child: Text('Question ${displayIndex + 1}', style: TextStyle(fontWeight: FontWeight.bold, color: isCorrect ? Colors.green.shade900 : Colors.red.shade900, fontSize: 16)))]),
                             SizedBox(height: 8),
-                            Text(
-                              answer['question'],
-                              style: TextStyle(fontSize: 14),
-                            ),
+                            Text(answer['question'], style: TextStyle(fontSize: 14)),
                             SizedBox(height: 8),
-                            if (answer['image'] != null && answer['image'].isNotEmpty)
-                              Container(
-                                height: 100,
-                                child: Image.asset(
-                                  answer['image'],
-                                  fit: BoxFit.contain,
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      Center(
-                                    child: Text(
-                                      'Image not found',
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                            if (answer['image'] != null && answer['image'].isNotEmpty) Container(height: 100, child: Image.asset(answer['image'], fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey))))),
                             SizedBox(height: 8.0),
-                            RichText(
-                              text: TextSpan(
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: 'Your answer: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: answer['selected'] != null
-                                        ? question['options'][answer['selected']]
-                                        : 'Not answered',
-                                    style: TextStyle(
-                                      color: isCorrect
-                                          ? Colors.green.shade900
-                                          : Colors.red.shade900,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            RichText(text: TextSpan(style: TextStyle(fontSize: 14, color: Colors.black), children: [TextSpan(text: 'Your answer: ', style: TextStyle(fontWeight: FontWeight.w500)), TextSpan(text: answer['selected'] != null ? question['options'][answer['selected']] : 'Not answered', style: TextStyle(color: isCorrect ? Colors.green.shade900 : Colors.red.shade900, fontWeight: FontWeight.bold))])),
                             SizedBox(height: 4),
-                            RichText(
-                              text: TextSpan(
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: 'Correct answer: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: question['options'][answer['correctIndex']],
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green.shade900,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            RichText(text: TextSpan(style: TextStyle(fontSize: 14, color: Colors.black), children: [TextSpan(text: 'Correct answer: ', style: TextStyle(fontWeight: FontWeight.w500)), TextSpan(text: question['options'][answer['correctIndex']], style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green.shade900))])),
                             SizedBox(height: 8),
-                            Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Colors.blue.shade50,
-                                borderRadius: BorderRadius.circular(4),
-                                border: Border.all(
-                                  color: Colors.blue.shade100,
-                                  width: 1,
-                                ),
-                              ),
-                              child: Text(
-                                'Solution: ${answer['solution']}',
-                                style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 13,
-                                  color: Colors.blue.shade800,
-                                ),
-                              ),
-                            ),
+                            Container(padding: EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.circular(4), border: Border.all(color: Colors.blue.shade100, width: 1)), child: Text('Solution: ${answer['solution']}', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 13, color: Colors.blue.shade800))),
                           ],
                         ),
                       ),
@@ -1036,22 +657,8 @@ class ResultsScreen extends StatelessWidget {
                   Navigator.pop(context);
                   onRestart();
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
-                  foregroundColor: Colors.white,
-                  minimumSize: Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.refresh),
-                    SizedBox(width: 8),
-                    Text('Restart Quiz', style: TextStyle(fontSize: 18)),
-                  ],
-                ),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.purple, foregroundColor: Colors.white, minimumSize: Size(double.infinity, 50), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+                child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.refresh), SizedBox(width: 8), Text('Restart Quiz', style: TextStyle(fontSize: 18))]),
               ),
             ],
           ),
@@ -1107,15 +714,7 @@ class _ZoombaleStateImageScreenState extends State<_ZoomableImageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Image Preview'),
-        actions: [
-          IconButton(
-            onPressed: _resetZoom,
-            icon: Icon(Icons.refresh),
-          )
-        ],
-      ),
+      appBar: AppBar(title: Text('Image Preview'), actions: [IconButton(onPressed: _resetZoom, icon: Icon(Icons.refresh))]),
       body: Stack(
         children: [
           Center(
@@ -1128,17 +727,7 @@ class _ZoombaleStateImageScreenState extends State<_ZoomableImageScreen> {
                   _currentScale = _controller.value.getMaxScaleOnAxis();
                 });
               },
-              child: Image.asset(
-                widget.imagePath,
-                width: double.infinity,
-                height: double.infinity,
-                errorBuilder: (context, error, stackTrace) => Center(
-                  child: Text(
-                    'Image not found',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ),
-              ),
+              child: Image.asset(widget.imagePath, width: double.infinity, height: double.infinity, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey)))),
             ),
           ),
           Positioned(
@@ -1146,40 +735,12 @@ class _ZoombaleStateImageScreenState extends State<_ZoomableImageScreen> {
             bottom: 100,
             child: Column(
               children: [
-                FloatingActionButton(
-                  mini: true,
-                  onPressed: _currentScale < _maxScale ? _zoomIn : null,
-                  child: Icon(Icons.zoom_in),
-                  backgroundColor: _currentScale < _maxScale
-                      ? Theme.of(context).primaryColor
-                      : Colors.grey,
-                ),
+                FloatingActionButton(mini: true, onPressed: _currentScale < _maxScale ? _zoomIn : null, child: Icon(Icons.zoom_in), backgroundColor: _currentScale < _maxScale ? Theme.of(context).primaryColor : Colors.grey),
                 SizedBox(height: 8),
-                FloatingActionButton(
-                  mini: true,
-                  onPressed: _currentScale > _minScale ? _zoomOut : null,
-                  child: Icon(Icons.zoom_out),
-                  backgroundColor: _currentScale > _minScale
-                      ? Theme.of(context).primaryColor
-                      : Colors.grey,
-                ),
+                FloatingActionButton(mini: true, onPressed: _currentScale > _minScale ? _zoomOut : null, child: Icon(Icons.zoom_out), backgroundColor: _currentScale > _minScale ? Theme.of(context).primaryColor : Colors.grey),
                 SizedBox(height: 8),
                 // Zoom level indicator
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.black54,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    '${(_currentScale * 100).round()}%',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                Container(padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(12)), child: Text('${(_currentScale * 100).round()}%', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold))),
               ],
             ),
           ),
