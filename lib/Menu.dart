@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:math_app/Cone.dart';
 import 'package:math_app/DynamicShapes.dart';
 import 'package:math_app/GeneralQuiz.dart';
+import 'package:math_app/main.dart';
 
 class MenuButton extends StatelessWidget {
   const MenuButton({Key? key});
@@ -23,7 +24,15 @@ class MenuButton extends StatelessWidget {
           ),
           centerTitle: true,
           title: const Text('Menu', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-          actions: [],
+          actions: [
+            TextButton.icon(
+              onPressed: () {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MyApp()));
+              },
+              icon: const Icon(Icons.home, size: 30),
+              label: const Text(''),
+            ),
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),

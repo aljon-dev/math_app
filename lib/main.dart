@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:math_app/Intro.dart';
 import 'package:math_app/WhatisConic.dart';
 
@@ -19,29 +20,33 @@ class MyApp extends StatelessWidget {
 class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          // Background image - fullscreen
-           Container(
-            width: double.infinity, height: double.infinity,
-             child: Image.asset('assets/background.jpg', fit: BoxFit.fill)
-            ),
+    return PopScope(
+      canPop: false, // Prevents default back navigation
+      onPopInvokedWithResult: (bool didPop, dynamic result) async {
+        if (didPop) return; // Already popped? Do nothing.
+        SystemNavigator.pop(); // Close the app
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            // Background image - fullscreen
+            Container(width: double.infinity, height: double.infinity, child: Image.asset('assets/background.jpg', fit: BoxFit.fill)),
 
-          // Button positioned at bottom
-          Positioned(
-            bottom: 80,
-            left: 20,
-            right: 20,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ConicCurvesPage()));
-              },
-              child: Text('GET STARTED', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+            // Button positioned at bottom
+            Positioned(
+              bottom: 80,
+              left: 20,
+              right: 20,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ConicCurvesPage()));
+                },
+                child: Text('GET STARTED', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

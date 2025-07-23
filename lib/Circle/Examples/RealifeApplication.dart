@@ -49,27 +49,10 @@ class RealLifeApplicationsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              title, 
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold, 
-                color: Colors.blue[800]
-              ),
-            ),
+            Text(title, style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: Colors.black)),
             const SizedBox(height: 12),
-            Text(
-              content, 
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontSize: 16, 
-                height: 1.5
-              ),
-            ),
-            if (imagePath.isNotEmpty) ...[
-              const SizedBox(height: 16), 
-              Center(
-                child: _buildZoomableImage(context, imagePath),
-              ),
-            ],
+            Text(content, style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16, height: 1.5)),
+            if (imagePath.isNotEmpty) ...[const SizedBox(height: 16), Center(child: _buildZoomableImage(context, imagePath))],
           ],
         ),
       ),
@@ -81,33 +64,13 @@ class RealLifeApplicationsScreen extends StatelessWidget {
       height: 200,
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => _ZoomableImageScreen(imagePath: imagePath),
-            ),
-          );
+          Navigator.push(context, MaterialPageRoute(builder: (context) => _ZoomableImageScreen(imagePath: imagePath)));
         },
-        child: Hero(
-          tag: 'image-$imagePath',
-          child: Image.asset(
-            imagePath,
-            width: 200,
-            height: 200,
-            fit: BoxFit.contain,
-            errorBuilder: (context, error, stackTrace) => Center(
-              child: Text(
-                'Image not found',
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-          ),
-        ),
+        child: Hero(tag: 'image-$imagePath', child: Image.asset(imagePath, width: 200, height: 200, fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey))))),
       ),
     );
   }
 }
-
 
 class _ZoomableImageScreen extends StatefulWidget {
   final String imagePath;
@@ -118,7 +81,7 @@ class _ZoomableImageScreen extends StatefulWidget {
   _ZoomableImageScreenState createState() => _ZoomableImageScreenState();
 }
 
-class _ZoomableImageScreenState extends State<_ZoomableImageScreen > {
+class _ZoomableImageScreenState extends State<_ZoomableImageScreen> {
   final TransformationController _controller = TransformationController();
   double _currentScale = 1.0;
   final double _minScale = 0.5;

@@ -10,11 +10,9 @@ class FormulasSection extends StatefulWidget {
 class _FormulasSectionState extends State<FormulasSection> {
   int currentStep = 0;
 
-
-  final GlobalKey<ScaffoldState> _drawerKey  = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _drawerKey = GlobalKey<ScaffoldState>();
 
   final List<Map<String, dynamic>> steps = [
-    {'title': 'FORMULA OF THE CIRCLE', 'content': 'Let\'s explore the essential formulas used with circles. These formulas help us calculate important properties like area, circumference, and equations.', 'type': 'intro'},
     {'title': 'Area Formula', 'content': 'The area of a circle is the space enclosed within its circumference.', 'formula': r'A = π r²', 'type': 'formula'},
     {'title': 'Diameter Formula', 'content': 'The diameter is the longest distance across a circle, passing through the center.', 'formula': r'd = 2r', 'type': 'formula'},
     {'title': 'Circumference Formula', 'content': 'The circumference is the distance around the edge of the circle.', 'formula': r'c = 2π r', 'type': 'formula'},
@@ -47,14 +45,12 @@ class _FormulasSectionState extends State<FormulasSection> {
     }
   }
 
-  void _NavigateTo(int index){
-      setState(() {
-        currentStep = index;
-      });
-      Navigator.pop(context);
+  void _NavigateTo(int index) {
+    setState(() {
+      currentStep = index;
+    });
+    Navigator.pop(context);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -63,29 +59,24 @@ class _FormulasSectionState extends State<FormulasSection> {
     return PopScope(
       child: Scaffold(
         key: _drawerKey,
-        appBar: AppBar(title: Text('Circle Formula'),
-        actions: [
-              IconButton(onPressed: (){
-               
-               _drawerKey.currentState?.openEndDrawer();
-
-              }, icon: Icon(Icons.menu))
-        ],
+        appBar: AppBar(
+          title: Text('Circle Formula'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                _drawerKey.currentState?.openEndDrawer();
+              },
+              icon: Icon(Icons.menu),
+            ),
+          ],
         ),
         endDrawer: Drawer(
-              child: ListView.builder(
-                itemCount: steps.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(steps[index]['title']),
-                    selected: index == currentStep,
-                    selectedTileColor: Colors.blue.withOpacity(0.1),
-
-
-                    onTap: () => _NavigateTo(index),
-                  );
-                },
-              ),
+          child: ListView.builder(
+            itemCount: steps.length,
+            itemBuilder: (context, index) {
+              return ListTile(title: Text(steps[index]['title']), selected: index == currentStep, selectedTileColor: Colors.blue.withOpacity(0.1), onTap: () => _NavigateTo(index));
+            },
+          ),
         ),
         body: Column(
           children: [

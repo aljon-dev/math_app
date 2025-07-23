@@ -13,32 +13,9 @@ class HyperbolaRealWorldScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildProblem(
-                problem: '1. A cooling tower is shaped like a hyperbola that can be modeled by x²/25 - y²/256 = 1. What is the width of the tower at its narrowest part in the middle?', 
-                solution: [
-                  'Given: a² = 25 → a = 5',
-                  'The narrowest part is the length of the transverse axis: 2a',
-                  'Solution: 2(5) = 10',
-                  'Answer: The narrowest part is 10 meters.'
-                ], 
-                context: context,
-                image: 'assets/images/hyperbola_cooling_tower_problem.png'
-              ),
+              _buildProblem(problem: '1. A cooling tower is shaped like a hyperbola that can be modeled by x²/25 - y²/256 = 1. What is the width of the tower at its narrowest part in the middle?', solution: ['Given: a² = 25 → a = 5', 'The narrowest part is the length of the transverse axis: 2a', 'Solution: 2(5) = 10', 'Answer: The narrowest part is 10 meters.'], context: context, image: 'assets/images/hyperbola_cooling_tower_problem.png'),
               const SizedBox(height: 24),
-              _buildProblem(
-                problem: '2. A cooling tower stands 195 meters tall. The diameter of the top is 82 meters. At their closest, the sides are 50 meters apart. Find the equation of the hyperbola that models the sides.', 
-                solution: [
-                  'Given:',
-                  '2a = 50 → a = 25 → a² = 625',
-                  'Top radius = 82/2 = 41m',
-                  'Height to top = 95m (from center)',
-                  'Using point (41, 95) on hyperbola:',
-                  'b² = y² / (x²/a² - 1) = 95² / (41²/25² - 1) ≈ 5341.50',
-                  'Final equation: x²/625 - y²/5341.50 = 1'
-                ], 
-                context: context,
-                image: 'assets/images/hyperbola_cooling_tower_equation.png'
-              ),
+              _buildProblem(problem: '2. A cooling tower stands 195 meters tall. The diameter of the top is 82 meters. At their closest, the sides are 50 meters apart. Find the equation of the hyperbola that models the sides.', solution: ['Given:', '2a = 50 → a = 25 → a² = 625', 'Top radius = 82/2 = 41m', 'Height to top = 95m (from center)', 'Using point (41, 95) on hyperbola:', 'b² = y² / (x²/a² - 1) = 95² / (41²/25² - 1) ≈ 5341.50', 'Final equation: x²/625 - y²/5341.50 = 1'], context: context, image: 'assets/images/hyperbola_cooling_tower_equation.png'),
             ],
           ),
         ),
@@ -46,64 +23,32 @@ class HyperbolaRealWorldScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProblem({
-    required String problem, 
-    required List<String> solution, 
-    required BuildContext context,
-    String? image
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(problem, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 8),
-        if (image != null) ...[
-          _buildZoomableImage(image,context),
-          const SizedBox(height: 8)
-        ],
-        const Text('Solution:', style: TextStyle(fontWeight: FontWeight.bold)),
-        ...solution.map((step) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0), 
-          child: Text(step)
-        )).toList(),
-      ],
+  Widget _buildProblem({required String problem, required List<String> solution, required BuildContext context, String? image}) {
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(problem, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            if (image != null) ...[_buildZoomableImage(image, context), const SizedBox(height: 8)],
+            const Text('Solution:', style: TextStyle(fontWeight: FontWeight.bold)),
+            ...solution.map((step) => Padding(padding: const EdgeInsets.symmetric(vertical: 4.0), child: Text(step))).toList(),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _buildZoomableImage(String imagePath,BuildContext context) {
+  Widget _buildZoomableImage(String imagePath, BuildContext context) {
     return SizedBox(
       height: 200,
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => _ZoomableImageScreen(imagePath: imagePath),
-            ),
-          );
+          Navigator.push(context, MaterialPageRoute(builder: (context) => _ZoomableImageScreen(imagePath: imagePath)));
         },
-        child: Hero(
-          tag: 'image-$imagePath',
-          child: Image.asset(
-            imagePath,
-            width: double.infinity,
-            height: 200,
-            fit: BoxFit.contain,
-            errorBuilder: (context, error, stackTrace) => Container(
-              height: 200,
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Center(
-                child: Text(
-                  'Image not found: $imagePath',
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ),
-            ),
-          ),
-        ),
+        child: Hero(tag: 'image-$imagePath', child: Image.asset(imagePath, width: double.infinity, height: 200, fit: BoxFit.contain, errorBuilder: (context, error, stackTrace) => Container(height: 200, decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(8)), child: Center(child: Text('Image not found: $imagePath', style: TextStyle(color: Colors.grey)))))),
       ),
     );
   }
@@ -156,16 +101,7 @@ class _ZoomableImageScreenState extends State<_ZoomableImageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Image Preview'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: _resetZoom,
-            tooltip: 'Reset Zoom',
-          )
-        ],
-      ),
+      appBar: AppBar(title: Text('Image Preview'), actions: [IconButton(icon: Icon(Icons.refresh), onPressed: _resetZoom, tooltip: 'Reset Zoom')]),
       body: Stack(
         children: [
           Center(
@@ -179,60 +115,10 @@ class _ZoomableImageScreenState extends State<_ZoomableImageScreen> {
                   _currentScale = _controller.value.getMaxScaleOnAxis();
                 });
               },
-              child: Hero(
-                tag: 'image-${widget.imagePath}',
-                child: Image.asset(
-                  widget.imagePath,
-                  errorBuilder: (context, error, stackTrace) => Center(
-                    child: Text(
-                      'Image not found',
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                ),
-              ),
+              child: Hero(tag: 'image-${widget.imagePath}', child: Image.asset(widget.imagePath, errorBuilder: (context, error, stackTrace) => Center(child: Text('Image not found', style: TextStyle(color: Colors.grey))))),
             ),
           ),
-          Positioned(
-            right: 16,
-            bottom: 100,
-            child: Column(
-              children: [
-                FloatingActionButton(
-                  mini: true,
-                  onPressed: _currentScale < _maxScale ? _zoomIn : null,
-                  child: Icon(Icons.zoom_in),
-                  backgroundColor: _currentScale < _maxScale
-                      ? Theme.of(context).primaryColor
-                      : Colors.grey,
-                ),
-                SizedBox(height: 8),
-                FloatingActionButton(
-                  mini: true,
-                  onPressed: _currentScale > _minScale ? _zoomOut : null,
-                  child: Icon(Icons.zoom_out),
-                  backgroundColor: _currentScale > _minScale
-                      ? Theme.of(context).primaryColor
-                      : Colors.grey,
-                ),
-                SizedBox(height: 8),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.black54,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    '${(_currentScale * 100).round()}%',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          Positioned(right: 16, bottom: 100, child: Column(children: [FloatingActionButton(mini: true, onPressed: _currentScale < _maxScale ? _zoomIn : null, child: Icon(Icons.zoom_in), backgroundColor: _currentScale < _maxScale ? Theme.of(context).primaryColor : Colors.grey), SizedBox(height: 8), FloatingActionButton(mini: true, onPressed: _currentScale > _minScale ? _zoomOut : null, child: Icon(Icons.zoom_out), backgroundColor: _currentScale > _minScale ? Theme.of(context).primaryColor : Colors.grey), SizedBox(height: 8), Container(padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4), decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(12)), child: Text('${(_currentScale * 100).round()}%', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)))])),
         ],
       ),
     );
